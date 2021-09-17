@@ -6,4 +6,4 @@
 | Mohamed Halat | halatmoh | 1006322962 | mohamed.halat@mail.utoronto.ca | Text : 6479397713 | Requiem#1534
 | Christian Cachuen Chen Liu | Chenl147 | 1006171009 | christian.chenliu@mail.utoronto.ca | Discord | I like breathing#6969
 ---
-**Discord Chat/Server Invite :** https://discord.gg/qfKufqZ7x4
+**Discord Chat/Server Invite :** https://discord.gg/v7yHGfgCfp
