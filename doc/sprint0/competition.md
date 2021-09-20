@@ -26,5 +26,6 @@
 If your product is better for specific users and/or specific scenarios
 
   - Who are the users and/or what are the scenarios?
+  Our users are specifically Students that want to be able to easily manage their school work. It would rely on Teachers adopting our platform, making it easier for students to use.
   - Why do you think the competitors didn’t focus on these users and/or
       scenarios? And, what would it take from them to do so?
