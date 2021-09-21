@@ -15,5 +15,5 @@ If your product is better for specific users and/or specific scenarios
 
   - Who are the users and/or what are the scenarios?
   Our users are specifically Students that want to be able to easily manage their school work. It would rely on Teachers adopting our platform, making it easier for students to use.
-  - Why do you think the competitors didn’t focus on these users and/or scenarios? And, what would it take from them to do so? 
+  - Why do you think the competitors didn’t focus on these users and/or scenarios? And, what would it take from them to do so?
   The competitors didn't focus on the needs of students/teachers because they just wanted their product to satisfy the need for organizing tasks. The competition would need to spend a lot of resources in order to satisfy every class of users they have, also if they do not satisfy all the classes of their already existing user base, just trying to satisfy a specific class might cause other already existing users to be dissatisfied.
