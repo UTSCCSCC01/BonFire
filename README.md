@@ -3,13 +3,13 @@ A Student Kanban Board for seeing all your class work in one place! Designed by 
 
 ## Motivation
 
-Welcome to BonFire, a kanban-board web app designed and created by students with one purpose. Providing students and professors with a simple feature rich interface to keep track of their classes and class-work.
+Welcome to BonFire, a kanban-board web app designed and created by students with one purpose: providing students and professors with a simple feature-rich interface to keep track of their classes and class-work.
 
 Throughout covid, it has become more apparent how difficult it is to keep track of assignments for online and in person classes. We hope to implement features on top of kanban functionality to solve this issue.
 
 ## Installation
 
-In order to install the web app, take a look at the separate readme in both [frontend](frontend/README.md) and [backend](backend/README.md). Database inforamtion can be found in the [backend](backend/README.md) as well since we are using a database ORM.
+In order to install the web app, take a look at the separate readme in both [frontend](frontend/README.md) and [backend](backend/README.md). Database information can be found in the [backend](backend/README.md) as well since we are using a database ORM.
 
 ## Contributions
 
