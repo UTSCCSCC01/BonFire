@@ -13,14 +13,12 @@
 1. As a Bonfire user, I want to see a specific board so that I can organize myself
 
 1. As a Bonfire user, I want to be able to delete a board so that I can no longer see it because it is no longer relevant.
-Backend
 
 1. As a teacher, I want to create a course board so that I can organize the different components of my course and present them to my students
 
 1. As a teacher, I want to add students to my classroom board so they can stay organized with the assignments and due dates I assign
 
 1. As a student, I want to join my teacher’s board so that I can see the different tasks related to the course.
-
 
 1. As a teacher, I want to see the students in my classroom board so that I can see who is participating in the class
 
@@ -30,7 +28,7 @@ Backend
 
 1. As a Bonfire user, I want to be able to customize my boards so that I can better differentiate them and add personality.
 
-1. As a teacher, I want to see aggregate analytics about my course boards so I can see the progress of the students in my courses
+1. As a teacher, I want to see aggregate analytics about my course boards so that I can see the progress of the students in my courses
 
 1. As a Bonfire user, I want to create states on my boards so that I can organize my cards.
 
@@ -38,7 +36,7 @@ Backend
 
 1. As a Bonfire user, I want to delete a specific state on my board so that I can reorganize my cards to my preference
 
-1. As a Bonfire user, I want to create cards in my board’s specific state so that I can add the tasks that need to be done
+1. As a Bonfire user, I want to create cards in my board’s specific state so that I can add the tasks that need to be done related to the board state
 
 1. As a Bonfire user, I want to move cards around my board so that I can reorganize my tasks depending on the circumstances.
 
