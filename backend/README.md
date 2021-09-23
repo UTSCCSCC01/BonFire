@@ -32,7 +32,7 @@ $ npm run start:prod
 ```
 
 ## Database
- Database credentials should be stored in [.env](.env) which should be created from [.env](.env.bak)
+ Database credentials should be stored in [.env](.env) which should be created from [.env.bak](.env.bak)
 ```bash
 $ cp .env.bak .env
 ```
