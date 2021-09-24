@@ -1,4 +1,4 @@
-# projectf21-hello-world-418
+# Bonfire
 
 Refer to the [base readme](../../README.md) for more information
 
