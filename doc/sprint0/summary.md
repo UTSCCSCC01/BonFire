@@ -36,4 +36,4 @@ Users should be able to easily take advantage of their boards to help them keep 
 
 Teachers should be able to easily be able to share their course boards with their students and received different notifications and information about specific course boards such as who has joined them and who has completed some tasks of the course board.
 
-Students should be able to easily join their teacher's course boards and receive different notifications about their course boards such as new assignments or close due dates.
+Students should be able to easily join their teacher's course board.
