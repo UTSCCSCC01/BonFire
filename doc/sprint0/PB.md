@@ -44,9 +44,9 @@
 
 21. As Professor Pero, I want to delete my course boards so that my students and I can no longer access them as they are longer relevant.
 
-22. As a teacher, I want to kick certain students from one of my specific course boards so that I can kick those students that have dropped the course.
+22. As Professor Pero, I want to kick certain students from one of my specific course boards so that I can kick those students that have dropped the course.
 
-23. As a teacher, I want to ban certain students from one of my specific course boards so that I can avoid unwanted students in my course board.
+23. As Professor Pero, I want to ban certain students from one of my specific course boards so that I can avoid unwanted students in my course board.
 
 24. As Professor Pero, I want to see aggregate analytics about my course boards so that I can see the progress of the students in my courses.
 
