@@ -32,12 +32,19 @@ $ npm run start:prod
 ```
 
 ## Database
- Database credentials should be stored in [.env](.env) which should be created from [.env.bak](.env.bak)
+ Database credentials should be stored in [.env](.env) which should be created from [.env.bak](.env.bak). Follow these steps withing the [.env.bak](.env.bak) to connect prisma to your local db
 ```bash
 $ cp .env.bak .env
 ```
 
-to reflect changes in the database locally
+Setup with MacOS
+```bash
+$ brew install mysql
+$ brew service start mysql
+$ brew service stop mysql
+```
+
+To reflect prisma changes to the database run the following
 ```bash
 $ npx prisma generate
 ```
