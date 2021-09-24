@@ -28,6 +28,8 @@ Professor Pero wants to keep track of analytics for all of his classes' students
 
 User experience (such as dragging and dropping cards, or updating analytics for the professor dashboard) should be smooth at an expense of complexity in the backend of the application.
 
-Students should feel comfortable on all pages and should easily be able to switch between boards and should be able to create a fresh board with the ability to select preset templates.
+Users should feel comfortable on all pages of the web application and should be able to easily switch between boards and should be able to create a fresh board with the ability to select preset templates.
 
 Students should be able to easily take advantage of their boards to help them keep track of their tasks in a simple, elegant and meaningful manner.
+
+Teachers should be able to easily be able to share their course boards with their students and received different notifications and information about specific course boards such as who has joined them and who has completed some tasks of the course board.
