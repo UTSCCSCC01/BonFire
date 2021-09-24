@@ -4,7 +4,7 @@
 
 1. As Fred or Professor Pero, I want to be able to register to Bonfire so that I can log in to Bonfire.
 
-2. As a new user, I want to be asked if I am a student or teacher so that I can see the correct dashboard, every time I log into Bonfire.
+2. As Fred or Professor Pero, I want to be asked if I am a student or teacher so that I can see the correct dashboard, every time I log into Bonfire.
 
 3. As Fred or Professor Pero, I want to create my personal boards so that I can organize myself.
 
