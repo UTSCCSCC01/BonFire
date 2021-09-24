@@ -16,7 +16,7 @@ Fred, a 19 year old student studying software engineering at UTSC in his 3st yea
 
 ### Professor
 
-Professor Pero is a professor of 3 classes and is the Computer Science department head at UTSC. Although his teaching experience has been smooth, every year he struggles with keeping track of the progress of his students assignments for all his classes.
+Professor Pero is a professor of 3 classes and is the Computer Science department head at UTSC. Although his teaching experience has been smooth so far, every year he struggles with keeping track of the progress of his students' assignments for all his classes.
 
 ## Key Scenarios
 
