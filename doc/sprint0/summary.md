@@ -5,7 +5,7 @@
 
 ## Objective
 
-Bonfire is Kanban-style, task recording board, made by students, for students and professors. Our goal for Bonfire is to build and run as a web application which university students can easy use to manage their assignments and due dates in an organized and convenient fashion. Where professors can keep track of aggregate progress of students for their classes.
+Bonfire is Kanban-style, task recording board, made by students, for students and professors. Our goal for Bonfire is to build and run as a web application which university students can easy use to manage their assignments and due dates in an organized and convenient fashion. Where professors can keep track of aggregate progress using analytics of students for their classes.
 
 ## Key Personas
 
@@ -28,6 +28,6 @@ Professor Pero wants to keep track of analytics for all of his classes' students
 
 User experience (such as dragging and dropping cards, or updating analytics for the professor dashboard) should be smooth at an expense of complexity in the backend of the application.
 
-Students should feel comfortable on all pages and should easily be able to switch between boards and should be able to create a fresh board with ability to select preset templates.
+Users should feel comfortable on all pages and should easily be able to switch between boards and should be able to create a fresh board with ability to select preset templates.
 
-Students should be able to easily take advantage of their boards to help them keep track of their tasks in a simple, elegant and meaningful manner.
+Users should be able to easily take advantage of their boards to help them keep track of their tasks in a simple, elegant and meaningful manner.
