@@ -22,7 +22,7 @@ Professor Pero is a professor of 3 classes and is the Computer Science departmen
 
 Fred wants to organize his tasks not only for school but for his internship as well, which uses an agile approach. Fred is familiar with Kan-boards from work, which uses Jira. Rather than using two different Kan-board applications, one for work and one for school, he wants to use one single application where he can seamlessly switch between them so he can stay on top of his tasks.
 
-Professor Pero wants to keep track of analytics for all of his classes' students so he knows how far majority of his students are progressing through his assignments. He needs to know if most of his students have started working on the assignment he assigned last week and how many have finished so he knows when to hand out his next assignment.
+Professor Pero wants to keep track of analytics for all of his classes' students so he knows how far his students are progressing through his assignments. He needs to know if most of his students have started working on the assignment he assigned last week and how many have finished so he knows when is the best time to hand out his next assignment.
 
 ## Key Principles
 
