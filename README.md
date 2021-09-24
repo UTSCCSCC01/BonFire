@@ -1,6 +1,8 @@
 # BonFire
 A Student Kanban Board for seeing all your class work in one place! Designed by Hello World 418! Check out [418 - I'm a teapot!](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/418)
 
+### [Figma](https://www.figma.com/file/yLSI2eGZEtE6fp5JwDOaQM/BonFire?node-id=0%3A1)
+
 ## Motivation
 
 Welcome to BonFire, a kanban-board web app designed and created by students with one purpose: providing students and professors with a simple feature-rich interface to keep track of their classes and class-work.
