@@ -4,7 +4,7 @@
 
 1. As Fred or Professor Pero, I want to be able to register to Bonfire so that I can log in to Bonfire.
 
-2. As Fred or Professor Pero, I want to be asked if I am a student or teacher so that I can see the correct dashboard, every time I log into Bonfire.
+2. As Fred or Professor Pero, I want to be asked if I am a student or teacher when i log in for the first time so that I can see the correct dashboard in the future.
 
 3. As Fred or Professor Pero, I want to create my personal boards so that I can organize myself.
 
@@ -26,11 +26,11 @@
 
 12. As Fred or Professor Pero, I want to move cards around my board so that I can reorganize my tasks depending on the circumstances.
 
-13. As Fred or Professor Pero, I want to delete a particular card in my board’s specific state so that that card does not appear anymore since it is no longer relevant.
+13. As Fred or Professor Pero, I want to delete a particular card in my board’s specific state so that the card does not appear anymore since it is no longer relevant.
 
-14. As Fred or Professor Pero, I want to add card tags to my boards so that I can categorize my tasks for better readability and organization.
+14. As Fred or Professor Pero, I want to add tags to my cards so that I can categorize my tasks for better readability and organization.
 
-15. As Fred or Professor Pero, I want to be able to modify card tags in my boards so that I can better visualize the category/importance of my cards.
+15. As Fred or Professor Pero, I want to be able to modify tags in my cards so that I can better visualize the category/importance of my cards.
 
 16. As Professor Pero, I want to create a course board so that I can organize the different components of my course and present them to my students.
 
@@ -44,10 +44,8 @@
 
 21. As Professor Pero, I want to delete my course boards so that my students and I can no longer access them as they are longer relevant.
 
-22. As Professor Pero, I want to kick certain students from one of my specific course boards so that I can kick those students that have dropped the course.
+22. As Professor Pero, I want to kick a student from one of my course boards so that I can remove students that do not belong in the course.
 
-23. As Professor Pero, I want to ban certain students from one of my specific course boards so that I can avoid unwanted students in my course board.
-
-24. As Professor Pero, I want to see aggregate analytics about my course boards so that I can see the progress of the students in my courses.
+23. As Professor Pero, I want to see aggregate analytics about my course boards so that I can see the progress of the students in my courses.
 
 
