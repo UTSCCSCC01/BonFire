@@ -11,7 +11,7 @@ Bonfire is a Kanban-style, task recording board, made by students, for students 
 
 ### Student
 
-Fred, a 19 year old student studying software engineering at UTSC, in his 1st year works and studies full time at the same time. Fred is a hard worker and takes 4-5 courses every semester but has a hard time organizing his due dates for all just subjects, especially for his online courses.
+Fred, a 19 year old student studying software engineering at UTSC in his 3st year, works part-time and studies full time at the same time. Fred is a hard worker and takes 4-5 courses every semester but has a hard time organizing his due dates for all just subjects, especially for his online courses.
 
 
 ### Professor
