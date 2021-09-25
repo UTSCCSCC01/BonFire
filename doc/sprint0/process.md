@@ -65,7 +65,7 @@ Everyone will have a say on their division of work but everyone has to come to a
 
 
 ### Next phase
-During this phase, we noticed that quite a few of us are working during the day so meetings for this project during the weekdays can only be done in the late afternoon or night, hence, we have assigned the time of 5pm to 6pm perfect for holding future meetings.
+During this phase, we noticed that quite a few of us are working during the day so meetings for this project during the weekdays can only be done in the late afternoon or night, hence, we come to the conclusion that around 5pm to 6pm is the perfect time for holding future meetings.
 
 Furthermore, some of team members have intern experience which comes in really handy to know how to accomplish certain tasks, thus, the less experienced members can often just ask these knowledgeable members for advice or a review of their tasks.
 
