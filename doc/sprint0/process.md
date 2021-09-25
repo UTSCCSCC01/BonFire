@@ -62,3 +62,9 @@ Everyone will have a say on their division of work but everyone has to come to a
 | 13 | More than a week | Unknown
 
 ###### On average, it took 1 or 2 rounds of voting to come to consensus for the point estimation using planning poker. This may have been as a result of the chemistry of the group members. As a team, we agreed that scoring a story as 8 or 13 should be very rare and means the story should be broken down and worked on more than a single developer
+
+
+### Next phase
+During this phase, we noticed that quite a few of us are working during the day so meetings for this project during the weekdays can only be done in the late afternoon or night, hence, we have assigned the time of 5pm to 6pm perfect for holding future meetings.
+
+Furthermore, some of team members have intern experience which comes in really handy to know how to accomplish certain tasks, thus, the less experienced members can often just ask these knowledgeable members for advice or a review of their tasks.
