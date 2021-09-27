@@ -1,81 +1,73 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+  engineType = "binary"
+  binaryTargets = ["native"]
+}
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-model User{
-  id  Int @id @default(autoincrement()) @unique
-  username String
+model User {
+  id         Int         @id @default(autoincrement())
+  username   String
   first_name String
-  last_name String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-
-  // The following fields are not part of the schema, but are used by the
-  // generator to generate the client.
-  cards Card[]
-  boards UserBoard[]
+  last_name  String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
+  cards      Card[]
+  boards     UserBoard[]
 }
 
-model Board{
-  id Int @id @default(autoincrement()) @unique
-  title String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-
-  // The following fields are not part of the schema, but are used by the
-  // generator to generate the client.
-  users UserBoard[]
-  states State[]
+model Board {
+  id         Int         @id @default(autoincrement())
+  title      String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @default(now())
+  states     State[]
+  users      UserBoard[]
 }
 
 model UserBoard {
-  id Int @id @default(autoincrement()) @unique
   board_id Int
-  user_id Int
-  role Role @default(owner)
+  user_id  Int
+  role     Role  @default(owner)
+  board    Board @relation(fields: [board_id], references: [id])
+  user     User  @relation(fields: [user_id], references: [id])
 
-  // The following fields are not part of the schema, but are used by the
-  // generator to generate the client.
-  board Board @relation(fields: [board_id], references: [id])
-  user User @relation(fields: [user_id], references: [id])
+  @@id([board_id, user_id])
+  @@index([board_id], name: "UserBoard_board_id_fkey")
+  @@index([user_id], name: "UserBoard_user_id_fkey")
 }
 
-model State{
-  id Int @id @default(autoincrement()) @unique
-  board_id  Int
-  title String
+model State {
+  id         Int      @id @default(autoincrement())
+  board_id   Int
+  title      String
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
+  board      Board    @relation(fields: [board_id], references: [id])
+  cards      Card[]
 
-  // The following fields are not part of the schema, but are used by the
-  // generator to generate the client.
-  board Board @relation(fields: [board_id], references: [id])
-  cards Card[]
+  @@index([board_id], name: "State_board_id_fkey")
 }
 
-model Card{
-  id Int @id @default(autoincrement()) @unique
-  title String
-  desc String
-  created_at DateTime @default(now())
-  modified_at DateTime @default(now())
-  due_date DateTime?
-  submit_url String?
+model Card {
+  id              Int       @id @default(autoincrement())
+  title           String
+  desc            String
+  created_at      DateTime  @default(now())
+  modified_at     DateTime  @default(now())
+  due_date        DateTime?
+  submit_url      String?
   creator_user_id Int
-  state_id Int
+  state_id        Int
+  creator         User      @relation(fields: [creator_user_id], references: [id])
+  state           State     @relation(fields: [state_id], references: [id])
 
-  // The following fields are not part of the schema, but are used by the
-  // generator to generate the client.
-  creator User @relation(fields: [creator_user_id], references: [id])
-  state State @relation(fields: [state_id], references: [id])
+  @@index([creator_user_id], name: "Card_creator_user_id_fkey")
+  @@index([state_id], name: "Card_state_id_fkey")
 }
 
 enum Role {

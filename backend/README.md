@@ -44,22 +44,10 @@ $ brew service start mysql
 $ brew service stop mysql
 ```
 
-To reflect prisma changes to the database run the following
 ```bash
+\# to apply schema to your database
+$ npx prisma push
+
+\# To reflect prisma changes to the database run the following
 $ npx prisma generate
-```
-
-## Migrations
-```bash
-# Create migration
-$ npx prisma migrate dev --name added_job_title
-
-# Run migration for a DEVELOPMENT env
-$ npx prisma migrate dev
-
-# running migration on PRODUCTION environment
-$ npx prisma migrate deploy
-
-# reset migrations (only on local dev)
-$ npx prisma migrate reset
 ```
