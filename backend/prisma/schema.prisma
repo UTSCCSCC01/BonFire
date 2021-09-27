@@ -12,53 +12,74 @@ generator client {
 
 model User{
   id  Int @id @default(autoincrement()) @unique
-  firstName String  @db.VarChar(255)
-  lastName String @db.VarChar(255)
-  createdAt DateTime @default(now())
-  job  Job  
-}
+  username String
+  first_name String
+  last_name String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
 
-model Classroom{
-  id  Int @id @default(autoincrement()) @unique
-  board_id Int
-  facilitator_id Int
-  title String  @db.VarChar(255)
-  createdAt DateTime @default(now())
-  inviteLink  String
+  // The following fields are not part of the schema, but are used by the
+  // generator to generate the client.
+  cards Card[]
+  boards UserBoard[]
 }
 
 model Board{
   id Int @id @default(autoincrement()) @unique
+  title String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  // The following fields are not part of the schema, but are used by the
+  // generator to generate the client.
+  users UserBoard[]
+  states State[]
+}
+
+model UserBoard {
+  id Int @id @default(autoincrement()) @unique
+  board_id Int
   user_id Int
-  classroom_id Int @default(-1)   //If -1, not a classroom board
+  role Role @default(owner)
+
+  // The following fields are not part of the schema, but are used by the
+  // generator to generate the client.
+  board Board @relation(fields: [board_id], references: [id])
+  user User @relation(fields: [user_id], references: [id])
 }
 
 model State{
   id Int @id @default(autoincrement()) @unique
   board_id  Int
   title String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+
+  // The following fields are not part of the schema, but are used by the
+  // generator to generate the client.
+  board Board @relation(fields: [board_id], references: [id])
+  cards Card[]
 }
 
 model Card{
   id Int @id @default(autoincrement()) @unique
-  title String  
-  desc String
-  createdAt DateTime @default(now())
-  modifiedAt DateTime @default(now())
-  dueDate DateTime  //nullable
-  submitUrl String  //nullable
-}
-
-model Tag{
-  id Int @id @default(autoincrement()) @unique
-  board_id Int
   title String
+  desc String
+  created_at DateTime @default(now())
+  modified_at DateTime @default(now())
+  due_date DateTime?
+  submit_url String?
+  creator_user_id Int
+  state_id Int
+
+  // The following fields are not part of the schema, but are used by the
+  // generator to generate the client.
+  creator User @relation(fields: [creator_user_id], references: [id])
+  state State @relation(fields: [state_id], references: [id])
 }
 
-enum Job {
-  STUDENT
-  TA
-  TEACHER
-  TUTOR
-  PROFESSOR
+enum Role {
+  owner
+  editor
+  viewer
 }
