@@ -47,6 +47,17 @@ $ brew services start mysql
 $ brew services stop mysql
 ```
 
+Adding a mysql connection
+- Run mysql as root in bash
+```bash
+mysql -uroot
+```
+- Update the connection username/password
+```SQL
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'YOURNEWPASSWORD';
+```
+- Now go to .env file and update it with your username and password
+
 ```bash
 \# to apply schema to your database
 $ npx prisma push
