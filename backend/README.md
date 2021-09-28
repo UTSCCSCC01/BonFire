@@ -25,9 +25,6 @@ $ npm install --include=dev
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
 
 # production mode
@@ -59,9 +56,9 @@ ALTER USER 'root'@'localhost' IDENTIFIED BY 'YOURNEWPASSWORD';
 - Now go to .env file and update it with your username and password
 
 ```bash
-\# to apply schema to your database
+# to apply schema to your database
 $ npx prisma push
 
-\# To reflect prisma changes to the database run the following
+# To reflect prisma changes to the database run the following
 $ npx prisma generate
 ```
