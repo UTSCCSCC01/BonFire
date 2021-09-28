@@ -39,8 +39,13 @@ $ cp .env.bak .env
 
 Setup with MacOS
 ```bash
+# Install
 $ brew install mysql
+
+# Start the db server
 $ brew services start mysql
+
+# Stop the db server
 $ brew services stop mysql
 ```
 
