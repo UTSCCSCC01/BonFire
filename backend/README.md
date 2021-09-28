@@ -12,6 +12,9 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Compatibility
+Be sure to run using Node 14 and npm 7
+
 ## Installation
 
 ```bash
@@ -40,8 +43,8 @@ $ cp .env.bak .env
 Setup with MacOS
 ```bash
 $ brew install mysql
-$ brew service start mysql
-$ brew service stop mysql
+$ brew services start mysql
+$ brew services stop mysql
 ```
 
 ```bash
