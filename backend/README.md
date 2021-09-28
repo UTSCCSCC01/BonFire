@@ -44,6 +44,12 @@ $ brew services start mysql
 $ brew services stop mysql
 ```
 
+Setup with windows
+```bash
+# Good luck figuring it out lol
+```
+
+
 Adding a mysql connection
 - Run mysql as root in bash
 ```bash
