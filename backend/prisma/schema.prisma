@@ -15,7 +15,7 @@ model User {
   first_name String
   last_name  String
   created_at DateTime    @default(now())
-  updated_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
   cards      Card[]
   boards     UserBoard[]
 }
@@ -24,7 +24,7 @@ model Board {
   id         Int         @id @default(autoincrement())
   title      String
   created_at DateTime    @default(now())
-  updated_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
   states     State[]
   users      UserBoard[]
 }
@@ -35,6 +35,8 @@ model UserBoard {
   role     Role  @default(owner)
   board    Board @relation(fields: [board_id], references: [id])
   user     User  @relation(fields: [user_id], references: [id])
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
 
   @@id([board_id, user_id])
   @@index([board_id], name: "UserBoard_board_id_fkey")
@@ -46,7 +48,7 @@ model State {
   board_id   Int
   title      String
   created_at DateTime @default(now())
-  updated_at DateTime @default(now())
+  updated_at DateTime @updatedAt
   board      Board    @relation(fields: [board_id], references: [id])
   cards      Card[]
 
@@ -56,9 +58,9 @@ model State {
 model Card {
   id              Int       @id @default(autoincrement())
   title           String
-  desc            String
+  desc            String?
   created_at      DateTime  @default(now())
-  modified_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
   due_date        DateTime?
   submit_url      String?
   creator_user_id Int
