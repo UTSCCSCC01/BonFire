@@ -12,6 +12,9 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Compatibility
+Be sure to run using Node 14 and npm 7
+
 ## Installation
 
 ```bash
@@ -22,9 +25,6 @@ $ npm install --include=dev
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
 $ npm run start:dev
 
 # production mode
@@ -39,27 +39,37 @@ $ cp .env.bak .env
 
 Setup with MacOS
 ```bash
+# Install
 $ brew install mysql
-$ brew service start mysql
-$ brew service stop mysql
+
+# Start the db server
+$ brew services start mysql
+
+# Stop the db server
+$ brew services stop mysql
 ```
 
-To reflect prisma changes to the database run the following
+Setup with windows
 ```bash
+# Good luck figuring it out lol
+```
+
+
+Adding a mysql connection
+- Run mysql as root in bash
+```bash
+mysql -uroot
+```
+- Update the connection username/password
+```SQL
+ALTER USER 'root'@'localhost' IDENTIFIED BY 'YOURNEWPASSWORD';
+```
+- Now go to .env file and update it with your username and password
+
+```bash
+# to apply schema to your database
+$ npx prisma push
+
+# To reflect prisma changes to the database run the following
 $ npx prisma generate
-```
-
-## Migrations
-```bash
-# Create migration
-$ npx prisma migrate dev --name added_job_title
-
-# Run migration for a DEVELOPMENT env
-$ npx prisma migrate dev
-
-# running migration on PRODUCTION environment
-$ npx prisma migrate deploy
-
-# reset migrations (only on local dev)
-$ npx prisma migrate reset
 ```

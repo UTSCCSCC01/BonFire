@@ -1,11 +1,79 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+  engineType    = "binary"
+}
 
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
+model User {
+  id         Int         @id @default(autoincrement())
+  username   String
+  first_name String
+  last_name  String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  cards      Card[]
+  boards     UserBoard[]
+}
+
+model Board {
+  id         Int         @id @default(autoincrement())
+  title      String
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  states     State[]
+  users      UserBoard[]
+}
+
+model UserBoard {
+  board_id   Int
+  user_id    Int
+  role       Role     @default(owner)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  board      Board    @relation(fields: [board_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
+
+  @@id([board_id, user_id])
+  @@index([board_id])
+  @@index([user_id])
+}
+
+model State {
+  id         Int      @id @default(autoincrement())
+  board_id   Int
+  title      String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  board      Board    @relation(fields: [board_id], references: [id])
+  cards      Card[]
+
+  @@index([board_id])
+}
+
+model Card {
+  id              Int       @id @default(autoincrement())
+  title           String
+  desc            String?
+  submit_url      String?
+  creator_user_id Int
+  state_id        Int
+  due_date        DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  creator         User      @relation(fields: [creator_user_id], references: [id])
+  state           State     @relation(fields: [state_id], references: [id])
+
+  @@index([creator_user_id])
+  @@index([state_id])
+}
+
+enum Role {
+  owner
+  editor
+  viewer
 }
