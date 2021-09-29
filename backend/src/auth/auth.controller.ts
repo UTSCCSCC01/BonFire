@@ -32,18 +32,18 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register a user' })
-  @ApiOkResponse({ description: 'Registration status' })
+  @ApiOkResponse({ description: 'User details' })
   @ApiParam({ name: 'last_name' })
   @ApiParam({ name: 'fist_name' })
   @ApiParam({ name: 'password' })
   @ApiParam({ name: 'email' })
-  public async register(@Body() userData: User): Promise<RegistrationStatus> {
-    const result = await this.authService.register(userData);
+  public async register(@Body() userData: User): Promise<LoginResult> {
+    const result = await this.authService.register({ ...userData });
 
     if (!result.success)
       throw new HttpException(result, HttpStatus.BAD_REQUEST);
 
-    return result;
+    return this.authService.login(userData);
   }
 
   @Post('login')
@@ -58,7 +58,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Get the request user' })
   @ApiOkResponse({ description: 'Returns the request user' })
   @UseGuards(AuthGuard())
-  public async testAuth(@RequestUser() user: User): Promise<User> {
+  public async getUser(@RequestUser() user: User): Promise<User> {
     return user;
   }
 }
