@@ -17,33 +17,48 @@ import {
 } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '.prisma/client';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiParam,
+  ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('auth')
+@ApiTags('auth')
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('register')
+  @ApiOperation({ summary: 'Register a user' })
+  @ApiOkResponse({ description: 'Registration status' })
+  @ApiParam({ name: 'last_name' })
+  @ApiParam({ name: 'fist_name' })
+  @ApiParam({ name: 'password' })
+  @ApiParam({ name: 'email' })
   public async register(@Body() userData: User): Promise<RegistrationStatus> {
-    console.log(userData);
-    const result: RegistrationStatus = await this.authService.register(
-      userData,
-    );
+    const result = await this.authService.register(userData);
 
-    if (!result.success) {
+    if (!result.success)
       throw new HttpException(result, HttpStatus.BAD_REQUEST);
-    }
 
     return result;
   }
 
   @Post('login')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Sign a user token' })
   public async login(@Body() loginUserData: LoginInfo): Promise<LoginResult> {
-    return await this.authService.login(loginUserData);
+    return this.authService.login(loginUserData);
   }
 
-  @Get('whoami')
+  @Get('user')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: 'Get the request user' })
+  @ApiOkResponse({ description: 'Returns the request user' })
   @UseGuards(AuthGuard())
   public async testAuth(@RequestUser() user: User): Promise<User> {
-    return await user;
+    return user;
   }
 }

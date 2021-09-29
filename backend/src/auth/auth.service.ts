@@ -18,7 +18,7 @@ export type RegistrationStatus = {
 };
 
 export type LoginInfo = {
-  username: string;
+  email: string;
   password: string;
 };
 
@@ -80,7 +80,7 @@ export class AuthService {
 
   async login(userData: LoginInfo): Promise<LoginResult> {
     const user = await this.getAuthenticatedUser(
-      userData.username,
+      userData.email,
       userData.password,
     );
     const token = this._createToken(user);
@@ -91,13 +91,10 @@ export class AuthService {
     };
   }
 
-  public async getAuthenticatedUser(
-    username: string,
-    plainTextPassword: string,
-  ) {
+  public async getAuthenticatedUser(email: string, password: string) {
     try {
-      const user = await this.userService.find({ username });
-      await this.verifyPassword(plainTextPassword, user.password);
+      const user = await this.userService.find({ email });
+      await this.verifyPassword(password, user.password);
       delete user.password;
       return user;
     } catch (error) {
@@ -125,17 +122,17 @@ export class AuthService {
   }
 
   async validateUser(payload: JwtPayload): Promise<User> {
-    const user = await this.userService.find({ username: payload.username });
+    const user = await this.userService.find({ email: payload.email });
     if (!user) {
       throw new HttpException('Invalid token', HttpStatus.UNAUTHORIZED);
     }
     return user;
   }
 
-  private _createToken({ username }: User): any {
+  private _createToken({ email }: User): any {
     const expiresIn = process.env.EXPIRESIN;
 
-    const user = { username };
+    const user = { email };
     const accessToken = this.jwtService.sign(user);
     return {
       expiresIn,
