@@ -17,11 +17,9 @@
       <hr>
     </form>
   </div>
-  </template>
+</template>
 <script>
-import {
-  login
-} from '@/axios';
+import { login } from '@/axios';
 
 export default {
   components: {},
