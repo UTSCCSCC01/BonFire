@@ -1,7 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  engineType = "binary"
+  provider      = "prisma-client-js"
   binaryTargets = ["native"]
+  engineType    = "binary"
 }
 
 datasource db {
@@ -30,17 +30,17 @@ model Board {
 }
 
 model UserBoard {
-  board_id Int
-  user_id  Int
-  role     Role  @default(owner)
-  board    Board @relation(fields: [board_id], references: [id])
-  user     User  @relation(fields: [user_id], references: [id])
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  board_id   Int
+  user_id    Int
+  role       Role     @default(owner)
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  board      Board    @relation(fields: [board_id], references: [id])
+  user       User     @relation(fields: [user_id], references: [id])
 
   @@id([board_id, user_id])
-  @@index([board_id], name: "UserBoard_board_id_fkey")
-  @@index([user_id], name: "UserBoard_user_id_fkey")
+  @@index([board_id])
+  @@index([user_id])
 }
 
 model State {
@@ -52,24 +52,24 @@ model State {
   board      Board    @relation(fields: [board_id], references: [id])
   cards      Card[]
 
-  @@index([board_id], name: "State_board_id_fkey")
+  @@index([board_id])
 }
 
 model Card {
   id              Int       @id @default(autoincrement())
   title           String
   desc            String?
-  created_at      DateTime  @default(now())
-  updated_at     DateTime  @updatedAt
-  due_date        DateTime?
   submit_url      String?
   creator_user_id Int
   state_id        Int
+  due_date        DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
   creator         User      @relation(fields: [creator_user_id], references: [id])
   state           State     @relation(fields: [state_id], references: [id])
 
-  @@index([creator_user_id], name: "Card_creator_user_id_fkey")
-  @@index([state_id], name: "Card_state_id_fkey")
+  @@index([creator_user_id])
+  @@index([state_id])
 }
 
 enum Role {
