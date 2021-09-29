@@ -4,22 +4,24 @@
       <div class="form-group">
         <label>Username</label>
         <input required v-model="username" type="username" class="form-control" placeholder="Enter username">
-     </div>
-     <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Email address</label>
         <input required v-model="email" type="email" class="form-control" placeholder="Enter email">
-     </div>
-     <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Password</label>
         <input required v-model="password" type="password" class="form-control" placeholder="Password">
-     </div>
-     <button type="submit" :disabled="loading">Login</button>
-     <hr>
-   </form>
+      </div>
+      <button type="submit" :disabled="loading">Login</button>
+      <hr>
+    </form>
   </div>
-</template>
+  </template>
 <script>
-import { login } from '@/axios';
+import {
+  login
+} from '@/axios';
 
 export default {
   components: {},
@@ -38,7 +40,11 @@ export default {
     submit() {
       this.loading = true;
 
-      login({ email: this.email, username: this.username, password: this.password })
+      login({
+          email: this.email,
+          username: this.username,
+          password: this.password
+        })
         .then(res => {
           console.log(res);
         })
@@ -48,12 +54,9 @@ export default {
         })
         .finally(() => {
           this.loading = false;
-        })
+        });
     }
   },
-  mounted() {
-
-  }
 }
 </script>
 <style lang="scss" scoped>

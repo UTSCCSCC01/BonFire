@@ -5,40 +5,36 @@
         <label>Username</label>
         <input required v-model="user.username" type="username" class="form-control" placeholder="Enter username">
         {{ validations.username.valid() ? '' : validations.username.message  }}
-     </div>
-     <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>First Name</label>
         <input v-model="user.first_name" class="form-control" placeholder="Enter first name">
         {{ validations.first_name.valid() ? '' : validations.first_name.message  }}
-     </div>
-     <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Last Name</label>
         <input v-model="user.last_name" class="form-control" placeholder="Enter last name">
         {{ validations.last_name.valid() ? '' : validations.last_name.message  }}
-     </div>
-     <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Password</label>
         <input required v-model="user.password" type="password" class="form-control" placeholder="Password">
         {{ validations.password.valid() ? '' : validations.password.message  }}
-     </div>
-     <div class="form-group">
+      </div>
+      <div class="form-group">
         <label>Verify Password</label>
         <input required v-model="verifyPass" type="password" class="form-control" placeholder="Password">
         {{ validations.verifyPass.valid() ? '' : validations.verifyPass.message  }}
-     </div>
-     <button type="submit" :disabled="loading || !validUser">Login</button>
-     <hr>
-   </form>
+      </div>
+      <button type="submit" :disabled="loading || !validUser">Login</button>
+      <hr>
+    </form>
   </div>
 </template>
 <script>
 import { register } from '@/axios';
 
 export default {
-  components: {},
-  props: {
-
-  },
   data() {
     return {
       user: {

@@ -1,33 +1,50 @@
 import axios from 'axios';
 
 const client = axios.create({
-    baseUrl: process.env.VUE_APP_BACKEND_URL
+  baseUrl: process.env.VUE_APP_BACKEND_URL
 });
 
 console.log(process.env.VUE_APP_BACKEND_URL)
 client.defaults.baseURL = process.env.VUE_APP_BACKEND_URL;
 
 export function register(params) {
-    // debugger;
-    return client.post('auth/register', params)
-        .then(res => {
-            login(params)
-            return res;
-        })
+  // debugger;
+  return client.post('auth/register', params)
+    .then(res => {
+      login(params)
+      return res;
+    })
 }
 
 export function login(params) {
-    // debugger;
-    return client.post('auth/login', params)
-        .then(res => {
-            axios.defaults.headers['authorization'] = res.accessToken;
-            return res;
-        })
+  // debugger;
+  return client.post('auth/login', params)
+    .then(res => {
+      axios.defaults.headers['authorization'] = res.accessToken;
+      return res;
+    })
 }
 
 export function logout() {
-    delete axios.defaults.headers['authorization'];
-    // return client.post('auth/logout', params)
+  delete axios.defaults.headers['authorization'];
+  // return client.post('auth/logout', params)
 }
+
+/* How to use Axios
+
+import axios from '@/axios';
+
+// Then inside the component script
+
+axios.get(`/boards/${id}`)
+  .then(res => {
+
+  })
+  .catch(err => {
+
+  })
+
+*/
+
 
 export default client;
