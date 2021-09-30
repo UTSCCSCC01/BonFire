@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import { register } from '@/axios';
+import { register } from '@/utils/axios';
 
 export default {
   data() {

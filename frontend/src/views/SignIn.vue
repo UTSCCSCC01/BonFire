@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import { login } from '@/axios';
+import { login } from '@/utils/axios';
 
 export default {
   components: {},
