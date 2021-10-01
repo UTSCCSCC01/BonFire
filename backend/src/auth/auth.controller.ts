@@ -8,22 +8,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-import {
-  AuthService,
-  LoginInfo,
-  LoginResult,
-  RegistrationStatus,
-  RequestUser,
-} from './auth.service';
+import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 import { User } from '.prisma/client';
 import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
+  ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
+import { CreateUserDto, UserDto } from 'src/constants/user';
+import { LoginResultDto, LoginInfoDto, RequestUser } from 'src/constants/auth';
 
 @Controller('auth')
 @ApiTags('auth')
@@ -32,13 +28,13 @@ export class AuthController {
 
   @Post('register')
   @ApiOperation({ summary: 'Register a user' })
-  @ApiOkResponse({ description: 'User details' })
-  @ApiParam({ name: 'last_name' })
-  @ApiParam({ name: 'fist_name' })
-  @ApiParam({ name: 'password' })
-  @ApiParam({ name: 'email' })
-  public async register(@Body() userData: User): Promise<LoginResult> {
-    const result = await this.authService.register({ ...userData });
+  @ApiResponse({
+    description: 'User details',
+    type: LoginResultDto,
+    status: 201,
+  })
+  async register(@Body() userData: CreateUserDto): Promise<LoginResultDto> {
+    const result = await this.authService.register({ ...(userData as User) });
 
     if (!result.success)
       throw new HttpException(result, HttpStatus.BAD_REQUEST);
@@ -49,16 +45,21 @@ export class AuthController {
   @Post('login')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Sign a user token' })
-  public async login(@Body() loginUserData: LoginInfo): Promise<LoginResult> {
+  @ApiResponse({
+    description: 'User details and token',
+    type: LoginResultDto,
+    status: 201,
+  })
+  async login(@Body() loginUserData: LoginInfoDto): Promise<LoginResultDto> {
     return this.authService.login(loginUserData);
   }
 
   @Get('user')
   @ApiBearerAuth()
   @ApiOperation({ summary: 'Get the request user' })
-  @ApiOkResponse({ description: 'Returns the request user' })
+  @ApiOkResponse({ description: 'Returns the request user', type: UserDto })
   @UseGuards(AuthGuard())
-  public async getUser(@RequestUser() user: User): Promise<User> {
+  getUser(@RequestUser() user: User): UserDto {
     return user;
   }
 }
