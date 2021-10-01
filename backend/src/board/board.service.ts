@@ -21,4 +21,14 @@ export class BoardService {
         }
     }
     
+    async find(user: User, id: number): Promise<Board | null> {
+
+        let boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
+            id
+        }
+        return this.prisma.board.findUnique({
+            where: boardWhereUniqueInput,
+        });
+    }
+    
 }
