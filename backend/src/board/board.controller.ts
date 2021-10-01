@@ -22,12 +22,10 @@ export class BoardController {
     @Get(':id')
     @ApiOperation({ summary: 'Returns a board by specific ID' })
     public async getBoard(@RequestUser() user: User, @Param('id') id: number): Promise<Board> {
-        
         const result = await this.boardService.find(user, Number(id));
-        if (!result){
+        if (!result) {
             throw new HttpException("Invalid board id", HttpStatus.NOT_FOUND);
         }
-        return result
-        
+        return result;
     }
 }
