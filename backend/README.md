@@ -60,7 +60,7 @@ Adding a mysql connection
 ```bash
 mysql -uroot
 ```
-- Update the connection username/password
+- Update the connection email/password
 ```SQL
 ALTER USER 'root'@'localhost' IDENTIFIED BY 'YOURNEWPASSWORD';
 ```
