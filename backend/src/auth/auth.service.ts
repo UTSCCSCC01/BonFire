@@ -27,6 +27,11 @@ export class AuthService {
     try {
       await this.userService.create(userData);
     } catch (e) {
+      status = {
+        success: false,
+        message: e.message,
+      };
+
       if (e instanceof PrismaClientValidationError) {
         if ((e as any).code == 'P1012')
           status = {
@@ -38,16 +43,6 @@ export class AuthService {
             success: false,
             message: 'Unique constraint violation',
           };
-        else
-          status = {
-            success: false,
-            message: e.message,
-          };
-      } else {
-        status = {
-          success: false,
-          message: e.message,
-        };
       }
     }
 
