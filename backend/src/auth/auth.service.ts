@@ -1,39 +1,15 @@
 import { User } from '.prisma/client';
-import {
-  Injectable,
-  HttpException,
-  HttpStatus,
-  createParamDecorator,
-  ExecutionContext,
-} from '@nestjs/common';
+import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { UserService } from 'src/user/user.service';
 import { JwtPayload } from './jwt.strategy';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaClientValidationError } from '@prisma/client/runtime';
 import * as bcrypt from 'bcrypt';
-
-export type RegistrationStatus = {
-  success: boolean;
-  message: string;
-};
-
-export type LoginInfo = {
-  email: string;
-  password: string;
-};
-
-export type LoginResult = {
-  token: string;
-  user: User;
-};
-
-export const RequestUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): User => {
-    const request = ctx.switchToHttp().getRequest();
-    delete request.user.password;
-    return request.user;
-  },
-);
+import {
+  RegistrationStatus,
+  LoginInfoDto,
+  LoginResultDto,
+} from 'src/constants/auth';
 
 @Injectable()
 export class AuthService {
@@ -78,7 +54,7 @@ export class AuthService {
     return status;
   }
 
-  async login(userData: LoginInfo): Promise<LoginResult> {
+  async login(userData: LoginInfoDto): Promise<LoginResultDto> {
     const user = await this.getAuthenticatedUser(
       userData.email,
       userData.password,
@@ -86,8 +62,8 @@ export class AuthService {
     const token = this._createToken(user);
 
     return {
-      user,
-      ...token,
+      ...user,
+      token,
     };
   }
 
