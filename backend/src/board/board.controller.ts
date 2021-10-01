@@ -2,7 +2,7 @@ import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UseGuard
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 import { Board, User } from '@prisma/client';
-import { RequestUser } from 'src/auth/auth.service';
+import { RequestUser } from 'src/constants/auth';
 import { BoardService } from './board.service';
 
 @Controller('board')
