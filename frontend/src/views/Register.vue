@@ -1,34 +1,66 @@
 <template>
   <div class="register">
-    <form class="register" @submit.prevent="submit">
-      <div class="form-group">
-        <label>Username</label>
-        <input required v-model="user.username" type="username" class="form-control" placeholder="Enter username">
-        {{ validations.username.valid() ? '' : validations.username.message  }}
-      </div>
-      <div class="form-group">
-        <label>First Name</label>
-        <input v-model="user.first_name" class="form-control" placeholder="Enter first name">
-        {{ validations.first_name.valid() ? '' : validations.first_name.message  }}
-      </div>
-      <div class="form-group">
-        <label>Last Name</label>
-        <input v-model="user.last_name" class="form-control" placeholder="Enter last name">
-        {{ validations.last_name.valid() ? '' : validations.last_name.message  }}
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input required v-model="user.password" type="password" class="form-control" placeholder="Password">
-        {{ validations.password.valid() ? '' : validations.password.message  }}
-      </div>
-      <div class="form-group">
-        <label>Verify Password</label>
-        <input required v-model="verifyPass" type="password" class="form-control" placeholder="Password">
-        {{ validations.verifyPass.valid() ? '' : validations.verifyPass.message  }}
-      </div>
-      <button type="submit" :disabled="loading || !validUser">Login</button>
-      <hr>
-    </form>
+    <v-main>
+      <v-form v-model="valid_form">
+        <v-container>
+          <v-row>
+            <v-col cols="12" md="8">
+              <v-text-field
+                v-model="user.username"
+                label="Username"
+                required
+                :rules="[ validations.username ]"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="user.firstname"
+                label="First name"
+                required
+                :rules="[ validations.firstname ]"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="user.lastname"
+                label="Last name"
+                required
+                :rules="[ validations.lastname ]"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="user.password"
+                label="Password"
+                type="password"
+                required
+                :rules="[ validations.password ]"
+              ></v-text-field>
+            </v-col>
+            <v-col cols="12" md="4">
+              <v-text-field
+                v-model="verifyPass"
+                label="Verify Password"
+                type="password"
+                required
+                :rules="[ validations.verifyPass() ]"
+              ></v-text-field>
+            </v-col>
+          </v-row>
+          <v-btn
+            class="mr-4"
+            type="submit"
+            :disabled="!valid_form"
+          >
+            submit
+          </v-btn>
+        </v-container>
+      </v-form>
+    </v-main>
   </div>
 </template>
 <script>
@@ -45,6 +77,7 @@ export default {
       },
       verifyPass: '',
       loading: false,
+      valid_form: false,
     }
   },
   methods: {
@@ -62,31 +95,13 @@ export default {
     }
   },
   computed: {
-    validUser() {
-      return Object.values(this.validations).every(v => v.valid());
-    },
     validations() {
       return {
-        password: {
-          message: 'Password is required',
-          valid: () => this.user.password.length > 0
-        },
-        verifyPass: {
-          message: 'Passwords must match',
-          valid: () => this.user.password == this.verifyPass
-        },
-        username: {
-          message: 'Username is required',
-          valid: () => this.user.username.length > 0
-        },
-        first_name: {
-          message: 'First name is required',
-          valid: () => this.user.first_name.length > 0
-        },
-        last_name: {
-          message: 'Last name is required',
-          valid: () => this.user.last_name.length > 0
-        },
+        password: () => this.user.password.length > 0 ? true : 'Password is required',
+        verifyPass: () => this.user.password == this.verifyPass ? true : 'Passwords must match',
+        username: () => this.user.username.length > 0 ? true : 'Username is required',
+        firstname: () => this.user.firstname.length > 0 ? true : 'First name is required',
+        lastname: () => this.user.lastname.length > 0 ? true : 'Last name is required'
       }
     }
   }
