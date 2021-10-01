@@ -20,6 +20,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
+  /** validate token user
+   * @param  {JwtPayload} payload
+   * @returns Promise
+   */
   async validate(payload: JwtPayload): Promise<User> {
     const user = await this.authService.validateUser(payload);
     if (!user) {
