@@ -1,6 +1,6 @@
 import { Board, Prisma } from '.prisma/client';
 import { createParamDecorator, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { User } from '@prisma/client';
+import { State, User } from '@prisma/client';
 import { PrismaClientValidationError } from '@prisma/client/runtime';
 import { AuthService } from 'src/auth/auth.service';
 import { PrismaService } from 'src/prisma.service';
