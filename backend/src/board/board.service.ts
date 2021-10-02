@@ -1,13 +1,10 @@
 import { Board, Prisma } from '.prisma/client';
-import { createParamDecorator, ExecutionContext, HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { State, User } from '@prisma/client';
-import { PrismaClientValidationError } from '@prisma/client/runtime';
-import { AuthService } from 'src/auth/auth.service';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
 import { CardService } from 'src/card/card.service';
 import { BoardDetails, CardDetails, StateDetails } from 'src/constants/board';
 import { PrismaService } from 'src/prisma.service';
 import { StateService } from 'src/state/state.service';
-import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class BoardService {
@@ -28,7 +25,7 @@ export class BoardService {
         }
     }
     
-    async find(user: User, id: number): Promise<Board | null> {
+    async find(id: number): Promise<Board | null> {
         let boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
             id
         };

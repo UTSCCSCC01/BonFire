@@ -1,11 +1,9 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { Board, Card, User } from '@prisma/client';
-import { CardService } from 'src/card/card.service';
+import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDetails, CardDetails, StateDetails } from 'src/constants/board';
-import { StateService } from 'src/state/state.service';
+import { BoardDetails } from 'src/constants/board';
 import { BoardService } from './board.service';
 
 @Controller('board')
@@ -21,7 +19,7 @@ export class BoardController {
     @ApiResponse({
         description: 'New Board',
         status: 201,
-      })
+    })
     public async createBoard(@RequestUser() user: User, @Body() board: Board): Promise<Board>{
         return this.boardService.create(user, board);
     }
@@ -31,8 +29,8 @@ export class BoardController {
     @ApiOkResponse({
         description: 'Get board details including corresponding states and cards',
     })
-    public async getBoard(@RequestUser() user: User, @Param('id') id: number): Promise<BoardDetails> {
-        const boardResult = await this.boardService.find(user, Number(id));
+    public async getBoard(@Param('id') id: number): Promise<BoardDetails> {
+        const boardResult = await this.boardService.find(Number(id));
         if (!boardResult) {
             throw new HttpException("Invalid board id", HttpStatus.NOT_FOUND);
         }
