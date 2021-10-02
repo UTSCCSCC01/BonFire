@@ -35,8 +35,9 @@ export class BoardService {
     }
 
     async getBoardDetails(boardData: Board): Promise<BoardDetails | null> {
-        let boardDetails: BoardDetails = {};
-        boardDetails.board=boardData;
+        let boardDetails: BoardDetails = {
+            board: boardData
+        };
         const statesResult = await this.stateService.findMany({ where: { board_id: boardData.id }})
         
         for (const state of statesResult){
@@ -47,6 +48,7 @@ export class BoardService {
                     title: card.title, 
                     desc: card.desc,
                     submit_url: card.submit_url,
+                    order: card.order,
                     due_date: card.due_date,
                     created_at: card.created_at,
                     updated_at: card.updated_at
@@ -57,6 +59,7 @@ export class BoardService {
             {
                 id: state.id,
                 title: state.title,
+                order: state.order,
                 created_at: state.created_at,
                 updated_at: state.updated_at,
                 cards: cards

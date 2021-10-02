@@ -39,6 +39,7 @@ model State {
   title      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  order      Int
   board      Board    @relation(fields: [board_id], references: [id])
   cards      Card[]
 
@@ -52,6 +53,7 @@ model Card {
   submit_url      String?
   creator_user_id Int
   state_id        Int
+  order           Int
   due_date        DateTime?
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
