@@ -20,4 +20,5 @@ import { StateService } from './state/state.service';
   controllers: [BoardController],
   providers: [AuthService, UserService, PrismaService, DashboardService, BoardService, CardService, StateService],
 })
+
 export class AppModule {}
