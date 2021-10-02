@@ -3,13 +3,20 @@ import { createParamDecorator, ExecutionContext, HttpException, HttpStatus, Inje
 import { State, User } from '@prisma/client';
 import { PrismaClientValidationError } from '@prisma/client/runtime';
 import { AuthService } from 'src/auth/auth.service';
+import { CardService } from 'src/card/card.service';
+import { BoardDetails, CardDetails, StateDetails } from 'src/constants/board';
 import { PrismaService } from 'src/prisma.service';
+import { StateService } from 'src/state/state.service';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class BoardService {
 
-    constructor(private prisma: PrismaService) {}
+    constructor(
+        private prisma: PrismaService,
+        private readonly cardService: CardService,
+        private readonly stateService: StateService,
+        ) {}
 
     async create(user: User, boardData: Board): Promise<Board>{
         boardData.user_id=user.id;
@@ -29,5 +36,37 @@ export class BoardService {
             where: boardWhereUniqueInput,
         });
     }
-    
+
+    async getBoardDetails(boardData: Board): Promise<BoardDetails | null> {
+        let boardDetails: BoardDetails = {};
+        boardDetails.board=boardData;
+        const statesResult = await this.stateService.findMany({ where: { board_id: boardData.id }})
+        
+        for (const state of statesResult){
+            let cardsResult = await this.cardService.findMany({ where: { state_id: state.id }});
+            var cards: CardDetails[] = cardsResult.map((card): CardDetails => (
+                { 
+                    id: card.id, 
+                    title: card.title, 
+                    desc: card.desc,
+                    submit_url: card.submit_url,
+                    due_date: card.due_date,
+                    created_at: card.created_at,
+                    updated_at: card.updated_at
+                }));
+        }
+
+        const states: StateDetails[] = statesResult.map((state): StateDetails => (
+            {
+                id: state.id,
+                title: state.title,
+                created_at: state.created_at,
+                updated_at: state.updated_at,
+                cards: cards
+            }));
+
+        boardDetails.states=states;
+
+        return boardDetails;
+    }
 }
