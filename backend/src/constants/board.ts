@@ -1,26 +1,57 @@
 import { Board } from "@prisma/client";
+import { ApiProperty } from '@nestjs/swagger';
 
-export type BoardDetails = {
-    board: Board,
-    states?: StateDetails[]
+export class BoardDto {
+    @ApiProperty()
+    board: Board;
+    
+    @ApiProperty()
+    states?: StateDto[];
 }
 
-export type StateDetails={
-    id: number
-    title: string
-    order: number
-    created_at: Date
-    updated_at: Date
-    cards?:CardDetails[]
+export class StateDto {
+    @ApiProperty()
+    id: number;
+    
+    @ApiProperty()
+    title: string;
+
+    @ApiProperty()
+    order: number;
+
+    @ApiProperty()
+    created_at: Date;
+
+    @ApiProperty()
+    updated_at: Date;
+
+    @ApiProperty()
+    cards?:CardDto[];
 }
 
-export type CardDetails={
-    id: number
-    title: string
-    desc: string | null
-    submit_url: string | null
-    order: number
-    due_date: Date | null
-    created_at: Date
-    updated_at: Date
+export class CardDto {
+
+    @ApiProperty()
+    id: number;
+
+    @ApiProperty()
+    title: string;
+
+    @ApiProperty()
+    desc: string | null;
+
+    @ApiProperty()
+    submit_url: string | null;
+
+    @ApiProperty()
+    order: number;
+
+    @ApiProperty()
+    due_date: Date | null;
+
+    @ApiProperty()
+    created_at: Date;
+
+    @ApiProperty()
+    updated_at: Date;
 }

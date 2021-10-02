@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDetails } from 'src/constants/board';
+import { BoardDto } from 'src/constants/board';
 import { BoardService } from './board.service';
 
 @Controller('board')
@@ -28,8 +28,9 @@ export class BoardController {
     @ApiOperation({ summary: 'Returns a board by specific ID' })
     @ApiOkResponse({
         description: 'Get board details including corresponding states and cards',
+        type: BoardDto
     })
-    public async getBoard(@Param('id') id: number): Promise<BoardDetails> {
+    public async getBoard(@Param('id') id: number): Promise<BoardDto> {
         const boardResult = await this.boardService.find(Number(id));
         if (!boardResult) {
             throw new HttpException("Invalid board id", HttpStatus.NOT_FOUND);

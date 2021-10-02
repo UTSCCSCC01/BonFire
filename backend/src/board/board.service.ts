@@ -2,9 +2,9 @@ import { Board, Prisma } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { CardService } from 'src/card/card.service';
-import { BoardDetails, CardDetails, StateDetails } from 'src/constants/board';
 import { PrismaService } from 'src/prisma.service';
 import { StateService } from 'src/state/state.service';
+import { BoardDto, CardDto, StateDto } from '../constants/board';
 
 @Injectable()
 export class BoardService {
@@ -34,15 +34,15 @@ export class BoardService {
         });
     }
 
-    async getBoardDetails(boardData: Board): Promise<BoardDetails | null> {
-        let boardDetails: BoardDetails = {
+    async getBoardDetails(boardData: Board): Promise<BoardDto | null> {
+        let boardDetails: BoardDto = {
             board: boardData
         };
         const statesResult = await this.stateService.findMany({ where: { board_id: boardData.id }})
         
         for (const state of statesResult){
             let cardsResult = await this.cardService.findMany({ where: { state_id: state.id }});
-            var cards: CardDetails[] = cardsResult.map((card): CardDetails => (
+            var cards: CardDto[] = cardsResult.map((card): CardDto => (
                 { 
                     id: card.id, 
                     title: card.title, 
@@ -55,7 +55,7 @@ export class BoardService {
                 }));
         }
 
-        const states: StateDetails[] = statesResult.map((state): StateDetails => (
+        const states: StateDto[] = statesResult.map((state): StateDto => (
             {
                 id: state.id,
                 title: state.title,
