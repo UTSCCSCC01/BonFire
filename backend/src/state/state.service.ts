@@ -1,5 +1,6 @@
 import { Prisma, State } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
+import { CardDto } from 'src/constants/board';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -27,6 +28,15 @@ export class StateService {
       cursor,
       where,
       orderBy,
+    });
+  }
+
+  async findCards(state: State): Promise<CardDto[]> {
+    const cardWhereInput: Prisma.CardWhereInput = {
+      state_id: state.id,
+    };
+    return this.prisma.card.findMany({
+      where: cardWhereInput,
     });
   }
 }

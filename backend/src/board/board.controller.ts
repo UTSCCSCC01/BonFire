@@ -17,13 +17,13 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Board, User } from '@prisma/client';
+import { Board, State, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDto } from 'src/constants/board';
+import { BoardDto, StateDto } from 'src/constants/board';
 import { BoardService } from './board.service';
 
-@Controller('board')
-@ApiTags('board')
+@Controller('boards')
+@ApiTags('boards')
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class BoardController {
@@ -43,18 +43,39 @@ export class BoardController {
     return this.boardService.create(user, board);
   }
 
+  @Get()
+  @ApiOperation({ summary: 'Returns all boards tied to a specific user' })
+  @ApiOkResponse({
+    description: 'List of Boards',
+  })
+  public async getBoards(@RequestUser() user: User): Promise<BoardDto[]> {
+    return this.boardService.findAll(user);
+  }
+
   @Get(':id')
   @ApiOperation({ summary: 'Returns a board by specific ID' })
   @ApiOkResponse({
-    description: 'Get board details including corresponding states and cards',
+    description: 'Board details',
     type: BoardDto,
   })
-  public async getBoard(@Param('id') id: number): Promise<BoardDto> {
-    const boardResult = await this.boardService.find(Number(id));
+  public async getBoard(@Param('id') board: Board): Promise<BoardDto> {
+    const boardResult = await this.boardService.find(board);
     if (!boardResult) {
       throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
     }
     return boardResult;
-    // return this.boardService.getBoardDetails(boardResult);
+  }
+
+  @Get(':id/states')
+  @ApiOperation({ summary: 'Returns all states tied to a specific board' })
+  @ApiOkResponse({
+    description: 'List of States',
+  })
+  public async getStates(@Param('id') board: Board): Promise<StateDto[]> {
+    const boardResult = await this.boardService.find(board);
+    if (!boardResult) {
+      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
+    }
+    return await this.boardService.findStates(board);
   }
 }

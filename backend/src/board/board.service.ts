@@ -1,7 +1,9 @@
-import { Board, Prisma } from '.prisma/client';
+import { Board, Card, prisma, Prisma, State } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
+import { StateDto } from 'src/constants/board';
 import { PrismaService } from 'src/prisma.service';
+import { BoardDto } from '../constants/board';
 
 @Injectable()
 export class BoardService {
@@ -17,54 +19,30 @@ export class BoardService {
     }
   }
 
-  async find(id: number): Promise<Board | null> {
+  async find(board: Board): Promise<BoardDto> {
     const boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
-      id,
+      id: board.id,
     };
     return this.prisma.board.findUnique({
       where: boardWhereUniqueInput,
     });
   }
 
-  //   async getBoardDetails(boardData: Board): Promise<BoardDto> {
-  //     const boardDetails: BoardDto = {
-  //       board: boardData,
-  //     };
-  //     const statesResult = await this.stateService.findMany({
-  //       where: { board_id: boardData.id },
-  //     });
+  async findAll(user: User): Promise<BoardDto[]> {
+    const boardWhereInput: Prisma.BoardWhereInput = {
+      user_id: user.id,
+    };
+    return this.prisma.board.findMany({
+      where: boardWhereInput,
+    });
+  }
 
-  //     for (const state of statesResult) {
-  //       const cardsResult = await this.cardService.findMany({
-  //         where: { state_id: state.id },
-  //       });
-  //       var cards: CardDto[] = cardsResult.map(
-  //         (card): CardDto => ({
-  //           id: card.id,
-  //           title: card.title,
-  //           desc: card.desc,
-  //           submit_url: card.submit_url,
-  //           order: card.order,
-  //           due_date: card.due_date,
-  //           created_at: card.created_at,
-  //           updated_at: card.updated_at,
-  //         }),
-  //       );
-  //     }
-
-  //     const states: StateDto[] = statesResult.map(
-  //       (state): StateDto => ({
-  //         id: state.id,
-  //         title: state.title,
-  //         order: state.order,
-  //         created_at: state.created_at,
-  //         updated_at: state.updated_at,
-  //         cards: cards,
-  //       }),
-  //     );
-
-  // boardDetails.states = states;
-
-  // return boardDetails;
-  //   }
+  async findStates(board: Board): Promise<StateDto[]> {
+    const stateWhereInput: Prisma.StateWhereInput = {
+      board_id: board.id,
+    };
+    return this.prisma.state.findMany({
+      where: stateWhereInput,
+    });
+  }
 }
