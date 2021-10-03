@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth/auth.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma.service';
@@ -7,6 +6,7 @@ import { StateModule } from './state/state.module';
 import { UserModule } from './user/user.module';
 import { CardModule } from './card/card.module';
 import { BoardModule } from './board/board.module';
+import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
@@ -18,8 +18,9 @@ import { BoardModule } from './board/board.module';
     StateModule,
     CardModule,
     UserModule,
+    PassportModule,
   ],
   controllers: [],
-  providers: [AuthService, PrismaService],
+  providers: [],
 })
 export class AppModule {}

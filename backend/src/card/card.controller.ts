@@ -5,12 +5,22 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  UseGuards,
 } from '@nestjs/common';
-import { ApiOkResponse, ApiOperation } from '@nestjs/swagger';
+import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { CardDto } from 'src/constants/board';
 import { CardService } from './card.service';
 
 @Controller('cards')
+@ApiTags('cards')
+@UseGuards(AuthGuard())
+@ApiBearerAuth()
 export class CardController {
   constructor(private readonly cardService: CardService) {}
 
