@@ -1,13 +1,12 @@
 import { Module } from '@nestjs/common';
 import { AuthService } from './auth/auth.service';
-import { UserService } from './user/user.service';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { PrismaService } from './prisma.service';
-import { BoardService } from './board/board.service';
-import { BoardController } from './board/board.controller';
-import { CardService } from './card/card.service';
-import { StateService } from './state/state.service';
+import { StateModule } from './state/state.module';
+import { UserModule } from './user/user.module';
+import { CardModule } from './card/card.module';
+import { BoardModule } from './board/board.module';
 
 @Module({
   imports: [
@@ -15,9 +14,12 @@ import { StateService } from './state/state.service';
       isGlobal: true,
     }),
     AuthModule,
+    BoardModule,
+    StateModule,
+    CardModule,
+    UserModule,
   ],
-  controllers: [BoardController],
-  providers: [AuthService, UserService, PrismaService, BoardService, CardService, StateService],
+  controllers: [],
+  providers: [AuthService, PrismaService],
 })
-
 export class AppModule {}

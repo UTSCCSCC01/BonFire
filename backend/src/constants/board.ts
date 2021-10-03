@@ -1,57 +1,58 @@
-import { Board } from "@prisma/client";
 import { ApiProperty } from '@nestjs/swagger';
 
 export class BoardDto {
-    @ApiProperty()
-    board: Board;
-    
-    @ApiProperty()
-    states?: StateDto[];
+  @ApiProperty()
+  readonly id: number;
+
+  @ApiProperty()
+  readonly title: string;
+
+  @ApiProperty()
+  readonly created_at: Date;
+
+  @ApiProperty()
+  readonly updated_at: Date;
 }
 
 export class StateDto {
-    @ApiProperty()
-    id: number;
-    
-    @ApiProperty()
-    title: string;
+  @ApiProperty()
+  readonly id: number;
 
-    @ApiProperty()
-    order: number;
+  @ApiProperty()
+  readonly title: string;
 
-    @ApiProperty()
-    created_at: Date;
+  @ApiProperty()
+  readonly order: number;
 
-    @ApiProperty()
-    updated_at: Date;
+  @ApiProperty()
+  readonly created_at: Date;
 
-    @ApiProperty()
-    cards?:CardDto[];
+  @ApiProperty()
+  readonly updated_at: Date;
 }
 
 export class CardDto {
+  @ApiProperty()
+  readonly id: number;
 
-    @ApiProperty()
-    id: number;
+  @ApiProperty()
+  readonly title: string;
 
-    @ApiProperty()
-    title: string;
+  @ApiProperty()
+  readonly desc?: string;
 
-    @ApiProperty()
-    desc: string | null;
+  @ApiProperty()
+  readonly submit_url?: string;
 
-    @ApiProperty()
-    submit_url: string | null;
+  @ApiProperty()
+  readonly order: number;
 
-    @ApiProperty()
-    order: number;
+  @ApiProperty()
+  readonly due_date?: Date;
 
-    @ApiProperty()
-    due_date: Date | null;
+  @ApiProperty()
+  readonly created_at: Date;
 
-    @ApiProperty()
-    created_at: Date;
-
-    @ApiProperty()
-    updated_at: Date;
+  @ApiProperty()
+  readonly updated_at: Date;
 }

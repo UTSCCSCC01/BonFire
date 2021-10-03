@@ -11,7 +11,7 @@ const passport = PassportModule.register({
   defaultStrategy: 'jwt',
   property: 'user',
   session: false,
-})
+});
 
 @Module({
   imports: [
@@ -21,7 +21,7 @@ const passport = PassportModule.register({
         expiresIn: process.env.EXPIRESIN,
       },
     }),
-    passport
+    passport,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, UserService, PrismaService],
