@@ -30,8 +30,8 @@ export class StateController {
     description: 'State details',
     type: StateDto,
   })
-  public async getCard(@Param('id') state: State): Promise<StateDto> {
-    const stateResult = await this.stateService.find(state);
+  public async getCard(@Param('id') stateId: number): Promise<StateDto> {
+    const stateResult = await this.stateService.find(Number(stateId));
     if (!stateResult) {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);
     }
@@ -43,11 +43,11 @@ export class StateController {
   @ApiOkResponse({
     description: 'List of Cards',
   })
-  public async getStates(@Param('id') state: State): Promise<StateDto[]> {
-    const statesResult = await this.stateService.find(state);
+  public async getStates(@Param('id') stateId: number): Promise<StateDto[]> {
+    const statesResult = await this.stateService.find(Number(stateId));
     if (!statesResult) {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);
     }
-    return await this.stateService.findCards(state);
+    return await this.stateService.findCards(stateId);
   }
 }

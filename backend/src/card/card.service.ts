@@ -1,13 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { Card, Prisma } from '@prisma/client';
+import { CardDto } from 'src/constants/board';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class CardService {
   constructor(private prisma: PrismaService) {}
-  async find(
-    cardWhereUniqueInput: Prisma.CardWhereUniqueInput,
-  ): Promise<Card | null> {
+  async find(cardId: number): Promise<CardDto> {
+    const cardWhereUniqueInput: Prisma.CardWhereUniqueInput = {
+      id: cardId,
+    };
     return this.prisma.card.findUnique({
       where: cardWhereUniqueInput,
     });

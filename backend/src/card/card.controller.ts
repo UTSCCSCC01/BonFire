@@ -30,8 +30,8 @@ export class CardController {
     description: 'Card details',
     type: CardDto,
   })
-  public async getCard(@Param('id') card: Card): Promise<CardDto> {
-    const cardResult = await this.cardService.find(card);
+  public async getCard(@Param('id') cardId: number): Promise<CardDto> {
+    const cardResult = await this.cardService.find(Number(cardId));
     if (!cardResult) {
       throw new HttpException('Invalid card id', HttpStatus.NOT_FOUND);
     }

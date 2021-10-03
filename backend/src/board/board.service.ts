@@ -19,9 +19,9 @@ export class BoardService {
     }
   }
 
-  async find(board: Board): Promise<BoardDto> {
+  async find(boardId: number): Promise<BoardDto> {
     const boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
-      id: board.id,
+      id: boardId,
     };
     return this.prisma.board.findUnique({
       where: boardWhereUniqueInput,
@@ -37,9 +37,9 @@ export class BoardService {
     });
   }
 
-  async findStates(board: Board): Promise<StateDto[]> {
+  async findStates(boardId: number): Promise<StateDto[]> {
     const stateWhereInput: Prisma.StateWhereInput = {
-      board_id: board.id,
+      board_id: boardId,
     };
     return this.prisma.state.findMany({
       where: stateWhereInput,
