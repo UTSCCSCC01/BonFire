@@ -11,6 +11,7 @@ export type RegistrationStatus = {
 export class LoginInfoDto {
   @ApiProperty()
   readonly password: string;
+  
   @ApiProperty()
   readonly email: string;
 }

@@ -10,38 +10,27 @@ datasource db {
 }
 
 model User {
-  id         Int         @id @default(autoincrement())
-  email      String      @unique
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
   password   String
   first_name String
   last_name  String
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  boards     Board[]
   cards      Card[]
-  boards     UserBoard[]
 }
 
 model Board {
-  id         Int         @id @default(autoincrement())
+  id         Int      @id @default(autoincrement())
   title      String
-  created_at DateTime    @default(now())
-  updated_at DateTime    @updatedAt
-  states     State[]
-  users      UserBoard[]
-}
-
-model UserBoard {
-  board_id   Int
-  user_id    Int
-  role       Role     @default(owner)
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  board      Board    @relation(fields: [board_id], references: [id])
+  user_id    Int
   user       User     @relation(fields: [user_id], references: [id])
+  states     State[]
 
-  @@id([board_id, user_id])
-  @@index([board_id])
-  @@index([user_id])
+  @@index([user_id], map: "Board_user_id_fkey")
 }
 
 model State {
@@ -50,6 +39,7 @@ model State {
   title      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  order      Int
   board      Board    @relation(fields: [board_id], references: [id])
   cards      Card[]
 
@@ -63,6 +53,7 @@ model Card {
   submit_url      String?
   creator_user_id Int
   state_id        Int
+  order           Int
   due_date        DateTime?
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
@@ -71,10 +62,4 @@ model Card {
 
   @@index([creator_user_id])
   @@index([state_id])
-}
-
-enum Role {
-  owner
-  editor
-  viewer
 }
