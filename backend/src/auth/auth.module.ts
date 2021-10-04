@@ -7,24 +7,22 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
 
-const passport = PassportModule.register({
-  defaultStrategy: 'jwt',
-  property: 'user',
-  session: false,
-});
-
 @Module({
   imports: [
+    PassportModule.register({
+      defaultStrategy: 'jwt',
+      property: 'user',
+      session: false,
+    }),
     JwtModule.register({
       secret: process.env.SECRETKEY,
       signOptions: {
         expiresIn: process.env.EXPIRESIN,
       },
     }),
-    passport,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy, UserService, PrismaService],
-  exports: [JwtModule, passport],
+  exports: [JwtModule],
 })
 export class AuthModule {}
