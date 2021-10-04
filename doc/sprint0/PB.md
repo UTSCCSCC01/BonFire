@@ -47,5 +47,3 @@
 22. As Professor Pero, I want to kick a student from one of my course boards so that I can remove students that do not belong in the course.
 
 23. As Professor Pero, I want to see aggregate analytics about my course boards so that I can see the progress of the students in my courses.
-
-
