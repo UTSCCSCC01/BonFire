@@ -19,7 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { Board, State, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDto, StateDto } from 'src/constants/board';
+import { BoardDto } from 'src/constants/board';
+import { StateDto } from 'src/constants/state';
 import { BoardService } from './board.service';
 
 @Controller('boards')

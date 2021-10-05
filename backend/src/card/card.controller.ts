@@ -14,7 +14,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CardDto } from 'src/constants/board';
+import { CardDto } from 'src/constants/card';
 import { CardService } from './card.service';
 
 @Controller('cards')
