@@ -43,5 +43,4 @@ axios.get(`/boards/${id}`)
 
 */
 
-
 export default client;

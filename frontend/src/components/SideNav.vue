@@ -82,6 +82,18 @@ export default {
       this.$root.currentUser = {};
       this.$router.push('/');
       logout();
+    },
+
+    getUserBoards() {
+      // axios.get(`/boards`)
+      // .then(res => {
+      //   console.log(res);
+      // })
+      // .catch(err => {
+      //   console.error(err);
+      // })
+      this.boards.push({id: 1, title: 'board1', created_at: new Date()});
+      this.boards.push({id: 2, title: 'board2', created_at: new Date()});
     }
   }
 }
