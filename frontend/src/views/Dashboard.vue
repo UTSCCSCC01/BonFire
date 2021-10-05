@@ -6,7 +6,12 @@
 
 <script>
 export default {
-
+	props: {
+		currentUser: {
+			type: Object,
+			required: true
+		}
+	}
 }
 </script>
 

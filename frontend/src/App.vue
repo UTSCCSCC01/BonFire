@@ -27,7 +27,7 @@
 
       <!-- Main -->
       <div class="container">
-        <router-view class="router-view" />
+        <router-view :currentUser="currentUser" class="router-view" />
       </div>
 
       <!-- Footer -->

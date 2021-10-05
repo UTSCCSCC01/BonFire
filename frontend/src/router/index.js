@@ -1,11 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-import Home from "../views/Home.vue";
-import SignIn from "../views/SignIn.vue";
-import Register from "../views/Register.vue";
+import Home from "@/views/Home.vue";
+import SignIn from "@/views/SignIn.vue";
+import Register from "@/views/Register.vue";
 
-import Dashboard from "../views/Dashboard.vue";
+import Dashboard from "@/views/Dashboard.vue";
+import Board from "@/views/Board.vue";
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,12 @@ const routes = [
     path: "/dashboard",
     name: "Dashboard",
     component: Dashboard,
+  },
+  {
+    path: "/board/:boardId",
+    name: "board",
+    component: Board,
+    props: true
   },
 ];
 
