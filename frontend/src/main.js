@@ -10,8 +10,19 @@ Vue.config.productionTip = false
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-new Vue({
+const app = new Vue({
   router,
   vuetify,
+  data: {
+    currentUser: {},
+    isAuthenticated: false,
+  },
   render: h => h(App)
 }).$mount('#app')
+
+router.beforeEach((to, from, next) => {
+  if (!to.meta.noAuthRequired && !app.isAuthenticated) next({
+    name: 'SignIn'
+  })
+  else next()
+})

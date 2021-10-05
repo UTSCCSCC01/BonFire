@@ -1,33 +1,33 @@
 <template>
   <div class="register">
     <v-main>
-      <v-form v-model="valid_form">
+      <v-form v-model="valid_form" v-on:submit="submit">
         <v-container>
           <v-row>
             <v-col cols="12" md="8">
               <v-text-field
-                v-model="user.username"
-                label="Username"
+                v-model="user.email"
+                label="email"
                 required
-                :rules="[ validations.username ]"
+                :rules="[ validations.email ]"
               ></v-text-field>
             </v-col>
           </v-row>
           <v-row>
             <v-col cols="12" md="4">
               <v-text-field
-                v-model="user.firstname"
+                v-model="user.first_name"
                 label="First name"
                 required
-                :rules="[ validations.firstname ]"
+                :rules="[ validations.first_name ]"
               ></v-text-field>
             </v-col>
             <v-col cols="12" md="4">
               <v-text-field
-                v-model="user.lastname"
+                v-model="user.last_name"
                 label="Last name"
                 required
-                :rules="[ validations.lastname ]"
+                :rules="[ validations.last_name ]"
               ></v-text-field>
             </v-col>
           </v-row>
@@ -64,7 +64,7 @@
   </div>
 </template>
 <script>
-import { register } from '@/utils/axios';
+import { register } from '@/plugins/axios';
 
 export default {
   data() {
@@ -73,7 +73,7 @@ export default {
         first_name: '',
         last_name: '',
         password: '',
-        username: '',
+        email: '',
       },
       verifyPass: '',
       loading: false,
@@ -82,11 +82,15 @@ export default {
   },
   methods: {
     submit() {
-      if (!this.validUser) {
+      if (!this.valid_form) {
         // Growl
       } else {
         this.loading = true;
         register(this.user)
+          .then(res => {
+            this.isAuthenticated = true;
+            this.currentUser = res;
+          })
           .finally(() => {
             this.loading = false;
             // TODO: Route to the teacher/student page.
@@ -99,9 +103,9 @@ export default {
       return {
         password: () => this.user.password.length > 0 ? true : 'Password is required',
         verifyPass: () => this.user.password == this.verifyPass ? true : 'Passwords must match',
-        username: () => this.user.username.length > 0 ? true : 'Username is required',
-        firstname: () => this.user.firstname.length > 0 ? true : 'First name is required',
-        lastname: () => this.user.lastname.length > 0 ? true : 'Last name is required'
+        email: () => this.user.email.length > 0 ? true : 'email is required',
+        first_name: () => this.user.first_name.length > 0 ? true : 'First name is required',
+        last_name: () => this.user.last_name.length > 0 ? true : 'Last name is required'
       }
     }
   }

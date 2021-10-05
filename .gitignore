@@ -25,3 +25,4 @@ pnpm-debug.log*
 .vscode/
 .vscode/*
 frontend/src/views/workspace.code-workspace
+*.code-workspace

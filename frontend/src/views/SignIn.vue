@@ -19,7 +19,7 @@
   </div>
 </template>
 <script>
-import { login } from '@/utils/axios';
+import { login } from '@/plugins/axios';
 
 export default {
   components: {},
@@ -44,7 +44,8 @@ export default {
           password: this.password
         })
         .then(res => {
-          console.log(res);
+            this.isAuthenticated = true;
+            this.currentUser = res;
         })
         .catch(err => {
           console.log(err);

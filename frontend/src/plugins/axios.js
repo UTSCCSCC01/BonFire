@@ -8,10 +8,10 @@ console.log(process.env.VUE_APP_BACKEND_URL)
 client.defaults.baseURL = process.env.VUE_APP_BACKEND_URL;
 
 export function register(params) {
-  // debugger;
+
   return client.post('auth/register', params)
     .then(res => {
-      login(params)
+      axios.defaults.headers['authorization'] = res.accessToken;
       return res;
     })
 }
