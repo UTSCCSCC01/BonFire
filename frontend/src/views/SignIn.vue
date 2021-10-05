@@ -1,19 +1,35 @@
 <template>
   <div class="signin">
-    <form class="login" @submit.prevent="submit">
-      <div class="form-group">
-        <label>Username</label>
-        <input required v-model="username" type="username" class="form-control" placeholder="Enter username">
-      </div>
+    <form
+      class="login"
+      @submit.prevent="submit"
+    >
       <div class="form-group">
         <label>Email address</label>
-        <input required v-model="email" type="email" class="form-control" placeholder="Enter email">
+        <input
+          v-model="email"
+          required
+          type="email"
+          class="form-control"
+          placeholder="Enter email"
+        >
       </div>
       <div class="form-group">
         <label>Password</label>
-        <input required v-model="password" type="password" class="form-control" placeholder="Password">
+        <input
+          v-model="password"
+          required
+          type="password"
+          class="form-control"
+          placeholder="Password"
+        >
       </div>
-      <button type="submit" :disabled="loading">Login</button>
+      <button
+        type="submit"
+        :disabled="loading"
+      >
+        Login
+      </button>
       <hr>
     </form>
   </div>
@@ -30,7 +46,6 @@ export default {
     return {
       email: '',
       password: '',
-      username: '',
       loading: false,
     }
   },
@@ -40,12 +55,12 @@ export default {
 
       login({
           email: this.email,
-          username: this.username,
           password: this.password
         })
         .then(res => {
-            this.isAuthenticated = true;
-            this.currentUser = res;
+          this.$root.isAuthenticated = true;
+          this.$root.currentUser = res;
+          this.$router.push('Dashboard');
         })
         .catch(err => {
           console.log(err);

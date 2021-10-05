@@ -8,7 +8,10 @@
               min-height="70vh"
               rounded="lg"
             >
-              <img alt="Vue logo" src="../assets/logo.png" />
+              <img
+                alt="Vue logo"
+                src="../assets/logo.png"
+              >
               <!--  -->
             </v-sheet>
           </v-col>

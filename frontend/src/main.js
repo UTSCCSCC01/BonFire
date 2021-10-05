@@ -13,14 +13,16 @@ import 'bootstrap-vue/dist/bootstrap-vue.css'
 const app = new Vue({
   router,
   vuetify,
-  data: {
-    currentUser: {},
-    isAuthenticated: false,
+  data: function () {
+    return {
+      currentUser: {},
+      isAuthenticated: false
+    }
   },
   render: h => h(App)
 }).$mount('#app')
 
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   if (!to.meta.noAuthRequired && !app.isAuthenticated) next({
     name: 'SignIn'
   })

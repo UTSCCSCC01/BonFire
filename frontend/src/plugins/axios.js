@@ -4,25 +4,22 @@ const client = axios.create({
   baseUrl: process.env.VUE_APP_BACKEND_URL
 });
 
-console.log(process.env.VUE_APP_BACKEND_URL)
 client.defaults.baseURL = process.env.VUE_APP_BACKEND_URL;
 
 export function register(params) {
-
   return client.post('auth/register', params)
     .then(res => {
       axios.defaults.headers['authorization'] = res.accessToken;
       return res;
-    })
+    });
 }
 
 export function login(params) {
-  // debugger;
   return client.post('auth/login', params)
     .then(res => {
       axios.defaults.headers['authorization'] = res.accessToken;
       return res;
-    })
+    });
 }
 
 export function logout() {
@@ -32,9 +29,9 @@ export function logout() {
 
 /* How to use Axios
 
-import axios from '@/axios';
+import axios from '@/plugins/axios';
 
-// Then inside the component script
+Then inside the component script
 
 axios.get(`/boards/${id}`)
   .then(res => {
