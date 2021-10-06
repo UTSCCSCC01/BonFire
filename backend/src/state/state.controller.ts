@@ -19,6 +19,7 @@ import {
 import { StateService } from './state.service';
 import { StateDto } from '../constants/state';
 import { CreateStateDto } from '../constants/state';
+import { CardDto } from 'src/constants/card';
 
 @Controller('states')
 @ApiTags('states')
@@ -57,8 +58,9 @@ export class StateController {
   @ApiOperation({ summary: 'Returns all cards tied to a specific state' })
   @ApiOkResponse({
     description: 'List of Cards',
+    type: CardDto,
   })
-  public async getStates(@Param('id') stateId: number): Promise<StateDto[]> {
+  public async getCards(@Param('id') stateId: number): Promise<CardDto[]> {
     const statesResult = await this.stateService.find(+stateId);
     if (!statesResult) {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);
