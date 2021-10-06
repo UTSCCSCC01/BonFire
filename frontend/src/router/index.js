@@ -16,6 +16,7 @@ const routes = [
     name: 'Home',
     meta: {
       noAuthRequired: true,
+      title: "BonFire"
     },
     component: Home
   },

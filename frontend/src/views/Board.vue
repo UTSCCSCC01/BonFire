@@ -1,7 +1,7 @@
 <template>
-	<div class="board">
-		This is a board {{ boardId }}
-	</div>
+  <div class="board">
+    This is a board {{ boardId }}
+  </div>
 </template>
 
 <script>

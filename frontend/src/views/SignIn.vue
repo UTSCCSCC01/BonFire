@@ -1,55 +1,90 @@
 <template>
-  <div class="signin">
-    <form class="login" @submit.prevent="submit">
-      <div class="form-group">
-        <label>Username</label>
-        <input required v-model="username" type="username" class="form-control" placeholder="Enter username">
-      </div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input required v-model="email" type="email" class="form-control" placeholder="Enter email">
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input required v-model="password" type="password" class="form-control" placeholder="Password">
-      </div>
-      <button type="submit" :disabled="loading">Login</button>
-      <hr>
-    </form>
+  <div class="register">
+    <v-main>
+      <v-form
+        v-model="valid_form"
+        @submit="submit"
+      >
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              md="8"
+            >
+              <v-text-field
+                v-model="user.email"
+                label="Email"
+                required
+                :disabled="loading"
+                :rules="[ validations.email ]"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              md="8"
+            >
+              <v-text-field
+                v-model="user.password"
+                label="Password"
+                type="password"
+                required
+                :disabled="loading"
+                :rules="[ validations.password ]"
+              />
+            </v-col>
+          </v-row>
+          <v-btn
+            class="mr-4"
+            large
+            color="primary"
+            type="submit"
+            :disabled="!valid_form || loading"
+            :loading="loading"
+          >
+            submit
+          </v-btn>
+        </v-container>
+      </v-form>
+    </v-main>
   </div>
 </template>
 <script>
-import { login } from '@/plugins/axios';
 
 export default {
-  components: {},
-  props: {
-
-  },
   data() {
     return {
-      email: '',
-      password: '',
-      username: '',
+      user: {
+        password: '',
+        email: '',
+      },
       loading: false,
+      valid_form: false,
+    }
+  },
+  computed: {
+    validations() {
+      return {
+        password: () => this.user.password.length > 0 ? true : 'Password is required',
+        email: () => this.user.email.length > 0 ? true : 'Email is required',
+      }
     }
   },
   methods: {
     submit() {
       this.loading = true;
-
-      login({
-          email: this.email,
-          username: this.username,
-          password: this.password
-        })
+      this.$http.post('auth/login', this.user)
         .then(res => {
-            this.isAuthenticated = true;
-            this.currentUser = res;
+          localStorage.setItem('token', res.data.token.accessToken);
+          this.$router.push('Dashboard');
         })
         .catch(err => {
-          console.log(err);
-          // Display Error
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: err?.response?.data?.message || 'Unknown Error'
+          });
         })
         .finally(() => {
           this.loading = false;
