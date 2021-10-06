@@ -14,16 +14,17 @@
 
 ## Tasks Breakdown:
 ### Epic: Project Setup
-Add configurations and additional packages to make development easier
+Setup project wireframe and app routing
 
 Story: __WRLD-141__
 
 Tasks:
+ - Add main page routing
  - Initialize vue frontend and router
  - Create basic vue components
  - Add axios for api calls
  - Add bootstrap for css
- - Add primevue for builtins
+ - Add vuetify for builtins
 
 Story: __WRLD-140__
 
