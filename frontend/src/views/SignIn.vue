@@ -59,7 +59,6 @@ export default {
         password: '',
         email: '',
       },
-      verifyPass: '',
       loading: false,
       valid_form: false,
     }

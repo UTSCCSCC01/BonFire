@@ -37,7 +37,7 @@
       <!-- Main -->
       <div class="container">
         <router-view class="router-view" />
-        <notifications position="bottom"/>
+        <notifications position="bottom" />
       </div>
 
       <!-- Footer -->

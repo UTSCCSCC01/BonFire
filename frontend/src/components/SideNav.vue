@@ -28,10 +28,10 @@
         dense
       >
         <v-list-item to="/board/10">
-          <v-list-item-icon>
-            C43
-          </v-list-item-icon>
-          <v-list-item-title>CSCC43 - Introduction to Somthing</v-list-item-title>
+          <v-list-item-icon> C43 </v-list-item-icon>
+          <v-list-item-title>
+            CSCC43 - Introduction to Somthing
+          </v-list-item-title>
         </v-list-item>
       </v-list>
 
@@ -66,23 +66,22 @@
 
 <script>
 export default {
-	data() {
-		return {
-			drawer: []
-		}
-	},
-	mounted() {
+  data() {
+    return {
+      drawer: [],
+    };
+  },
+  mounted() {
     this.$http.get('boards');
-	},
-	methods: {
+  },
+  methods: {
     signOut() {
       localStorage.removeItem('token');
       this.$router.push('/');
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>
-
 </style>
