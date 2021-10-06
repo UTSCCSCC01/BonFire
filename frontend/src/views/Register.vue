@@ -117,16 +117,18 @@ export default {
   },
   methods: {
     submit() {
-      if (!this.valid_form) {
-        // Growl
-        return;
-      }
-
       this.loading = true;
       this.$http.post('auth/register', this.user)
         .then(res => {
           localStorage.setItem('token', res.data.token.accessToken);
           this.$router.push('Dashboard');
+        })
+        .catch(err => {
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: err?.response?.data?.message || 'Unknown Error'
+          });
         })
         .finally(() => {
           this.loading = false;

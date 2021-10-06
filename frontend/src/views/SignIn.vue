@@ -74,10 +74,6 @@ export default {
   },
   methods: {
     submit() {
-      if (!this.valid_form) {
-        return;
-      }
-
       this.loading = true;
       this.$http.post('auth/login', this.user)
         .then(res => {
@@ -85,8 +81,11 @@ export default {
           this.$router.push('Dashboard');
         })
         .catch(err => {
-          console.log(err);
-          // Display Error
+          this.$notify({
+            type: 'error',
+            title: 'Error',
+            text: err?.response?.data?.message || 'Unknown Error'
+          });
         })
         .finally(() => {
           this.loading = false;

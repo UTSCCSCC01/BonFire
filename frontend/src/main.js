@@ -5,6 +5,7 @@ import router from './router'
 import vuetify from '@/plugins/vuetify'
 import axios from 'axios';
 
+import Notifications from 'vue-notification'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
@@ -19,6 +20,7 @@ client.interceptors.request.use(request => {
 
 Vue.config.productionTip = false
 Vue.prototype.$http = client;
+Vue.use(Notifications)
 
 new Vue({
   router,
