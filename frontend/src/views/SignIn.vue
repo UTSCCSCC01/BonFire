@@ -35,7 +35,6 @@
   </div>
 </template>
 <script>
-import { login } from '@/plugins/axios';
 
 export default {
   components: {},
@@ -53,13 +52,14 @@ export default {
     submit() {
       this.loading = true;
 
-      login({
+      this.$http.post({
           email: this.email,
           password: this.password
         })
         .then(res => {
           this.$root.isAuthenticated = true;
-          this.$root.currentUser = res;
+          this.$root.currentUser = res.data;
+          localStorage.setItem('token', res.data.token.accessToken);
           this.$router.push('Dashboard');
         })
         .catch(err => {

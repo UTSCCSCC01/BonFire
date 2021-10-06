@@ -65,8 +65,6 @@
 </template>
 
 <script>
-import { logout } from '@/plugins/axios';
-
 export default {
 	data() {
 		return {
@@ -74,14 +72,14 @@ export default {
 		}
 	},
 	mounted() {
-		console.log(this.currentUser, this.isAuthenticated)
+    this.$http.get('boards');
 	},
 	methods: {
     signOut() {
       this.$root.isAuthenticated = false;
       this.$root.currentUser = {};
       this.$router.push('/');
-      logout();
+      localStorage.removeItem('token');
     }
   }
 }

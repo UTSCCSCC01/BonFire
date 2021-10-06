@@ -82,8 +82,6 @@
   </div>
 </template>
 <script>
-import { register } from '@/plugins/axios';
-
 export default {
   data() {
     return {
@@ -115,10 +113,11 @@ export default {
         // Growl
       } else {
         this.loading = true;
-        register(this.user)
+        this.$http.post('auth/register', this.user)
           .then(res => {
+            localStorage.setItem('token', res.data.token.accessToken);
             this.$root.isAuthenticated = true;
-            this.$root.currentUser = res;
+            this.$root.currentUser = res.data;
             this.$router.push('Dashboard');
           })
           .finally(() => {

@@ -2,15 +2,25 @@ import Vue from 'vue'
 import App from './App.vue'
 
 import router from './router'
-import vuetify from '@/plugins/vuetify' // path to vuetify export
+import vuetify from '@/plugins/vuetify'
+import axios from 'axios';
 
-Vue.config.productionTip = false
-
-// Import Bootstrap an BootstrapVue CSS files (order is important)
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
 
-const app = new Vue({
+const client = axios.create({
+  baseUrl: process.env.VUE_APP_BACKEND_URL
+});
+client.defaults.baseURL = process.env.VUE_APP_BACKEND_URL;
+client.interceptors.request.use(request => {
+  request.headers.Authorization = `Bearer ${localStorage.getItem('token')}`;
+  return request;
+});
+
+Vue.config.productionTip = false
+Vue.prototype.$http = client;
+
+new Vue({
   router,
   vuetify,
   data: function () {
@@ -23,8 +33,8 @@ const app = new Vue({
 }).$mount('#app')
 
 router.beforeEach((to, _, next) => {
-  if (!to.meta.noAuthRequired && !app.isAuthenticated) next({
+  if (!to.meta.noAuthRequired && !localStorage.getItem('token')) next({
     name: 'SignIn'
   })
   else next()
-})
+});
