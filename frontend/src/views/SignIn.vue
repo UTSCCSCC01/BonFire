@@ -1,64 +1,86 @@
 <template>
-  <div class="signin">
-    <form
-      class="login"
-      @submit.prevent="submit"
-    >
-      <div class="form-group">
-        <label>Email address</label>
-        <input
-          v-model="email"
-          required
-          type="email"
-          class="form-control"
-          placeholder="Enter email"
-        >
-      </div>
-      <div class="form-group">
-        <label>Password</label>
-        <input
-          v-model="password"
-          required
-          type="password"
-          class="form-control"
-          placeholder="Password"
-        >
-      </div>
-      <button
-        type="submit"
-        :disabled="loading"
+  <div class="register">
+    <v-main>
+      <v-form
+        v-model="valid_form"
+        @submit="submit"
       >
-        Login
-      </button>
-      <hr>
-    </form>
+        <v-container>
+          <v-row>
+            <v-col
+              cols="12"
+              md="8"
+            >
+              <v-text-field
+                v-model="user.email"
+                label="Email"
+                required
+                :disabled="loading"
+                :rules="[ validations.email ]"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col
+              cols="12"
+              md="8"
+            >
+              <v-text-field
+                v-model="user.password"
+                label="Password"
+                type="password"
+                required
+                :disabled="loading"
+                :rules="[ validations.password ]"
+              />
+            </v-col>
+          </v-row>
+          <v-btn
+            class="mr-4"
+            large
+            color="primary"
+            type="submit"
+            :disabled="!valid_form || loading"
+            :loading="loading"
+          >
+            submit
+          </v-btn>
+        </v-container>
+      </v-form>
+    </v-main>
   </div>
 </template>
 <script>
 
 export default {
-  components: {},
-  props: {
-
-  },
   data() {
     return {
-      email: '',
-      password: '',
+      user: {
+        password: '',
+        email: '',
+      },
+      verifyPass: '',
       loading: false,
+      valid_form: false,
+    }
+  },
+  computed: {
+    validations() {
+      return {
+        password: () => this.user.password.length > 0 ? true : 'Password is required',
+        email: () => this.user.email.length > 0 ? true : 'Email is required',
+      }
     }
   },
   methods: {
     submit() {
-      this.loading = true;
+      if (!this.valid_form) {
+        return;
+      }
 
-      this.$http.post({
-          email: this.email,
-          password: this.password
-        })
+      this.loading = true;
+      this.$http.post('auth/login', this.user)
         .then(res => {
-          this.$root.isAuthenticated = true;
-          this.$root.currentUser = res.data;
           localStorage.setItem('token', res.data.token.accessToken);
           this.$router.push('Dashboard');
         })

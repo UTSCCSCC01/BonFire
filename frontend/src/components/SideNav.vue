@@ -76,10 +76,8 @@ export default {
 	},
 	methods: {
     signOut() {
-      this.$root.isAuthenticated = false;
-      this.$root.currentUser = {};
-      this.$router.push('/');
       localStorage.removeItem('token');
+      this.$router.push('/');
     }
   }
 }

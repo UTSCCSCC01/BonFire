@@ -21,7 +21,7 @@
 
             <v-btn
               v-for="link in links"
-              :key="link"
+              :key="link.name"
               :to="link.to"
               text
             >
@@ -78,9 +78,6 @@
         ],
       }
     },
-    mounted() {
-      console.log(this.links)
-    }
   }
 </script>
 <style>

@@ -23,12 +23,6 @@ Vue.prototype.$http = client;
 new Vue({
   router,
   vuetify,
-  data: function () {
-    return {
-      currentUser: {},
-      isAuthenticated: false
-    }
-  },
   render: h => h(App)
 }).$mount('#app')
 
