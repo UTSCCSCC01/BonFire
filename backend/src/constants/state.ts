@@ -2,6 +2,9 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateStateDto {
   @ApiProperty()
+  readonly board_id: number;
+
+  @ApiProperty()
   readonly title: string;
 }
 

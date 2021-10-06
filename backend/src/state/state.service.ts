@@ -1,5 +1,6 @@
 import { Board, Prisma, State } from '.prisma/client';
 import { Injectable } from '@nestjs/common';
+import { BoardDto } from 'src/constants/board';
 import { CardDto } from 'src/constants/card';
 import { CreateStateDto, StateDto } from 'src/constants/state';
 import { PrismaService } from 'src/prisma.service';
@@ -25,29 +26,32 @@ export class StateService {
     });
   }
 
-  async getBoard(stateId: number): Promise<Board> {
+  async getBoard(stateId: number): Promise<BoardDto> {
     const stateWhereUniqueInput: Prisma.StateWhereUniqueInput = {
       id: stateId,
     };
-    return this.prisma.board.findUnique({
+    return this.prisma.state.findUnique({
       where: stateWhereUniqueInput,
+      include: {
+        board: true,
+      },
     });
   }
 
-  async create(boardId: number, state: CreateStateDto): Promise<StateDto> {
+  async create(data: CreateStateDto): Promise<StateDto> {
     const stateOrder = await this.prisma.state.count({
       where: {
         board: {
-          id: boardId,
+          id: +data.board_id,
         },
       },
     });
     const stateCreateInput: Prisma.StateCreateInput = {
-      title: state.title,
+      title: data.title,
       order: stateOrder + 1,
       board: {
         connect: {
-          id: boardId,
+          id: +data.board_id,
         },
       },
     };

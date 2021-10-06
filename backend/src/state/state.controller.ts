@@ -34,7 +34,7 @@ export class StateController {
     type: StateDto,
   })
   public async getCard(@Param('id') stateId: number): Promise<StateDto> {
-    const stateResult = await this.stateService.find(Number(stateId));
+    const stateResult = await this.stateService.find(+stateId);
     if (!stateResult) {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);
     }
@@ -49,27 +49,20 @@ export class StateController {
     description: 'Returns newly created state',
     type: StateDto,
   })
-  async register(
-    @Param('id') id: number,
-    @Body() stateData: CreateStateDto,
-  ): Promise<StateDto> {
-    const board = await this.stateService.getBoard(Number(id));
-    if (!board)
-      throw new HttpException('Invalid board id', HttpStatus.BAD_REQUEST);
-
-    return this.stateService.create(Number(id), stateData);
+  async create(@Body() stateData: CreateStateDto): Promise<StateDto> {
+    return this.stateService.create(stateData);
   }
 
-  @Get('cards/:id')
+  @Get(':id/cards')
   @ApiOperation({ summary: 'Returns all cards tied to a specific state' })
   @ApiOkResponse({
     description: 'List of Cards',
   })
   public async getStates(@Param('id') stateId: number): Promise<StateDto[]> {
-    const statesResult = await this.stateService.find(Number(stateId));
+    const statesResult = await this.stateService.find(+stateId);
     if (!statesResult) {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);
     }
-    return await this.stateService.findCards(stateId);
+    return await this.stateService.findCards(+stateId);
   }
 }
