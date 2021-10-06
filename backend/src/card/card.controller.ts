@@ -14,7 +14,7 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CardDto } from 'src/constants/board';
+import { CardDto } from 'src/constants/card';
 import { CardService } from './card.service';
 
 @Controller('cards')
@@ -31,7 +31,7 @@ export class CardController {
     type: CardDto,
   })
   public async getCard(@Param('id') cardId: number): Promise<CardDto> {
-    const cardResult = await this.cardService.find(Number(cardId));
+    const cardResult = await this.cardService.find(+cardId);
     if (!cardResult) {
       throw new HttpException('Invalid card id', HttpStatus.NOT_FOUND);
     }

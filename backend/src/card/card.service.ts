@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Card, Prisma } from '@prisma/client';
-import { CardDto } from 'src/constants/board';
+import { CardDto } from 'src/constants/card';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()

@@ -19,7 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { Board, State, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDto, StateDto } from 'src/constants/board';
+import { BoardDto } from 'src/constants/board';
+import { StateDto } from 'src/constants/state';
 import { BoardService } from './board.service';
 
 @Controller('boards')
@@ -59,7 +60,7 @@ export class BoardController {
     type: BoardDto,
   })
   public async getBoard(@Param('id') boardId: number): Promise<BoardDto> {
-    const boardResult = await this.boardService.find(Number(boardId));
+    const boardResult = await this.boardService.find(+boardId);
     if (!boardResult) {
       throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
     }
@@ -72,10 +73,10 @@ export class BoardController {
     description: 'List of States',
   })
   public async getStates(@Param('id') boardId: number): Promise<StateDto[]> {
-    const boardResult = await this.boardService.find(Number(boardId));
+    const boardResult = await this.boardService.find(+boardId);
     if (!boardResult) {
       throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
     }
-    return await this.boardService.findStates(Number(boardId));
+    return await this.boardService.findStates(+boardId);
   }
 }

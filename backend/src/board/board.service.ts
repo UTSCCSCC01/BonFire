@@ -1,7 +1,7 @@
 import { Board, Card, prisma, Prisma, State } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import { StateDto } from 'src/constants/board';
+import { StateDto } from 'src/constants/state';
 import { PrismaService } from 'src/prisma.service';
 import { BoardDto } from '../constants/board';
 
