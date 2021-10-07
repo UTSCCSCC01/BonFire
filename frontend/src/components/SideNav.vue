@@ -44,11 +44,15 @@
         nav
         dense
       >
-        <v-list-item to="/board/1">
+        <v-list-item
+          v-for="board in boards"
+          :key="board.id"
+          :to="`/board/${board.id}`"
+        > 
           <v-list-item-icon>
             <v-icon>fas fa-fire</v-icon>
           </v-list-item-icon>
-          <v-list-item-title>Personal Board 1</v-list-item-title>
+          <v-list-item-title>{{ board.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
 
@@ -69,18 +73,31 @@ export default {
   data() {
     return {
       drawer: [],
+      boards: [],
     };
   },
   mounted() {
-    this.$http.get('boards');
+    this.getUserBoards();
   },
   methods: {
     signOut() {
       localStorage.removeItem('token');
       this.$router.push('/');
     },
+
+    getUserBoards() {
+      this.$http.get('boards')
+      .then(res => {
+        this.boards = res.data;
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    },
+
   },
 };
+
 </script>
 
 <style>
