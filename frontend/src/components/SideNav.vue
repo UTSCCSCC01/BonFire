@@ -1,5 +1,9 @@
 <template>
   <div class="sidebar">
+    <create-board-dialog
+      :open-dialog="createNewBoard"
+      @close-dialog="createNewBoard = false"
+    />
     <v-navigation-drawer
       class="pt-4"
       color="grey lighten-3"
@@ -50,6 +54,15 @@
           </v-list-item-icon>
           <v-list-item-title>Personal Board 1</v-list-item-title>
         </v-list-item>
+
+        <v-list-item @click="createNewBoard = true">
+          <v-list-item-icon>
+            <v-icon color="green">
+              fas fa-plus
+            </v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Create new Board</v-list-item-title>
+        </v-list-item>
       </v-list>
 
       <template v-slot:append>
@@ -65,10 +78,16 @@
 </template>
 
 <script>
+import CreateBoardDialog from './CreateBoardDialog';
+
 export default {
+  components: {
+    'create-board-dialog': CreateBoardDialog,
+  },
   data() {
     return {
       drawer: [],
+      createNewBoard: false,
     };
   },
   mounted() {
