@@ -35,10 +35,10 @@
       </div>
 
       <!-- Main -->
-      <div class="container">
+      <v-content class="pa-6 ml-12 pr-0">
         <router-view class="router-view" />
         <notifications position="bottom" />
-      </div>
+      </v-content>
 
       <!-- Footer -->
       <v-footer
