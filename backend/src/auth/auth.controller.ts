@@ -43,7 +43,6 @@ export class AuthController {
   }
 
   @Post('login')
-  @ApiBearerAuth()
   @ApiOperation({ summary: 'Sign a user token' })
   @ApiResponse({
     description: 'User details and token',
