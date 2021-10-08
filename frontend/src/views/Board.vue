@@ -13,10 +13,7 @@
           class="board-states-col"
         >
           <v-sheet
-            class="rounded md mx-auto transition-swing board-states-item"
-            elevation="12"
-            min-height="200px"
-          >
+            class="rounded lg border shadow-sm board-states-item">
             <p class="board-states-item-title">
               {{ state.title }}
             </p>
@@ -52,7 +49,6 @@
 		},
 		props: {
 			boardId: {
-				// Query params passes params as string by default
 				type: String,
 				required: true
 			},
@@ -141,6 +137,7 @@
 <style lang="scss" scoped>
 	.board {
 		width: 100%;
+		height: 100%;
 
 		&-body {
 			width: 100%;
@@ -148,16 +145,24 @@
 			overflow-y: clip;
 			margin-left: -15px;
 			padding-left: 15px;
-			min-height: 1000px;
-					min-height: 1000px;
+			height: 100%;
+			display: inline-block;
 		}
 
 		&-states {
+			flex-wrap: nowrap;
+
+			&-col {
+				max-width: 700px;
+			}
+
 			&-item {
-				background-color: #ededed;
+				// Need to override the default theme
+				background-color: #f7f7f7 !important;
 				padding: 20px;
 				height: 100%;
 				min-width: 350px;
+				min-height: 200px;
 
 				&-draggable {
 					height: 100%;

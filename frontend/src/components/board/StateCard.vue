@@ -1,7 +1,8 @@
 <template>
   <div class="state-card">
     <v-card
-      class="mx-auto"
+      class="mx-auto shadow-sm"
+      outlined
     >
       <v-card-text>
         <p class="text-h8 text--primary">
