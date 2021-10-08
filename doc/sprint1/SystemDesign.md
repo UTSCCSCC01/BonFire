@@ -73,8 +73,8 @@
 | AuthService | Defines authentication method used for Nest.Js |
 
 ## <a name="diagram"></a>Software Architecture Diagram
-  Nest.js is a fully featured JavaScript framework for building web applications with the MVC design pattern. However, instead of using integrated views with Nest.js, we decided to use Vue as it is a more powerful front-end framework.
+  Nest.js is a fully featured JavaScript framework for building web applications with the MVC design pattern. We used Nest.JS for our controllers however, instead of using integrated views with Nest.js, we decided to use Vue as a more powerful frontend framework.
 
-  Then we decided to use a MySQL database since we wanted a relational database. We also decided to use Prisma, a db ORM to connect our application to our database.
+  Then we decided to use a MySQL database since we wanted a relational database. We also decided to use Prisma for our Model interaction, and its a db ORM aded to NestJs.
 
 ![Software Architecture Diagram](./assets/architecture%20diagram.png)
