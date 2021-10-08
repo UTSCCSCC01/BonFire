@@ -75,6 +75,7 @@ export default {
             title: 'Successfully Created Board',
             text: `You successfully created a new board called: ${res.data.title}, reload the page to see the board`
           });
+          this.$emit("add-board" , res.data);
           this.closeDialog();
           this.board = {};
         })

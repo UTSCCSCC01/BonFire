@@ -3,6 +3,7 @@
     <create-board-dialog
       :open-dialog="createNewBoard"
       @close-dialog="createNewBoard = false"
+      @add-board="addBoard"
     />
     <v-navigation-drawer
       class="pt-4"
@@ -112,6 +113,10 @@ export default {
       .catch(err => {
         console.error(err);
       })
+    },
+
+    addBoard(data) {
+      this.boards.push(data);
     },
 
   },

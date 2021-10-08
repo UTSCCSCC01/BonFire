@@ -1,19 +1,46 @@
 <template>
   <div class="board">
-    This is a board {{ boardId }}
+    This is a board {{ board.id }} named {{ board.title }}
   </div>
 </template>
 
 <script>
-export default {
-	props: {
-		boardId: {
-			// Query params passes params as string by default
-			type: String,
-			required: true
-		}
+	export default {
+		props: {
+			boardId: {
+				// Query params passes params as string by default
+				type: String,
+				required: true
+			},
+		},
+
+		data() {
+			return {
+				board: {},
+			};
+		},
+		
+		watch: {
+			boardId: function() {this.getBoardInfo()},
+		},
+
+		mounted() {
+			this.getBoardInfo();
+		},
+
+		methods: {
+			getBoardInfo() {
+				this.$http.get(`boards/${this.boardId}`)
+					.then(res => {
+						this.board = res.data;
+					})
+					.catch(err => {
+						console.error(err);
+					})
+			},
+		},
+
 	}
-}
 </script>
 
 <style>
