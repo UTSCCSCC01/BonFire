@@ -10,9 +10,7 @@ import { PassportModule } from '@nestjs/passport';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
+    ConfigModule.forRoot({isGlobal: true}),
     AuthModule,
     BoardModule,
     StateModule,

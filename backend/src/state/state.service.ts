@@ -8,6 +8,11 @@ import { PrismaService } from 'src/prisma.service';
 @Injectable()
 export class StateService {
   constructor(private prisma: PrismaService) {}
+
+  /** Finds state by id
+   * @param  {number} stateId
+   * @returns Promise
+   */
   async find(stateId: number): Promise<StateDto> {
     const stateWhereUniqueInput: Prisma.StateWhereUniqueInput = {
       id: stateId,
@@ -17,6 +22,10 @@ export class StateService {
     });
   }
 
+  /** Find all cards in state
+   * @param  {number} stateId
+   * @returns Promise
+   */
   async findCards(stateId: number): Promise<CardDto[]> {
     const stateWhereInput: Prisma.StateWhereInput = {
       id: stateId,
@@ -26,6 +35,10 @@ export class StateService {
     });
   }
 
+  /** Finds board of state
+   * @param  {number} stateId
+   * @returns Promise
+   */
   async getBoard(stateId: number): Promise<BoardDto> {
     const stateWhereUniqueInput: Prisma.StateWhereUniqueInput = {
       id: stateId,
@@ -38,6 +51,10 @@ export class StateService {
     });
   }
 
+  /** Creates state
+   * @param  {CreateStateDto} data
+   * @returns Promise
+   */
   async create(data: CreateStateDto): Promise<StateDto> {
     const stateOrder = await this.prisma.state.count({
       where: {

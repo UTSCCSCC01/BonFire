@@ -16,7 +16,7 @@ In order to install the web app, take a look at the separate readme in both [fro
 ## Contributions
 We welcome and encourage any incoming contributions from the open source community. In order to contribute to the project, please follow the following guidelines:
  - Create a pull request with the following format:
-   - `\<commit-type>(scope): [WRLD-#]` description
+   - `<commit-type>(scope): [WRLD-#]` description
      - commit types can be found [here](doc/sprint0/commit-types.md)
      - scope is optional, some examples: backend, frontend
      - [WRLD-#] refers to ticket for the [jira board](https://mcsapps.utm.utoronto.ca/jira/secure/RapidBoard.jspa?rapidView=221)

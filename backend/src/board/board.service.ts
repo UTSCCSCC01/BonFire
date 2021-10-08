@@ -9,6 +9,11 @@ import { BoardDto } from '../constants/board';
 export class BoardService {
   constructor(private prisma: PrismaService) {}
 
+  /** Create a new board
+   * @param  {User} user
+   * @param  {Board} boardData
+   * @returns Promise
+   */
   async create(user: User, boardData: Board): Promise<Board> {
     boardData.user_id = user.id;
 
@@ -19,6 +24,10 @@ export class BoardService {
     }
   }
 
+  /** Find a board by id
+   * @param  {number} boardId
+   * @returns Promise
+   */
   async find(boardId: number): Promise<BoardDto> {
     const boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
       id: boardId,
@@ -28,6 +37,10 @@ export class BoardService {
     });
   }
 
+  /** Find all boards by user id
+   * @param  {User} user
+   * @returns Promise
+   */
   async findAll(user: User): Promise<BoardDto[]> {
     const boardWhereInput: Prisma.BoardWhereInput = {
       user_id: user.id,
@@ -37,6 +50,10 @@ export class BoardService {
     });
   }
 
+  /** Find all board states
+   * @param  {number} boardId
+   * @returns Promise
+   */
   async findStates(boardId: number): Promise<StateDto[]> {
     const stateWhereInput: Prisma.StateWhereInput = {
       board_id: boardId,

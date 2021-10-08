@@ -1,4 +1,3 @@
-import { Card } from '.prisma/client';
 import {
   Controller,
   Get,
