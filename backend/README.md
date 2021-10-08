@@ -30,6 +30,7 @@ $ npm install --include=dev
 
 ```bash
 # development
+# runs on port 3000
 $ npm run start:dev
 
 # production mode
@@ -81,3 +82,6 @@ $ npx prisma db pull
 # To reflect prisma changes to the client
 $ npx prisma generate
 ```
+
+## Swagger
+Swagger documentation is available at [swagger-spec.json](./swagger-spec.json) or at [localhost:3000/api-docs](http://localhost:3000/api-docs). If you would like to visualize [swagger-spec.json](./swagger-spec.json) and don't have localhost set, you can use the [Swagger editor](https://editor.swagger.io) to visualize it.
