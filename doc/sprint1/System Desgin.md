@@ -3,9 +3,6 @@
 ### CSCC01, Ilir Dema <br> Collaborators: Ahmed Halat, Armand Sarkezians, Christian Liu, <br> David Petrov, Mohamed Halat
 <br><br><br>
 
-
-
-
 <br/><br/><br/>
 ### Table of Contents
 1. [CRC Card descriptions](#crc)
@@ -14,12 +11,70 @@
 <br/><br/><br/><br/><br/>
 
 ## <a name="crc"></a>CRC Card descriptions
+### AuthController
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| JwtStrategy<br> PassportStrategy <br> AuthService | RESTFUL: Create user, get user, login user |
 
+### BoardController
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| AuthModule | RESTFUL: Get board, create board, update board |
+
+### StateController
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| AuthModule | RESTFUL: Get state, create state, get state's cards |
+
+### CardController
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| AuthModule | RESTFUL: Get card |
+
+### AuthService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| UserService <br>JwtService | register/login/get user, validate password, create jwt |
+
+### UserService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| PrismaService | Find, create, update or delete user |
+
+### BoardService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| PrismaService | Find or create board <br> Find board's states |
+
+
+### StateService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| PrismaService | Find or create state <br> Find state board <br> Get state cards |
+
+
+### CardService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| PrismaService | Find card |
+
+### PrismaService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| - | Performs database queries |
+
+### JwtStrategy
+| Collaborators | Responsibilities | Parent |
+| :---: | :--- | :--- |
+| AuthService | Validate user authentication tokens | PassportStrategy |
+
+### PassportStrategy
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| AuthService | Defines authentication method used for Nest.Js |
 ## <a name="diagram"></a>Software Architecture Diagram
   Nest.js is a fully featured JavaScript framework for building web applications with the MVC design pattern. However, instead of using integrated views with Nest.js, we decided to use Vue as it is a more powerful front-end framework.
 
   Then we decided to use a MySQL database since we wanted a relational database. We also decided to use Prisma, a db ORM to connect our application to our database.
 
 ![Software Architecture Diagram](./assets/architecture%20diagram.png)
-
-
