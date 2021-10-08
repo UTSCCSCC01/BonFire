@@ -19,6 +19,10 @@
 				board: {},
 			};
 		},
+		
+		watch: {
+			boardId: function() {this.getBoardInfo()},
+		},
 
 		mounted() {
 			this.getBoardInfo();
@@ -35,10 +39,6 @@
 					})
 			},
 		},
-		
-		watch: {
-			
-		}
 
 	}
 </script>
