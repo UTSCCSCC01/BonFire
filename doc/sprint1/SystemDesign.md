@@ -3,18 +3,17 @@
 ### CSCC01, Ilir Dema <br> Collaborators: Ahmed Halat, Armand Sarkezians, Christian Liu, <br> David Petrov, Mohamed Halat
 <br><br><br>
 
-<br/><br/><br/>
 ### Table of Contents
 1. [CRC Card descriptions](#crc)
 2. [Software Architecture Diagram](#diagram)
 
-<br/><br/><br/><br/><br/>
+<br/><br/><br/>
 
 ## <a name="crc"></a>CRC Card descriptions
 ### AuthController
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| JwtStrategy<br> PassportStrategy <br> AuthService | RESTFUL: Create user, get user, login user |
+| JwtStrategy<br> PassportStrategy <br> AuthService | RESTFUL: Register user, get user, login user |
 
 ### BoardController
 | Collaborators | Responsibilities |
@@ -34,23 +33,23 @@
 ### AuthService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| UserService <br>JwtService | register/login/get user, validate password, create jwt |
+| UserService <br>JwtService | Register/Login/Get user, validate password, create jwt |
 
 ### UserService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Find, create, update or delete user |
+| PrismaService | Get, create, update, delete user |
 
 ### BoardService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Find or create board <br> Find board's states |
+| PrismaService | Get, create board <br> Find board's states |
 
 
 ### StateService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Find or create state <br> Find state board <br> Get state cards |
+| PrismaService | Get, create state <br> Find state's board <br> Get state's cards |
 
 
 ### CardService
@@ -72,6 +71,7 @@
 | Collaborators | Responsibilities |
 | :---: | :--- |
 | AuthService | Defines authentication method used for Nest.Js |
+
 ## <a name="diagram"></a>Software Architecture Diagram
   Nest.js is a fully featured JavaScript framework for building web applications with the MVC design pattern. However, instead of using integrated views with Nest.js, we decided to use Vue as it is a more powerful front-end framework.
 
