@@ -5,7 +5,12 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class CardService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
+
+  /** Find first card by id
+   * @param  {number} cardId
+   * @returns Promise
+   */
   async find(cardId: number): Promise<CardDto> {
     const cardWhereUniqueInput: Prisma.CardWhereUniqueInput = {
       id: cardId,
@@ -15,6 +20,10 @@ export class CardService {
     });
   }
 
+  /** Find all cards with prisma options
+   * @param  {{skip?:number;take?:number;cursor?:Prisma.CardWhereUniqueInput;where?:Prisma.CardWhereInput;orderBy?:Prisma.CardOrderByWithRelationInput;}} params
+   * @returns Promise
+   */
   async findMany(params: {
     skip?: number;
     take?: number;

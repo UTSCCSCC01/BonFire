@@ -5,8 +5,12 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
+  /** Find a user by email or id
+   * @param  {Prisma.UserWhereUniqueInput} userWhereUniqueInput
+   * @returns Promise
+   */
   async find(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
   ): Promise<User | null> {
@@ -15,6 +19,10 @@ export class UserService {
     });
   }
 
+  /** Find a user by prisma values
+   * @param  {{skip?:number;take?:number;cursor?:Prisma.UserWhereUniqueInput;where?:Prisma.UserWhereInput;orderBy?:Prisma.UserOrderByWithRelationInput;}} params
+   * @returns Promise
+   */
   async findMany(params: {
     skip?: number;
     take?: number;
@@ -32,6 +40,11 @@ export class UserService {
     });
   }
 
+
+  /** Create a user
+   * @param  {Prisma.UserCreateInput} data
+   * @returns Promise
+   */
   async create(data: Prisma.UserCreateInput): Promise<User> {
     data.password = await bcrypt.hash(data.password, 12);
     return this.prisma.user.create({
@@ -39,6 +52,10 @@ export class UserService {
     });
   }
 
+  /** Update a user
+   * @param  {{where:Prisma.UserWhereUniqueInput;data:Prisma.UserUpdateInput;}} params
+   * @returns Promise
+   */
   async update(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
@@ -50,6 +67,10 @@ export class UserService {
     });
   }
 
+  /** Delete a user from the database
+   * @param  {Prisma.UserWhereUniqueInput} where
+   * @returns Promise
+   */
   async delete(where: Prisma.UserWhereUniqueInput): Promise<User> {
     return this.prisma.user.delete({
       where,
