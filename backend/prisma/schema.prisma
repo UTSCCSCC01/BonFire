@@ -10,15 +10,57 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  password   String
-  first_name String
-  last_name  String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  boards     Board[]
-  cards      Card[]
+  id         Int                     @id @default(autoincrement())
+  email      String                  @unique
+  password    String
+  first_name  String
+  last_name   String
+  created_at  DateTime                @default(now())
+  updated_at  DateTime                @updatedAt
+  Role        Role
+  Student     Student?        //Based on Role
+  Facilitator Facilitator?    //Based on Role
+  boards      Board[]
+}
+
+model Student{
+  id         Int                     @id @default(autoincrement())
+  user_id    Int                     
+  user      User                    @relation(fields: [user_id],references: [id])
+  classrooms  studentsAndClassrooms[]
+}
+
+model Facilitator{
+  id         Int                     @id @default(autoincrement())
+  user_id    Int                     
+  user      User                    @relation(fields: [user_id],references: [id])
+  classrooms  Classroom[]
+
+}
+
+enum Role {
+  Student
+  Facilitator
+}
+
+model studentsAndClassrooms {
+  classroom    Classroom @relation(fields: [classroom_id], references: [id])
+  classroom_id Int
+  student      Student      @relation(fields: [student_id], references: [id])
+  student_id   Int
+  assignedAt   DateTime  @default(now())
+
+  @@id([classroom_id, student_id])
+}
+
+model Classroom {
+  id             Int                     @id @default(autoincrement())
+  name           String
+  created_at     DateTime                @default(now())
+  updated_at     DateTime                @updatedAt
+  facilitator    Facilitator              @relation(fields: [facilitator_id], references: [id])
+  facilitator_id Int
+  students       studentsAndClassrooms[]
 }
 
 model Board {
@@ -26,8 +68,8 @@ model Board {
   title      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  user_id    Int
   user       User     @relation(fields: [user_id], references: [id])
+  user_id    Int
   states     State[]
 
   @@index([user_id], map: "Board_user_id_fkey")
@@ -51,15 +93,12 @@ model Card {
   title           String
   desc            String?
   submit_url      String?
-  creator_user_id Int
   state_id        Int
   order           Int
   due_date        DateTime?
   created_at      DateTime  @default(now())
   updated_at      DateTime  @updatedAt
-  creator         User      @relation(fields: [creator_user_id], references: [id])
   state           State     @relation(fields: [state_id], references: [id])
 
-  @@index([creator_user_id])
   @@index([state_id])
 }
