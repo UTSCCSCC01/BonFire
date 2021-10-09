@@ -28,13 +28,20 @@ export class BoardService {
    * @param  {number} boardId
    * @returns Promise
    */
-  async find(boardId: number): Promise<BoardDto> {
-    const boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
+  async find(user: User, boardId: number): Promise<BoardDto> {
+    const boardWhereInput: Prisma.BoardWhereInput = {
+      user_id: user.id,
       id: boardId,
     };
-    return this.prisma.board.findUnique({
-      where: boardWhereUniqueInput,
+    const board = await this.prisma.board.findFirst({
+      where: boardWhereInput,
     });
+
+    if (!board) {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    }
+
+    return board;
   }
 
   /** Find all boards by user id
@@ -54,9 +61,23 @@ export class BoardService {
    * @param  {number} boardId
    * @returns Promise
    */
-  async findStates(boardId: number): Promise<StateDto[]> {
+  async findStates(user: User, boardId: number): Promise<StateDto[]> {
+    // Find all states tied to a boardId with a specifc user
+    const boardWhereInput: Prisma.BoardWhereInput = {
+      user_id: user.id,
+      id: boardId,
+    };
+    const board = await this.prisma.board.findFirst({
+      where: boardWhereInput,
+    });
+
+    if (!board) {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    }
+
+    // Find all states tied to a boardId with a specifc user
     const stateWhereInput: Prisma.StateWhereInput = {
-      board_id: boardId,
+      board_id: board.id,
     };
     return this.prisma.state.findMany({
       where: stateWhereInput,

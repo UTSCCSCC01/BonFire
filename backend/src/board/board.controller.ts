@@ -59,12 +59,11 @@ export class BoardController {
     description: 'Board details',
     type: BoardDto,
   })
-  public async getBoard(@Param('id') boardId: number): Promise<BoardDto> {
-    const boardResult = await this.boardService.find(+boardId);
-    if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
-    }
-    return boardResult;
+  public async getBoard(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<BoardDto> {
+    return await this.boardService.find(user, +boardId);
   }
 
   @Get(':id/states')
@@ -72,11 +71,10 @@ export class BoardController {
   @ApiOkResponse({
     description: 'List of States',
   })
-  public async getStates(@Param('id') boardId: number): Promise<StateDto[]> {
-    const boardResult = await this.boardService.find(+boardId);
-    if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
-    }
-    return await this.boardService.findStates(+boardId);
+  public async getStates(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<StateDto[]> {
+    return await this.boardService.findStates(user, +boardId);
   }
 }
