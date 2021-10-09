@@ -12,7 +12,10 @@
           <div class="content">
             <div class="title-area">
               <p>Welcome To</p>
-              <h1 class="title-modern white--text" style="font-weight: 600; text-shadow: none;">
+              <h1
+                class="title-modern white--text"
+                style="font-weight: 600; text-shadow: none;"
+              >
                 Bonfire
               </h1>
               <h3 style="font-weight: 600; text-shadow: none;">

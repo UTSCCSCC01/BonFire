@@ -1,4 +1,4 @@
-import { Board, Card, prisma, Prisma, State } from '.prisma/client';
+import { Board, Prisma } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { StateDto } from 'src/constants/state';

@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /** Find a user by email or id
    * @param  {Prisma.UserWhereUniqueInput} userWhereUniqueInput
@@ -39,7 +39,6 @@ export class UserService {
       orderBy,
     });
   }
-
 
   /** Create a user
    * @param  {Prisma.UserCreateInput} data
