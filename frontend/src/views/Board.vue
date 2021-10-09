@@ -13,7 +13,8 @@
           class="board-states-col"
         >
           <v-sheet
-            class="rounded lg border shadow-sm board-states-item">
+            class="rounded lg border shadow-sm board-states-item"
+          >
             <p class="board-states-item-title">
               {{ state.title }}
             </p>

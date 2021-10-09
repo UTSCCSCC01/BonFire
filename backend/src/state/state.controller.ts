@@ -1,4 +1,3 @@
-import { Card, State } from '.prisma/client';
 import {
   Body,
   Controller,

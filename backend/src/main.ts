@@ -27,7 +27,7 @@ async function bootstrap() {
   if (process.env.NODE_ENV !== 'production') {
     const document = SwaggerModule.createDocument(app, config, options);
     SwaggerModule.setup('api-docs', app, document);
-    fs.writeFileSync("./swagger-spec.json", JSON.stringify(document, null, 2));
+    fs.writeFileSync('./swagger-spec.json', JSON.stringify(document, null, 2));
   }
 
   // Start the application

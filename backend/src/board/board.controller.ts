@@ -17,7 +17,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { Board, State, User } from '@prisma/client';
+import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { BoardDto } from 'src/constants/board';
 import { StateDto } from 'src/constants/state';
