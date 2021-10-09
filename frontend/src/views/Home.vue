@@ -12,15 +12,22 @@
           <div class="content">
             <div class="title-area">
               <p>Welcome To</p>
-              <h1 class="title-modern white--text">Bonfire</h1>
-              <h3>
+              <h1 class="title-modern white--text" style="font-weight: 600; text-shadow: none;">
+                Bonfire
+              </h1>
+              <h3 style="font-weight: 600; text-shadow: none;">
                 Organizational Tool for both Teachers and Students
-                <div class="separator line-separator">♦</div>
+                <div class="separator line-separator">
+                  ♦
+                </div>
               </h3>
             </div>
 
             <div class="button-get-started">
-              <router-link to="/register" class="btn btn-white btn-fill btn-lg">
+              <router-link
+                to="/register"
+                class="btn btn-white btn-fill btn-lg"
+              >
                 Get Started Today
               </router-link>
             </div>
@@ -34,7 +41,9 @@
         <div class="row">
           <div class="title-area">
             <h2>What we do</h2>
-            <div class="separator separator-danger">✻</div>
+            <div class="separator separator-danger">
+              ✻
+            </div>
             <p class="description">
               Welcome to BonFire, a kanban-board web app designed and created by
               students with one purpose: providing students and teachers with a
@@ -97,8 +106,12 @@
           <div class="content">
             <div class="row">
               <div class="title-area">
-                <h2 class="white--text">Who We Are</h2>
-                <div class="separator separator-danger white--text">✻</div>
+                <h2 class="white--text">
+                  Who We Are
+                </h2>
+                <div class="separator separator-danger white--text">
+                  ✻
+                </div>
                 <p class="description white--text">
                   We are a small team of student developers who want to make the
                   classroom better, more organized and more creative
@@ -109,7 +122,10 @@
             <div class="team">
               <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-md-10 col-md-offset-1">
-                  <div class="row">
+                  <div
+                    class="row"
+                    style="justifyContent: center;"
+                  >
                     <div class="col-md-4">
                       <div class="card card-member">
                         <div class="content">
@@ -118,11 +134,15 @@
                               alt="..."
                               class="img-circle"
                               src="../assets/img/faces/ahmed.png"
-                            />
+                            >
                           </div>
                           <div class="description">
-                            <h3 class="title">Ahmed</h3>
-                            <p class="description">Full Stack Developer</p>
+                            <h3 class="title">
+                              Ahmed
+                            </h3>
+                            <p class="description">
+                              Full Stack Developer
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -135,11 +155,15 @@
                               alt="..."
                               class="img-circle"
                               src="../assets/img/faces/mohamed.png"
-                            />
+                            >
                           </div>
                           <div class="description">
-                            <h3 class="title">Mohamed</h3>
-                            <p class="description">Full Stack Developer</p>
+                            <h3 class="title">
+                              Mohamed
+                            </h3>
+                            <p class="description">
+                              Full Stack Developer
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -152,11 +176,15 @@
                               alt="..."
                               class="img-circle"
                               src="../assets/img/faces/armand.png"
-                            />
+                            >
                           </div>
                           <div class="description">
-                            <h3 class="title">Armand</h3>
-                            <p class="description">Frontend Developer</p>
+                            <h3 class="title">
+                              Armand
+                            </h3>
+                            <p class="description">
+                              Frontend Developer
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -169,11 +197,15 @@
                               alt="..."
                               class="img-circle"
                               src="../assets/img/faces/christian.png"
-                            />
+                            >
                           </div>
                           <div class="description">
-                            <h3 class="title">Christian</h3>
-                            <p class="description">Frontend Developer</p>
+                            <h3 class="title">
+                              Christian
+                            </h3>
+                            <p class="description">
+                              Frontend Developer
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -186,11 +218,15 @@
                               alt="..."
                               class="img-circle"
                               src="../assets/img/faces/david.png"
-                            />
+                            >
                           </div>
                           <div class="description">
-                            <h3 class="title">David</h3>
-                            <p class="description">Fullstack Developer</p>
+                            <h3 class="title">
+                              David
+                            </h3>
+                            <p class="description">
+                              Fullstack Developer
+                            </p>
                           </div>
                         </div>
                       </div>
