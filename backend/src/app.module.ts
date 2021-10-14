@@ -6,6 +6,8 @@ import { UserModule } from './user/user.module';
 import { CardModule } from './card/card.module';
 import { BoardModule } from './board/board.module';
 import { PassportModule } from '@nestjs/passport';
+import { ClassroomController } from './classroom/classroom.controller';
+import { ClassroomModule } from './classroom/classroom.module';
 
 @Module({
   imports: [
@@ -16,8 +18,9 @@ import { PassportModule } from '@nestjs/passport';
     CardModule,
     UserModule,
     PassportModule,
+    ClassroomModule,
   ],
-  controllers: [],
+  controllers: [ClassroomController],
   providers: [],
 })
 export class AppModule {}
