@@ -10,32 +10,17 @@ datasource db {
 }
 
 model User {
-  id         Int                     @id @default(autoincrement())
-  email      String                  @unique
-  password    String
-  first_name  String
-  last_name   String
-  created_at  DateTime                @default(now())
-  updated_at  DateTime                @updatedAt
-  Role        Role
-  Student     Student?        //Based on Role
-  Facilitator Facilitator?    //Based on Role
-  boards      Board[]
-}
-
-model Student{
-  id         Int                     @id @default(autoincrement())
-  user_id    Int                     
-  user      User                    @relation(fields: [user_id],references: [id])
-  classrooms  studentsAndClassrooms[]
-}
-
-model Facilitator{
-  id         Int                     @id @default(autoincrement())
-  user_id    Int                     
-  user      User                    @relation(fields: [user_id],references: [id])
-  classrooms  Classroom[]
-
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  password          String
+  first_name        String
+  last_name         String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  Role              Role
+  boards            Board[]
+  StudentClassrooms StudentClassrooms[]
+  Classroom         Classroom[]
 }
 
 enum Role {
@@ -43,25 +28,25 @@ enum Role {
   Facilitator
 }
 
-model studentsAndClassrooms {
+model StudentClassrooms {
   classroom    Classroom @relation(fields: [classroom_id], references: [id])
   classroom_id Int
-  student      Student      @relation(fields: [student_id], references: [id])
-  student_id   Int
-  assignedAt   DateTime  @default(now())
+  user         User      @relation(fields: [user_id], references: [id])
+  user_id      Int
+  joined_on    DateTime  @default(now())
 
-  @@id([classroom_id, student_id])
+  @@id([classroom_id, user_id])
 }
 
 model Classroom {
-  id             Int                     @id @default(autoincrement())
-  token          String                  @unique
-  name           String
-  created_at     DateTime                @default(now())
-  updated_at     DateTime                @updatedAt
-  facilitator    Facilitator              @relation(fields: [facilitator_id], references: [id])
-  facilitator_id Int
-  students       studentsAndClassrooms[]
+  id         Int                 @id @default(autoincrement())
+  token      String              @unique
+  name       String
+  created_at DateTime            @default(now())
+  updated_at DateTime            @updatedAt
+  creator    User                @relation(fields: [creator_id], references: [id])
+  creator_id Int
+  students   StudentClassrooms[]
 }
 
 model Board {
@@ -90,16 +75,17 @@ model State {
 }
 
 model Card {
-  id              Int       @id @default(autoincrement())
-  title           String
-  desc            String?
-  submit_url      String?
-  state_id        Int
-  order           Int
-  due_date        DateTime?
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  state           State     @relation(fields: [state_id], references: [id])
+  id         Int       @id @default(autoincrement())
+  title      String
+  desc       String?
+  submit_url String?
+  creator_id Int
+  order      Int
+  due_date   DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  state      State     @relation(fields: [state_id], references: [id])
+  tstate_id   Int
 
   @@index([state_id])
 }
