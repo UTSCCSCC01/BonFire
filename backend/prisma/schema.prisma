@@ -85,7 +85,7 @@ model Card {
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
   state      State     @relation(fields: [state_id], references: [id])
-  tstate_id   Int
+  state_id   Int
 
   @@index([state_id])
 }
