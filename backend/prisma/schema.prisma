@@ -10,43 +10,15 @@ datasource db {
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique
-  password          String
-  first_name        String
-  last_name         String
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  Role              Role
-  boards            Board[]
-  StudentClassrooms StudentClassrooms[]
-  Classroom         Classroom[]
-}
-
-enum Role {
-  Student
-  Facilitator
-}
-
-model StudentClassrooms {
-  classroom    Classroom @relation(fields: [classroom_id], references: [id])
-  classroom_id Int
-  user         User      @relation(fields: [user_id], references: [id])
-  user_id      Int
-  joined_on    DateTime  @default(now())
-
-  @@id([classroom_id, user_id])
-}
-
-model Classroom {
-  id         Int                 @id @default(autoincrement())
-  token      String              @unique
-  name       String
-  created_at DateTime            @default(now())
-  updated_at DateTime            @updatedAt
-  creator    User                @relation(fields: [creator_id], references: [id])
-  creator_id Int
-  students   StudentClassrooms[]
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  first_name String
+  last_name  String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  boards     Board[]
+  Card       Card[]
 }
 
 model Board {
@@ -54,8 +26,8 @@ model Board {
   title      String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
-  user       User     @relation(fields: [user_id], references: [id])
   user_id    Int
+  user       User     @relation(fields: [user_id], references: [id])
   states     State[]
 
   @@index([user_id], map: "Board_user_id_fkey")
@@ -75,17 +47,19 @@ model State {
 }
 
 model Card {
-  id         Int       @id @default(autoincrement())
-  title      String
-  desc       String?
-  submit_url String?
-  creator_id Int
-  order      Int
-  due_date   DateTime?
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  state      State     @relation(fields: [state_id], references: [id])
-  state_id   Int
+  id              Int       @id @default(autoincrement())
+  title           String
+  desc            String?
+  submit_url      String?
+  creator_user_id Int
+  state_id        Int
+  order           Int
+  due_date        DateTime?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime  @updatedAt
+  User            User      @relation(fields: [creator_user_id], references: [id])
+  state           State     @relation(fields: [state_id], references: [id])
 
+  @@index([creator_user_id])
   @@index([state_id])
 }
