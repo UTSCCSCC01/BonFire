@@ -10,18 +10,18 @@ datasource db {
 }
 
 model User {
-  id                Int                 @id @default(autoincrement())
-  email             String              @unique
-  password          String
-  first_name        String
-  last_name         String
-  created_at        DateTime            @default(now())
-  updated_at        DateTime            @updatedAt
-  Role              Role
-  boards            Board[]
-  StudentClassrooms StudentClassrooms[]
-  Classroom         Classroom[]
-  Card              Card[]
+  id                 Int                 @id @default(autoincrement())
+  email              String              @unique
+  password           String
+  first_name         String
+  last_name          String
+  created_at         DateTime            @default(now())
+  updated_at         DateTime            @updatedAt
+  role               Role
+  boards             Board[]
+  student_classrooms StudentClassrooms[]
+  classroom          Classroom[]
+  card               Card[]
 }
 
 enum Role {
@@ -34,7 +34,7 @@ model StudentClassrooms {
   classroom_id Int
   student      User      @relation(fields: [student_id], references: [id])
   student_id   Int
-  assignedAt   DateTime  @default(now())
+  created_at   DateTime  @default(now())
 
   @@id([classroom_id, student_id])
 }
@@ -86,7 +86,7 @@ model Card {
   due_date   DateTime?
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
-  User       User      @relation(fields: [creator_id], references: [id])
+  creator    User      @relation(fields: [creator_id], references: [id])
   state      State     @relation(fields: [state_id], references: [id])
 
   @@index([creator_id])
