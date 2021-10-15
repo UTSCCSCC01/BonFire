@@ -17,11 +17,11 @@ model User {
   last_name          String
   created_at         DateTime            @default(now())
   updated_at         DateTime            @updatedAt
-  role               Role
-  boards             Board[]
+  role               Role?
   student_classrooms StudentClassrooms[]
   classrooms         Classroom[]
   cards              Card[]
+  Board              Board[]
 }
 
 enum Role {

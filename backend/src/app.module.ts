@@ -2,11 +2,9 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { StateModule } from './state/state.module';
-import { UserModule } from './user/user.module';
 import { CardModule } from './card/card.module';
 import { BoardModule } from './board/board.module';
 import { PassportModule } from '@nestjs/passport';
-import { ClassroomController } from './classroom/classroom.controller';
 import { ClassroomModule } from './classroom/classroom.module';
 
 @Module({
@@ -16,11 +14,10 @@ import { ClassroomModule } from './classroom/classroom.module';
     BoardModule,
     StateModule,
     CardModule,
-    UserModule,
     PassportModule,
     ClassroomModule,
   ],
-  controllers: [ClassroomController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}
