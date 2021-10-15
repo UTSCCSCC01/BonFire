@@ -10,15 +10,44 @@ datasource db {
 }
 
 model User {
-  id         Int      @id @default(autoincrement())
-  email      String   @unique
-  password   String
-  first_name String
-  last_name  String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
-  boards     Board[]
-  Card       Card[]
+  id                Int                 @id @default(autoincrement())
+  email             String              @unique
+  password          String
+  first_name        String
+  last_name         String
+  created_at        DateTime            @default(now())
+  updated_at        DateTime            @updatedAt
+  Role              Role
+  boards            Board[]
+  StudentClassrooms StudentClassrooms[]
+  Classroom         Classroom[]
+  Card              Card[]
+}
+
+enum Role {
+  Student
+  Facilitator
+}
+
+model StudentClassrooms {
+  classroom    Classroom @relation(fields: [classroom_id], references: [id])
+  classroom_id Int
+  student      User      @relation(fields: [student_id], references: [id])
+  student_id   Int
+  assignedAt   DateTime  @default(now())
+
+  @@id([classroom_id, student_id])
+}
+
+model Classroom {
+  id         Int                 @id @default(autoincrement())
+  token      String              @unique
+  name       String
+  created_at DateTime            @default(now())
+  updated_at DateTime            @updatedAt
+  creator    User                @relation(fields: [creator_id], references: [id])
+  creator_id Int
+  students   StudentClassrooms[]
 }
 
 model Board {
@@ -47,19 +76,19 @@ model State {
 }
 
 model Card {
-  id              Int       @id @default(autoincrement())
-  title           String
-  desc            String?
-  submit_url      String?
-  creator_user_id Int
-  state_id        Int
-  order           Int
-  due_date        DateTime?
-  created_at      DateTime  @default(now())
-  updated_at      DateTime  @updatedAt
-  User            User      @relation(fields: [creator_user_id], references: [id])
-  state           State     @relation(fields: [state_id], references: [id])
+  id         Int       @id @default(autoincrement())
+  title      String
+  desc       String?
+  submit_url String?
+  creator_id Int
+  state_id   Int
+  order      Int
+  due_date   DateTime?
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
+  User       User      @relation(fields: [creator_id], references: [id])
+  state      State     @relation(fields: [state_id], references: [id])
 
-  @@index([creator_user_id])
+  @@index([creator_id])
   @@index([state_id])
 }
