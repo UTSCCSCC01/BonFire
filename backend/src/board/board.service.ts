@@ -71,10 +71,6 @@ export class BoardService {
       where: boardWhereInput,
     });
 
-    if (!board) {
-      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
-    }
-
     // Find all states tied to a boardId with a specifc user
     const stateWhereInput: Prisma.StateWhereInput = {
       board_id: board.id,

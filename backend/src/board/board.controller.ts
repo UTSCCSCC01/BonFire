@@ -63,7 +63,11 @@ export class BoardController {
     @RequestUser() user: User,
     @Param('id') boardId: number,
   ): Promise<BoardDto> {
-    return await this.boardService.find(user, +boardId);
+    const boardResult = await this.boardService.find(user, +boardId);
+    if (!boardResult) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
+    }
+    return boardResult;
   }
 
   @Get(':id/states')
@@ -75,6 +79,10 @@ export class BoardController {
     @RequestUser() user: User,
     @Param('id') boardId: number,
   ): Promise<StateDto[]> {
-    return await this.boardService.findStates(user, +boardId);
+    const statesResult = await this.boardService.findStates(user, +boardId);
+    if (!statesResult) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
+    }
+    return statesResult;
   }
 }
