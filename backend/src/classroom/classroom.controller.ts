@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpException,
+  HttpStatus,
   Param,
   Post,
   Put,
@@ -46,18 +48,10 @@ export class ClassroomController {
     description: 'Classroom',
   })
   public async classroomExists(@Body() token: string): Promise<Classroom> {
-    return await this.classroomService.existsClass(token);
-  }
-
-  @Put(':id')
-  @ApiOperation({ summary: 'Adds a student to a specific classroom' })
-  @ApiOkResponse({
-    description: 'Added a student to classroom',
-  })
-  public async addStudent(
-    @RequestUser() user: User,
-    @Param('id') classId: number,
-  ): Promise<Classroom> {
-    return await this.classroomService.addStudent(user, +classId);
+    const classroomResult = this.classroomService.existsClass(token);
+    if (!classroomResult) {
+      throw new HttpException('Invalid classroom token', HttpStatus.NOT_FOUND);
+    }
+    return classroomResult;
   }
 }

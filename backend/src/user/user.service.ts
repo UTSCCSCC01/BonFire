@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { UserDto } from 'src/constants/user';
 
 @Injectable()
 export class UserService {
@@ -74,5 +75,20 @@ export class UserService {
     return this.prisma.user.delete({
       where,
     });
+  }
+
+  async joinClassroom(user: User, classroomId: number): Promise<UserDto> {
+    // add user to classroom with id classroomId
+    const userClassroom = await this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        classrooms: {
+          connect: {
+            id: classroomId,
+          },
+        },
+      },
+    });
+    return userClassroom;
   }
 }

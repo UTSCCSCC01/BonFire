@@ -24,11 +24,6 @@ export class ClassroomService {
     });
   }
 
-  async addStudent(user: User, classId: number): Promise<Classroom> {
-    // Add user to classroom
-    return null;
-  }
-
   //generate a unique 8 digit code for the classroom
   generateClassroomToken(): string {
     let code = '';
