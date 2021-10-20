@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
+import { ClassroomDto } from 'src/constants/classroom';
 
 @Injectable()
 export class UserService {
@@ -74,5 +75,29 @@ export class UserService {
     return this.prisma.user.delete({
       where,
     });
+  }
+
+  async joinClassroom(user: User, token: string): Promise<ClassroomDto> {
+    const classroom = await this.prisma.classroom.findFirst({
+      where: { token },
+    });
+
+    if (!classroom) {
+      throw new HttpException('Invalid board token', HttpStatus.NOT_FOUND);
+    }
+
+    // add user to classroom with id classroomId
+    this.prisma.user.update({
+      where: { id: user.id },
+      data: {
+        classrooms: {
+          connect: {
+            id: classroom.id,
+          },
+        },
+      },
+    });
+
+    return classroom;
   }
 }
