@@ -20,7 +20,7 @@ import { UserModule } from './user/user.module';
     ClassroomModule,
     UserModule,
   ],
-  controllers: [UserController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

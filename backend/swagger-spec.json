@@ -392,35 +392,6 @@
           }
         ]
       }
-    },
-    "/classroom/{id}": {
-      "put": {
-        "operationId": "addStudent",
-        "summary": "Adds a student to a specific classroom",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Added a student to classroom"
-          }
-        },
-        "tags": [
-          "classroom"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
     }
   },
   "info": {
