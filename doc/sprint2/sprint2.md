@@ -1,4 +1,4 @@
-# Sprint 1 Planning
+# Sprint 2 Planning
 
 #### Meeting and sprint goal is documented, all spikes clearly identified,
 - decisions about user stories to be completed this sprint are clear,
