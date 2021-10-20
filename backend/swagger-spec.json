@@ -344,6 +344,54 @@
           }
         ]
       }
+    },
+    "/classroom": {
+      "post": {
+        "operationId": "create",
+        "summary": "Creates and returns a new classroom given title",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "New Classroom"
+          }
+        },
+        "tags": [
+          "classroom"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "classroomExists",
+        "summary": "Returns classroom if classroom w/ token exists",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Classroom"
+          }
+        },
+        "tags": [
+          "classroom"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "info": {
