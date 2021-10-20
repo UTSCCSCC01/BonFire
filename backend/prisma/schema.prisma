@@ -21,7 +21,7 @@ model User {
   student_classrooms StudentClassrooms[]
   classrooms         Classroom[]
   cards              Card[]
-  board              Board[]
+  boards              Board[]
 }
 
 enum Role {
