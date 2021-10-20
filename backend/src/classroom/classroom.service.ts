@@ -1,4 +1,5 @@
 import { User, Board, Classroom } from '.prisma/client';
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
@@ -23,9 +24,12 @@ export class ClassroomService {
       where: { token: token },
     });
   }
-
+  
   generateClassroomToken(): string {
-    // 10 digit random number
-    return Date.now().toString(10) + Math.random().toString(36).substring(2);
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    return code;
   }
 }
