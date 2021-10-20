@@ -5,7 +5,9 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -19,7 +21,7 @@ import {
 } from '@nestjs/swagger';
 import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDto } from 'src/constants/board';
+import { BoardDetailsDto, BoardDto } from 'src/constants/board';
 import { StateDto } from 'src/constants/state';
 import { BoardService } from './board.service';
 
@@ -28,7 +30,7 @@ import { BoardService } from './board.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(private readonly boardService: BoardService) { }
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new board' })
@@ -67,6 +69,25 @@ export class BoardController {
     if (!boardResult) {
       throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
+    return boardResult;
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a board by specific ID' })
+  @ApiOkResponse({
+    description: 'Board details',
+    type: BoardDetailsDto,
+  })
+  public async update(
+    @RequestUser() user: User,
+    @Param('id') id: number,
+    @Body() board: Board,
+  ): Promise<BoardDto> {
+    const canAccess = await this.boardService.find(user, +id);
+    if (!canAccess) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
+    }
+    const boardResult = await this.boardService.update({ where: {id: +id}, data: board});
     return boardResult;
   }
 

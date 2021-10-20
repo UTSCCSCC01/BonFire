@@ -57,6 +57,24 @@ export class BoardService {
     });
   }
 
+  /** Update a board
+   * @param  {{where:Prisma.BoardWhereUniqueInput;data:Prisma.BoardUpdateInput;}} params
+   * @returns Promise
+   */
+  async update(params: {
+    where: Prisma.BoardWhereUniqueInput;
+    data: Prisma.BoardUpdateInput;
+  }): Promise<Board> {
+    const { where, data } = params;
+    delete data.created_at;
+    delete data.updated_at;
+
+    return this.prisma.board.update({
+      data,
+      where,
+    });
+  }
+
   /** Find all board states
    * @param  {number} boardId
    * @returns Promise
