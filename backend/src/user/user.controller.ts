@@ -40,4 +40,5 @@ export class UserController {
   ): Promise<ClassroomDto> {
     return await this.userService.joinClassroom(user, token);
   }
+
 }

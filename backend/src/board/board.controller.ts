@@ -59,10 +59,13 @@ export class BoardController {
     description: 'Board details',
     type: BoardDto,
   })
-  public async getBoard(@Param('id') boardId: number): Promise<BoardDto> {
-    const boardResult = await this.boardService.find(+boardId);
+  public async getBoard(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<BoardDto> {
+    const boardResult = await this.boardService.find(user, +boardId);
     if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
     return boardResult;
   }
@@ -72,11 +75,14 @@ export class BoardController {
   @ApiOkResponse({
     description: 'List of States',
   })
-  public async getStates(@Param('id') boardId: number): Promise<StateDto[]> {
-    const boardResult = await this.boardService.find(+boardId);
-    if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
+  public async getStates(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<StateDto[]> {
+    const statesResult = await this.boardService.findStates(user, +boardId);
+    if (!statesResult) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
-    return await this.boardService.findStates(+boardId);
+    return statesResult;
   }
 }

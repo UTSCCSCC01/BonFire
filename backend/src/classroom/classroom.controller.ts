@@ -41,4 +41,18 @@ export class ClassroomController {
   ): Promise<Classroom> {
     return this.classroomService.create(user, classroom);
   }
+
+  @Get()
+  @ApiOperation({ summary: 'Returns classroom if classroom w/ token exists' })
+  @ApiOkResponse({
+    description: 'Classroom',
+  })
+  public async classroomExists(@Body() token: string): Promise<Classroom> {
+    const classroomResult = this.classroomService.existsClass(token);
+    if (!classroomResult) {
+      throw new HttpException('Invalid classroom token', HttpStatus.NOT_FOUND);
+    }
+    return classroomResult;
+  }
+
 }

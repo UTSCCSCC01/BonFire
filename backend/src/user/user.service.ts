@@ -3,6 +3,7 @@ import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { ClassroomDto } from 'src/constants/classroom';
+import { UserDto } from 'src/constants/user';
 
 @Injectable()
 export class UserService {
@@ -97,7 +98,6 @@ export class UserService {
         },
       },
     });
-
     return classroom;
   }
 }

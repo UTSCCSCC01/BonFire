@@ -17,11 +17,11 @@ model User {
   last_name          String
   created_at         DateTime            @default(now())
   updated_at         DateTime            @updatedAt
-  role               Role
-  boards             Board[]
+  role               Role?
   student_classrooms StudentClassrooms[]
   classrooms         Classroom[]
   cards              Card[]
+  boards              Board[]
 }
 
 enum Role {
@@ -89,6 +89,5 @@ model Card {
   creator    User      @relation(fields: [creator_id], references: [id])
   state      State     @relation(fields: [state_id], references: [id])
 
-  @@index([creator_id])
-  @@index([state_id])
+  @@index([creator_id, state_id])
 }

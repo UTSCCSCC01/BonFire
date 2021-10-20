@@ -2,10 +2,12 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { StateModule } from './state/state.module';
-import { UserModule } from './user/user.module';
 import { CardModule } from './card/card.module';
 import { BoardModule } from './board/board.module';
 import { PassportModule } from '@nestjs/passport';
+import { ClassroomModule } from './classroom/classroom.module';
+import { UserController } from './user/user.controller';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
@@ -14,8 +16,9 @@ import { PassportModule } from '@nestjs/passport';
     BoardModule,
     StateModule,
     CardModule,
-    UserModule,
     PassportModule,
+    ClassroomModule,
+    UserModule,
   ],
   controllers: [],
   providers: [],

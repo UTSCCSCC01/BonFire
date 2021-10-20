@@ -1,4 +1,5 @@
-import { User, Classroom } from '.prisma/client';
+import { User, Board, Classroom } from '.prisma/client';
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
 
@@ -18,6 +19,12 @@ export class ClassroomService {
     return this.prisma.classroom.create({ data: classroomData });
   }
 
+  async existsClass(token: string): Promise<Classroom> {
+    return this.prisma.classroom.findFirst({
+      where: { token: token },
+    });
+  }
+  
   generateClassroomToken(): string {
     let code = '';
     for (let i = 0; i < 8; i++) {
