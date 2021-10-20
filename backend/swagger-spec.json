@@ -171,6 +171,40 @@
             "bearer": []
           }
         ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "Update a board by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoardDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "boards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/boards/{id}/states": {
@@ -392,6 +426,35 @@
           }
         ]
       }
+    },
+    "/user/classroom": {
+      "put": {
+        "operationId": "joinClassroom",
+        "summary": "Adds a student to a specific classroom",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Added a student to classroom"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
     }
   },
   "info": {
@@ -538,6 +601,17 @@
           "title",
           "created_at",
           "updated_at"
+        ]
+      },
+      "BoardDetailsDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title"
         ]
       },
       "StateDto": {

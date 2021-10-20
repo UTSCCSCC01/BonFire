@@ -7,7 +7,11 @@
 </p>
 
 ## Documentation
-  If you are unfamiliar with vue, take a look at [official documentation here](https://vuejs.org/v2/guide/). Here are some added things you need to know. We are using vue as well as vue-router. So that means the [App](src/App.vue) created from [main.js](src/main.js) loads different views/pages based on [routers](src/router/index.js). We also use the vuetify component library for styling.
+  If you are unfamiliar with vue, take a look at [official documentation here](https://vuejs.org/v2/guide/). Here are some added things you need to know.
+
+  We are using vue as well as vue-router. So that means the [App](src/App.vue) created from [main.js](src/main.js) loads different views/pages based on [routers](src/router/index.js).
+
+  We also use the [vuetify](https://vuetifyjs.com) component library for styling.
 
 ## Project setup
 ```bash

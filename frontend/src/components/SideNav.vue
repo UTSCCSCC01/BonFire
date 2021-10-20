@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <div id="sidebar">
     <create-board-dialog
       :open-dialog="createNewBoard"
       @close-dialog="createNewBoard = false"
@@ -7,25 +7,31 @@
     />
     <v-navigation-drawer
       class="pt-4"
-      color="grey lighten-3"
+      color="#FBE7D3"
+      :mini-variant="collapsed"
       app
       permanent
-      expand-on-hover
     >
       <v-list>
         <v-list-item to="/dashboard">
           <v-list-item-content>
             <v-list-item-title class="text-h6">
+              <v-icon>fas fa-home</v-icon>
               My Dashboard
             </v-list-item-title>
-            <v-list-item-subtitle>Student Dashboard</v-list-item-subtitle>
+            <v-list-item-subtitle v-if="!collapsed">
+              Student Dashboard
+            </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
       </v-list>
 
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
-      <v-toolbar-title class="text-h6 px-3">
+      <v-toolbar-title
+        v-if="!collapsed"
+        class="text-h6 px-3"
+      >
         My Campsites
       </v-toolbar-title>
       <v-list
@@ -42,7 +48,11 @@
 
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
-      <v-toolbar-title class="text-h6 px-3">
+      <v-toolbar-title
+        v-if="!collapsed"
+        class="text-h6 px-3"
+      >
+        <v-icon>fas fa-campfire</v-icon>
         My Campfires
       </v-toolbar-title>
       <v-list
@@ -53,7 +63,7 @@
           v-for="board in boards"
           :key="board.id"
           :to="`/board/${board.id}`"
-        > 
+        >
           <v-list-item-icon>
             <v-icon>fas fa-fire</v-icon>
           </v-list-item-icon>
@@ -71,6 +81,12 @@
       </v-list>
 
       <template v-slot:append>
+        <v-list-item @click="collapsed = !collapsed">
+          <v-list-item-icon>
+            <v-icon>fas fa-{{ collapsed ? "angle-double-right" : "angle-double-left" }}</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title />
+        </v-list-item>
         <v-list-item @click="signOut">
           <v-list-item-icon>
             <v-icon>fas fa-sign-out-alt</v-icon>
@@ -83,7 +99,7 @@
 </template>
 
 <script>
-import CreateBoardDialog from './CreateBoardDialog';
+import CreateBoardDialog from './board/CreateBoardDialog';
 
 export default {
   components: {
@@ -94,6 +110,7 @@ export default {
       drawer: [],
       createNewBoard: false,
       boards: [],
+      collapsed: true,
     };
   },
   mounted() {
@@ -125,4 +142,7 @@ export default {
 </script>
 
 <style>
+#sidebar {
+  font-family: Poppins;
+}
 </style>

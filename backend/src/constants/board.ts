@@ -13,3 +13,14 @@ export class BoardDto {
   @ApiProperty()
   readonly updated_at: Date;
 }
+
+export class BoardDetailsDto {
+  readonly id: number;
+
+  @ApiProperty()
+  readonly title: string;
+
+  readonly created_at: Date;
+
+  readonly updated_at: Date;
+}

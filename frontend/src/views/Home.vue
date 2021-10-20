@@ -14,11 +14,11 @@
               <p>Welcome To</p>
               <h1
                 class="title-modern white--text"
-                style="font-weight: 600; text-shadow: none;"
+                style="font-weight: 600; text-shadow: none"
               >
                 Bonfire
               </h1>
-              <h3 style="font-weight: 600; text-shadow: none;">
+              <h3 style="font-weight: 600; text-shadow: none">
                 Organizational Tool for both Teachers and Students
                 <div class="separator line-separator">
                   ♦
@@ -125,110 +125,27 @@
             <div class="team">
               <div class="row d-flex justify-content-center align-items-center">
                 <div class="col-md-10 col-md-offset-1">
-                  <div
-                    class="row"
-                    style="justifyContent: center;"
-                  >
-                    <div class="col-md-4">
+                  <div class="row justify-content-center">
+                    <div
+                      v-for="member in members"
+                      :key="member.name"
+                      class="col-md-4"
+                    >
                       <div class="card card-member">
                         <div class="content">
                           <div class="avatar avatar-danger">
                             <img
-                              alt="..."
+                              :alt="member.name"
                               class="img-circle"
-                              src="../assets/img/faces/ahmed.png"
+                              :src="member.image"
                             >
                           </div>
                           <div class="description">
                             <h3 class="title">
-                              Ahmed
+                              {{ member.name }}
                             </h3>
                             <p class="description">
-                              Full Stack Developer
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card card-member">
-                        <div class="content">
-                          <div class="avatar avatar-danger">
-                            <img
-                              alt="..."
-                              class="img-circle"
-                              src="../assets/img/faces/mohamed.png"
-                            >
-                          </div>
-                          <div class="description">
-                            <h3 class="title">
-                              Mohamed
-                            </h3>
-                            <p class="description">
-                              Full Stack Developer
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card card-member">
-                        <div class="content">
-                          <div class="avatar avatar-danger">
-                            <img
-                              alt="..."
-                              class="img-circle"
-                              src="../assets/img/faces/armand.png"
-                            >
-                          </div>
-                          <div class="description">
-                            <h3 class="title">
-                              Armand
-                            </h3>
-                            <p class="description">
-                              Frontend Developer
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card card-member">
-                        <div class="content">
-                          <div class="avatar avatar-danger">
-                            <img
-                              alt="..."
-                              class="img-circle"
-                              src="../assets/img/faces/christian.png"
-                            >
-                          </div>
-                          <div class="description">
-                            <h3 class="title">
-                              Christian
-                            </h3>
-                            <p class="description">
-                              Frontend Developer
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-4">
-                      <div class="card card-member">
-                        <div class="content">
-                          <div class="avatar avatar-danger">
-                            <img
-                              alt="..."
-                              class="img-circle"
-                              src="../assets/img/faces/david.png"
-                            >
-                          </div>
-                          <div class="description">
-                            <h3 class="title">
-                              David
-                            </h3>
-                            <p class="description">
-                              Fullstack Developer
+                              {{ member.title }}
                             </p>
                           </div>
                         </div>
@@ -252,6 +169,33 @@ export default {
       links: [
         { name: "Register", to: "/register" },
         { name: "Sign In", to: "/signin" },
+      ],
+      members: [
+        {
+          name: "Ahmed",
+          image: require("@/assets/img/faces/ahmed.png"),
+          title: "Full Stack Developer",
+        },
+        {
+          name: "Mohamed",
+          image: require("@/assets/img/faces/mohamed.png"),
+          title: "Full Stack Developer",
+        },
+        {
+          name: "Armand",
+          image: require("@/assets/img/faces/armand.png"),
+          title: "Frontend Developer",
+        },
+        {
+          name: "Christian",
+          image: require("@/assets/img/faces/christian.png"),
+          title: "Frontend Developer",
+        },
+        {
+          name: "David",
+          image: require("@/assets/img/faces/david.png"),
+          title: "Fullstack Developer",
+        },
       ],
     };
   },
@@ -459,7 +403,6 @@ h5,
 h6 {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
-  font-family: Cambo, "Times New Roman", serif;
 }
 .h1 a,
 .h2 a,
@@ -474,7 +417,6 @@ h4 a,
 h5 a,
 h6 a {
   font-size: inherit;
-  font-family: Cambo, "Times New Roman", serif;
 }
 .h1,
 h1 {
@@ -1257,4 +1199,3 @@ a {
   }
 }
 </style>
-
