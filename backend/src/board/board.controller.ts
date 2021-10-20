@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -79,4 +80,18 @@ export class BoardController {
     }
     return await this.boardService.findStates(+boardId);
   }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deletes a specific board' })
+  @ApiResponse({
+    description: 'Deleted Board',
+    status: 201,
+  })
+  public async deleteBoard(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<Board> {
+    return this.boardService.delete(user, boardId);
+  }
+
 }

@@ -62,4 +62,31 @@ export class BoardService {
       where: stateWhereInput,
     });
   }
+
+  /** Delete a board by id
+   * @param  {number} boardId
+   * @returns Promise
+   */
+  async delete(user: User, boardId: number): Promise<Board> {
+
+    const boardWhereUniqueInput: Prisma.BoardWhereUniqueInput = {
+      id: boardId,
+    };
+
+    if ((await this.prisma.board.findUnique({
+      where: boardWhereUniqueInput,
+    })).user_id == user.id) {
+
+      return this.prisma.board.delete({
+        where: boardWhereUniqueInput,
+      });
+
+    } else {
+
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+
+    }
+
+  }
+
 }
