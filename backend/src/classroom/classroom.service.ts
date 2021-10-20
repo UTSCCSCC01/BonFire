@@ -24,12 +24,8 @@ export class ClassroomService {
     });
   }
 
-  //generate a unique 8 digit code for the classroom
   generateClassroomToken(): string {
-    let code = '';
-    for (let i = 0; i < 8; i++) {
-      code += Math.floor(Math.random() * 10);
-    }
-    return code;
+    // 10 digit random number
+    return Date.now().toString(10) + Math.random().toString(36).substring(2);
   }
 }
