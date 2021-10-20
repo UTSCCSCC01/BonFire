@@ -1,10 +1,16 @@
 <template>
-  <div class="board">
-    <div class="header">
-      <div class="title text-h3">
-        {{ board.title }}
-      </div>
-    </div>
+  <div class="board mx-4">
+    <v-title class="header">
+			{{ board.title || 'Board' }}
+			<v-spacer></v-spacer>
+			<v-btn icon>
+				<v-icon
+					class="fas fa-edit"
+					style="cursor:pointer;"
+					@click="editBoardDialog = true"
+				/>
+			</v-btn>
+    </v-title>
     <div class="board-body">
       <v-row class="board-states">
         <v-col
@@ -37,14 +43,24 @@
         </v-col>
       </v-row>
     </div>
+
+    <board-dialog
+      v-if="board"
+      :open-dialog="editBoardDialog"
+      :board="board"
+			@save="saveBoard"
+      @close="editBoardDialog = false"
+    />
   </div>
 </template>
 <script>
 	import Draggable from "vuedraggable";
 	import StateCard from "@/components/board/StateCard";
+	import EditBoardDialog from "@/components/board/EditBoardDialog";
 
 	export default {
 		components: {
+			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
 			'v-draggable': Draggable
 		},
@@ -57,6 +73,7 @@
 		data() {
 			return {
 				board: {},
+				editBoardDialog: false,
 				states: [
 					{
 						id: 1,
@@ -121,6 +138,9 @@
 			this.getBoardInfo();
 		},
 		methods: {
+			saveBoard(data) {
+				this.board = data;
+			},
 			getBoardInfo() {
 				this.$http.get(`boards/${this.boardId}`)
 					.then(res => {
@@ -136,6 +156,19 @@
 </script>
 
 <style lang="scss" scoped>
+	.header {
+		font-family: Poppins;
+		font-size: 45px;
+		font-weight: bold;
+		color: #3f3f3f;
+		margin-bottom: 20px;
+		text-align: left;
+		border-bottom: 1px solid #e6e6e6;
+		display: flex;
+		align-items: center;
+		padding: 0 30px;
+	}
+
 	.board {
 		width: 100%;
 		height: 100%;

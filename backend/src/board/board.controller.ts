@@ -6,7 +6,9 @@ import {
   HttpException,
   HttpStatus,
   Param,
+  Patch,
   Post,
+  Put,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -20,7 +22,7 @@ import {
 } from '@nestjs/swagger';
 import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { BoardDto } from 'src/constants/board';
+import { BoardDetailsDto, BoardDto } from 'src/constants/board';
 import { StateDto } from 'src/constants/state';
 import { BoardService } from './board.service';
 
@@ -29,7 +31,7 @@ import { BoardService } from './board.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class BoardController {
-  constructor(private readonly boardService: BoardService) {}
+  constructor(private readonly boardService: BoardService) { }
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new board' })
@@ -60,11 +62,33 @@ export class BoardController {
     description: 'Board details',
     type: BoardDto,
   })
-  public async getBoard(@Param('id') boardId: number): Promise<BoardDto> {
-    const boardResult = await this.boardService.find(+boardId);
+  public async getBoard(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<BoardDto> {
+    const boardResult = await this.boardService.find(user, +boardId);
     if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
+    return boardResult;
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a board by specific ID' })
+  @ApiOkResponse({
+    description: 'Board details',
+    type: BoardDetailsDto,
+  })
+  public async update(
+    @RequestUser() user: User,
+    @Param('id') id: number,
+    @Body() board: Board,
+  ): Promise<BoardDto> {
+    const canAccess = await this.boardService.find(user, +id);
+    if (!canAccess) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
+    }
+    const boardResult = await this.boardService.update({ where: {id: +id}, data: board});
     return boardResult;
   }
 
@@ -73,12 +97,15 @@ export class BoardController {
   @ApiOkResponse({
     description: 'List of States',
   })
-  public async getStates(@Param('id') boardId: number): Promise<StateDto[]> {
-    const boardResult = await this.boardService.find(+boardId);
-    if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.NOT_FOUND);
+  public async getStates(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<StateDto[]> {
+    const statesResult = await this.boardService.findStates(user, +boardId);
+    if (!statesResult) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
-    return await this.boardService.findStates(+boardId);
+    return statesResult;
   }
 
   @Delete(':id')

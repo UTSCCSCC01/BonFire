@@ -1,9 +1,9 @@
 <template>
-  <div>
+  <div id="app">
     <v-app id="inspire">
       <v-content class="white">
         <!-- Navbar -->
-        <div class="nav">
+        <div class="nav topbar">
           <v-app-bar
             v-if="$route.meta.noAuthRequired"
             app
@@ -12,7 +12,7 @@
             flat
           >
             <v-container class="py-0 fill-height">
-              <v-col cols="1">
+              <v-col cols="2">
                 <v-img
                   src="../src/assets/img/logo.png"
                   contain="true"
@@ -94,11 +94,16 @@ export default {
 </script>
 <style>
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  font-family: Poppins, "Helvetica Neue", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
   color: #2c3e50;
+}
+
+.topbar {
+  font-family: Poppins;
+  z-index: 999999;
+  position: absolute;
 }
 
 #nav {
