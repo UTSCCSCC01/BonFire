@@ -38,7 +38,7 @@
                 class="mr-4"
                 type="submit"
                 large
-                olor="primary"
+                olor="primary" 
                 :disabled="!valid_form || loading"
                 :loading="loading">
                 
