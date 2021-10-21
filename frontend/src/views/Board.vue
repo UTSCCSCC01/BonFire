@@ -1,6 +1,6 @@
 <template>
   <div class="board mx-4">
-    <v-title class="header">
+    <div class="header">
 			{{ board.title || 'Board' }}
 			<v-spacer></v-spacer>
 			<v-btn icon>
@@ -10,37 +10,54 @@
 					@click="editBoardDialog = true"
 				/>
 			</v-btn>
-    </v-title>
+    </div>
     <div class="board-body">
+			<div class="toolbar">
+				<v-btn class="toolbar-btn" color="#f7f7f7" depressed tile
+					@click="newState = true"
+				>
+					<v-icon left>fa fa-plus</v-icon>
+					Add State
+				</v-btn>
+			</div>
       <v-row class="board-states">
-        <v-col
-          v-for="state in states"
-          :key="state.id"
-          class="board-states-col"
-        >
-          <v-sheet
-            class="rounded lg border shadow-sm board-states-item"
-          >
-            <p class="board-states-item-title">
-              {{ state.title }}
-            </p>
+				<v-draggable
+					:list="states"
+					:animation="200"
+					:show-dropzone-areas="true"
+					group="states"
+					style="display: flex"
+					@change="orderChange"
+				>
+				<v-col
+					v-for="state in states"
+					:key="state.id"
+					class="board-states-col"
+				>
+					<v-sheet
+						class="rounded lg border shadow-sm board-states-item"
+					>
+						<p class="board-states-item-title">
+							{{ state.title }}
+						</p>
 
-            <v-draggable
-              :list="state.cards"
-              :animation="200"
-              :show-dropzone-areas="true"
-              group="tasks"
-              class="board-states-item-draggable"
-            >
-              <state-card
-                v-for="(task) in state.cards"
-                :key="task.id"
-                :task="task"
-                class="mt-3 cursor-move"
-              />
-            </v-draggable>
-          </v-sheet>
-        </v-col>
+						<v-draggable
+							:list="state.cards"
+							:animation="200"
+							:show-dropzone-areas="true"
+							group="tasks"
+							class="board-states-item-draggable"
+						>
+							<state-card
+								v-for="(task) in state.cards"
+								:key="task.id"
+								:task="task"
+								class="mt-3 cursor-move"
+							/>
+						</v-draggable>
+					</v-sheet>
+				</v-col>
+				</v-draggable>
       </v-row>
     </div>
 
@@ -51,17 +68,32 @@
 			@save="saveBoard"
       @close="editBoardDialog = false"
     />
+		<state-dialog
+      v-if="board"
+			title="Create new state"
+      :open-dialog="newState"
+			@save="createState"
+      @close="newState = false"
+    >
+			<v-text-field
+				v-model="stateName"
+				label="New State Name"
+				required
+			/>
+		</state-dialog>
   </div>
 </template>
 <script>
 	import Draggable from "vuedraggable";
 	import StateCard from "@/components/board/StateCard";
 	import EditBoardDialog from "@/components/board/EditBoardDialog";
+	import Dialog from "@/components/Dialog";
 
 	export default {
 		components: {
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
+			'state-dialog': Dialog,
 			'v-draggable': Draggable
 		},
 		props: {
@@ -74,72 +106,93 @@
 			return {
 				board: {},
 				editBoardDialog: false,
-				states: [
-					{
-						id: 1,
-						title: 'To Do',
-						order: 0,
-						cards: [
-							{
-								id: 1,
-								title: "Add discount code to checkout page",
-								due_due_date: "Sep 14",
-								tag: "Feature Request",
-							},
-							{
-								id: 2,
-								title: "Provide documentation on integrations",
-								due_date: "Sep 12"
-							},
-						]
-					},
-					{
-						id: 3,
-						title: 'In Progress',
-						order: 1,
-						cards: [
-
-							{
-								id: 3,
-								title: "Design shopping cart dropdown",
-								due_date: "Sep 9",
-								tag: "Design"
-							},
-							{
-								id: 4,
-								title: "Add discount code to checkout page",
-								due_date: "Sep 14",
-								tag: "Feature Request"
-							},
-						]
-					},
-					{
-						id: 2,
-						title: 'Done',
-						order: 2,
-						cards: [
-							{
-								id: 5,
-								title: "Test checkout flow",
-								due_date: "Sep 15",
-								tag: "QA"
-							}
-						]
-					}
-				]
+				states: [],
+				newState: false,
+				stateName: ''
 			};
 		},
 		watch: {
 			boardId: function() {
-				this.getBoardInfo()
+				// If the board id changes, reload all board content
+				this.reloadPageContent()
 			},
 		},
 		mounted() {
-			this.getBoardInfo();
+			this.reloadPageContent();
 		},
 		methods: {
 			saveBoard(data) {
 				this.board = data;
+			},
+			createState() {
+				this.$http.post('states', { board_id: this.boardId, title: this.stateName })
+					.then(res => {
+						this.$notify({
+							type: "success",
+							title: "Successfully Create a new state",
+						});
+						this.states.push(res.data);
+						this.reorganizeStates();
+					})
+					.catch(err => {
+						this.$notify({
+							type: "error",
+							title: "Failed to create state",
+							text: `Failed to create ${this.stateName}`,
+						});
+						console.error(err);
+					})
+					.finally(() => {
+						this.stateName = '';
+						this.newState = false;
+					})
+			},
+			reorganizeStates() {
+				this.states.sort((a, b) => {
+					if (a.type === 'TODO') return -1;
+					if (a.type === 'DONE') return 1;
+
+					if (b.type === 'TODO') return 1;
+					if (b.type === 'DONE') return -1;
+
+					return a.order - b.order;
+				})
+			},
+			orderChange(event) {
+				if (['TODO', 'DONE'].includes(this.states[event.moved.newIndex].type) ||
+							['TODO', 'DONE'].includes(this.states[event.moved.oldIndex].type)) {
+					this.$notify({
+            type: "error",
+            title: "Can't reorder fixed states",
+            text: "You can't move the TODO or DONE states",
+          });
+					console.log('err')
+					this.reorderStates(event.moved.oldIndex, event.moved.newIndex);
+					return;
+				}
+				this.$http.put(`boards/${this.boardId}/reorder_states`, event.moved)
+					.catch(err => {
+						this.reorderStates(event.moved.oldIndex, event.moved.newIndex);
+						console.error(err);
+					})
+			},
+			reorderStates(oldIndex, newIndex) {
+				let moved = this.states.splice(newIndex, 1);
+				this.states.splice(oldIndex, 0, moved[0]);
+			},
+			reloadPageContent() {
+				this.getBoardInfo();
+				this.getStates();
+			},
+			getStates() {
+				this.$http.get(`boards/${this.boardId}/states`)
+					.then(res => {
+						this.states = res.data;
+						this.reorganizeStates();
+					})
+					.catch(err => {
+						console.error(err);
+					})
 			},
 			getBoardInfo() {
 				this.$http.get(`boards/${this.boardId}`)
@@ -179,8 +232,16 @@
 			overflow-y: clip;
 			margin-left: -15px;
 			padding-left: 15px;
-			height: 100%;
+			height: 95%;
 			display: inline-block;
+
+			.toolbar {
+				padding: 12px;
+
+				&-btn {
+
+				}
+			}
 		}
 
 		&-states {
