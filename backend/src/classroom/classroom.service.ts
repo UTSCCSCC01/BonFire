@@ -1,7 +1,8 @@
 import { User, Board, Classroom } from '.prisma/client';
 
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
+import { ClassroomDto } from '../constants/classroom';
 
 @Injectable()
 export class ClassroomService {
@@ -19,10 +20,19 @@ export class ClassroomService {
     return this.prisma.classroom.create({ data: classroomData });
   }
 
-  async existsClass(token: string): Promise<Classroom> {
-    return this.prisma.classroom.findFirst({
-      where: { token: token },
+  // get classroom by id and return ClassroomDto
+  async find(classroomId: number): Promise<ClassroomDto> {
+    const classroom = await this.prisma.classroom.findFirst({
+      where: {
+        id: classroomId,
+      },
     });
+
+    if (!classroom) {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    }
+
+    return classroom;
   }
   
   generateClassroomToken(): string {
@@ -30,6 +40,6 @@ export class ClassroomService {
     for (let i = 0; i < 8; i++) {
       code += Math.floor(Math.random() * 10);
     }
-    return code;
+    return 'Campsite#'.concat(code);
   }
 }

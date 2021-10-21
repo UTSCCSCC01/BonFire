@@ -382,11 +382,11 @@
     "/classroom": {
       "post": {
         "operationId": "create",
-        "summary": "Creates and returns a new classroom given title",
+        "summary": "Creates and returns a new classroom, given ",
         "parameters": [],
         "responses": {
           "201": {
-            "description": "New Classroom"
+            "description": "Returns new Classroom with a token"
           }
         },
         "tags": [
@@ -397,24 +397,32 @@
             "bearer": []
           }
         ]
-      },
+      }
+    },
+    "/classroom/{id}": {
       "get": {
-        "operationId": "classroomExists",
-        "summary": "Returns classroom if classroom w/ token exists",
-        "parameters": [],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string"
-              }
+        "operationId": "getClassroom",
+        "summary": "Returns a classroom by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
             }
           }
-        },
+        ],
         "responses": {
           "200": {
-            "description": "Classroom"
+            "description": "Classroom details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClassroomDto"
+                }
+              }
+            }
           }
         },
         "tags": [
@@ -698,6 +706,39 @@
           "due_date",
           "created_at",
           "updated_at"
+        ]
+      },
+      "ClassroomDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "token": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "creator_id": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "id",
+          "token",
+          "name",
+          "created_at",
+          "updated_at",
+          "creator_id"
         ]
       }
     }

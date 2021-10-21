@@ -5,6 +5,11 @@
       @close-dialog="createNewBoard = false"
       @add-board="addBoard"
     />
+    <create-classroom-dialog
+      :open-dialog="createNewClassroom"
+      @close-dialog="createNewClassroom = false"
+      @add-Classroom="addClassroom"
+    />
     <v-navigation-drawer
       class="pt-4"
       color="#FBE7D3"
@@ -43,6 +48,14 @@
           <v-list-item-title>
             CSCC43 - Introduction to Somthing
           </v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="createNewClassroom = true">
+          <v-list-item-icon>
+            <v-icon color="green">
+              fas fa-plus
+            </v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Create Campsite</v-list-item-title>
         </v-list-item>
       </v-list>
 
@@ -100,15 +113,19 @@
 
 <script>
 import CreateBoardDialog from './board/CreateBoardDialog';
+import CreateClassroomDialog from './classroom/CreateClassroomDialog';
+
 
 export default {
   components: {
     'create-board-dialog': CreateBoardDialog,
+    'create-classroom-dialog': CreateClassroomDialog,
   },
   data() {
     return {
       drawer: [],
       createNewBoard: false,
+      createNewClassroom: false,
       boards: [],
       collapsed: true,
     };

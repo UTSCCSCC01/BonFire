@@ -21,6 +21,7 @@ import {
 import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { ClassroomService } from './classroom.service';
+import { ClassroomDto } from '../constants/classroom';
 
 @Controller('classroom')
 @ApiTags('classroom')
@@ -30,9 +31,9 @@ export class ClassroomController {
   constructor(private readonly classroomService: ClassroomService) {}
 
   @Post()
-  @ApiOperation({ summary: 'Creates and returns a new classroom given title' })
+  @ApiOperation({ summary: 'Creates and returns a new classroom, given ' })
   @ApiResponse({
-    description: 'New Classroom',
+    description: 'Returns new Classroom with a token',
     status: 201,
   })
   public async create(
@@ -42,17 +43,20 @@ export class ClassroomController {
     return this.classroomService.create(user, classroom);
   }
 
-  @Get()
-  @ApiOperation({ summary: 'Returns classroom if classroom w/ token exists' })
+  @Get(':id')
+  @ApiOperation({ summary: 'Returns a classroom by specific ID' })
   @ApiOkResponse({
-    description: 'Classroom',
+    description: 'Classroom details',
+    type: ClassroomDto,
   })
-  public async classroomExists(@Body() token: string): Promise<Classroom> {
-    const classroomResult = this.classroomService.existsClass(token);
-    if (!classroomResult) {
-      throw new HttpException('Invalid classroom token', HttpStatus.NOT_FOUND);
+  public async getClassroom(
+    @Param('id') boardId: number,
+  ): Promise<ClassroomDto> {
+    const boardResult = await this.classroomService.find(+boardId);
+    if (!boardResult) {
+      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
-    return classroomResult;
+    return boardResult;
   }
 
 }
