@@ -23,6 +23,7 @@ import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { BoardDetailsDto, BoardDto } from 'src/constants/board';
 import { StateDto } from 'src/constants/state';
+import { StateService } from 'src/state/state.service';
 import { BoardService } from './board.service';
 
 @Controller('boards')
@@ -30,7 +31,7 @@ import { BoardService } from './board.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class BoardController {
-  constructor(private readonly boardService: BoardService) { }
+  constructor(private readonly boardService: BoardService, private readonly stateService: StateService) {}
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new board' })
@@ -43,7 +44,11 @@ export class BoardController {
     @RequestUser() user: User,
     @Body() board: Board,
   ): Promise<Board> {
-    return this.boardService.create(user, board);
+    const boardItem: Board = await this.boardService.create(user, board);
+    await this.stateService.create({ board_id: boardItem.id, title: 'To Do' }, 'TODO');
+    await this.stateService.create({ board_id: boardItem.id, title: 'Done' }, 'DONE');
+
+    return boardItem;
   }
 
   @Get()
@@ -89,6 +94,23 @@ export class BoardController {
     }
     const boardResult = await this.boardService.update({ where: {id: +id}, data: board});
     return boardResult;
+  }
+
+  @Put(':id/reorder-states')
+  @ApiOperation({ summary: 'Reorder a boards states' })
+  @ApiOkResponse({
+    description: 'Board details',
+    type: BoardDetailsDto,
+  })
+  public async reorderStates(
+    @RequestUser() user: User,
+    @Param('id') id: number,
+    @Body() body: {
+      oldIndex: number,
+      newIndex: number
+    },
+  ) {
+    return await this.boardService.reorderStates(user, +id, body.oldIndex, body.newIndex);
   }
 
   @Get(':id/states')

@@ -39,34 +39,13 @@
         </div>
 
         <!-- Main -->
-        <div>
+        <div class="content">
           <router-view
-            :current-user="currentUser"
             class="router-view"
           />
+          <notifications position="bottom" />
         </div>
 
-        <!-- Footer
-        <v-footer
-          v-if="$route.meta.noAuthRequired"
-          color="white"
-          absolute="true"
-        >
-          <v-row justify="center">
-            <v-col
-              class="orange darken-3 text-center white--text"
-              cols="12"
-            >
-              About Us
-            </v-col>
-            <v-col
-              class="orange darken-4 text-center white--text"
-              cols="12"
-            >
-              {{ new Date().getFullYear() }} <strong>Hello World - 418</strong>
-            </v-col>
-          </v-row>
-        </v-footer> -->
       </v-content>
     </v-app>
   </div>
@@ -104,6 +83,10 @@ export default {
   font-family: Poppins;
   z-index: 999999;
   position: absolute;
+}
+
+.content {
+  height: 100%;
 }
 
 #nav {

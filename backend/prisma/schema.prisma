@@ -62,6 +62,12 @@ model Board {
   @@index([user_id], map: "Board_user_id_fkey")
 }
 
+enum StateType {
+  TODO
+  DONE
+  CUSTOM
+}
+
 model State {
   id         Int      @id @default(autoincrement())
   board_id   Int
@@ -69,6 +75,7 @@ model State {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
   order      Int
+  type       StateType
   board      Board    @relation(fields: [board_id], references: [id])
   cards      Card[]
 

@@ -23,4 +23,7 @@ export class StateDto {
 
   @ApiProperty()
   readonly updated_at: Date;
+
+  @ApiProperty()
+  readonly type: string;
 }

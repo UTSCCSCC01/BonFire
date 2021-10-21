@@ -207,6 +207,42 @@
         ]
       }
     },
+    "/boards/{id}/reorder-states": {
+      "put": {
+        "operationId": "reorderStates",
+        "summary": "Reorder a boards states",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoardDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "boards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/boards/{id}/states": {
       "get": {
         "operationId": "getStates",
@@ -270,7 +306,9 @@
             "bearer": []
           }
         ]
-      },
+      }
+    },
+    "/states": {
       "post": {
         "operationId": "create",
         "summary": "Creates a new state in the board given a board id and state name",
@@ -633,6 +671,9 @@
           "updated_at": {
             "format": "date-time",
             "type": "string"
+          },
+          "type": {
+            "type": "string"
           }
         },
         "required": [
@@ -640,7 +681,8 @@
           "title",
           "order",
           "created_at",
-          "updated_at"
+          "updated_at",
+          "type"
         ]
       },
       "CreateStateDto": {
