@@ -166,11 +166,10 @@
             title: "Can't reorder fixed states",
             text: "You can't move the TODO or DONE states",
           });
-					console.log('err')
 					this.reorderStates(event.moved.oldIndex, event.moved.newIndex);
 					return;
 				}
-				this.$http.put(`boards/${this.boardId}/reorder_states`, event.moved)
+				this.$http.put(`boards/${this.boardId}/reorder-states`, event.moved)
 					.catch(err => {
 						this.reorderStates(event.moved.oldIndex, event.moved.newIndex);
 						console.error(err);

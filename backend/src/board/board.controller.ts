@@ -44,7 +44,7 @@ export class BoardController {
     @RequestUser() user: User,
     @Body() board: Board,
   ): Promise<Board> {
-    let boardItem: Board = await this.boardService.create(user, board);
+    const boardItem: Board = await this.boardService.create(user, board);
     await this.stateService.create({ board_id: boardItem.id, title: 'To Do' }, 'TODO');
     await this.stateService.create({ board_id: boardItem.id, title: 'Done' }, 'DONE');
 
@@ -96,7 +96,7 @@ export class BoardController {
     return boardResult;
   }
 
-  @Put(':id/reorder_states')
+  @Put(':id/reorder-states')
   @ApiOperation({ summary: 'Reorder a boards states' })
   @ApiOkResponse({
     description: 'Board details',

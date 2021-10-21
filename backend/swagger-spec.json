@@ -207,7 +207,7 @@
         ]
       }
     },
-    "/boards/{id}/reorder_states": {
+    "/boards/{id}/reorder-states": {
       "put": {
         "operationId": "reorderStates",
         "summary": "Reorder a boards states",

@@ -132,12 +132,8 @@ export class BoardService {
       return a.order - b.order;
     });
 
-    console.log({ before: states })
-
     let moved = states.splice(newIndex, 1);
     states.splice(oldIndex, 0, moved[0]);
-
-    console.log({ after: states })
 
     const promises = [];
     states.forEach((state, i) => {
