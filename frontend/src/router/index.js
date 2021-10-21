@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 import Home from "@/views/Home.vue";
 import SignIn from "@/views/SignIn.vue";
 import Register from "@/views/Register.vue";
+import Questionnaire from  "@/views/Questionnaire.vue";
 
 import Dashboard from "@/views/Dashboard.vue";
 import Board from "@/views/Board.vue";
@@ -39,6 +40,14 @@ const routes = [
       noAuthRequired: true,
     },
     component: Register,
+  },
+  {
+    path: "/questionnaire",
+    name: "Questionnaire",
+    meta: {
+      noAuthRequired: true,
+    },
+    component: Questionnaire,
   },
   {
     path: "/signin",

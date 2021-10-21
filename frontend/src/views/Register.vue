@@ -82,7 +82,9 @@
             :disabled="!valid_form || loading"
             :loading="loading"
           >
-            submit
+            <router-link to="/questionnaire" class="btn btn-white btn-fill btn-lg">
+              submit
+            </router-link>
           </v-btn>
         </v-container>
       </v-form>
