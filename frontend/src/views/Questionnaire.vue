@@ -4,10 +4,6 @@
       <div
         class="parallax orange d-flex justify-content-center align-items-center"
       >
-        <div
-          class="image"
-          style="background-image: url('assets/img/header-1.jpeg')"
-        />
         <div class="container">
           <div class="content">
             <div class="title-area">
@@ -20,6 +16,7 @@
               <h3 style="font-weight: 600; text-shadow: none">
                 Are you a Student or a Professor?
                 <div class="separator line-separator">
+                  ♦
                 </div>
               </h3>
             </div>
@@ -42,7 +39,7 @@
                 :disabled="!valid_form || loading"
                 :loading="loading">
                 
-                Student
+                Student   
             </v-btn>
 
           </div>
@@ -51,49 +48,6 @@
     </div>
   </div>
 </template>
-
-  <script>
-export default {
-  data() {
-    return {
-      links: [
-        { name: "Register", to: "/register" },
-        { name: "Sign In", to: "/signin" },
-      ],
-      members: [
-        {
-          name: "Ahmed",
-          image: require("@/assets/img/faces/ahmed.png"),
-          title: "Full Stack Developer",
-        },
-        {
-          name: "Mohamed",
-          image: require("@/assets/img/faces/mohamed.png"),
-          title: "Full Stack Developer",
-        },
-        {
-          name: "Armand",
-          image: require("@/assets/img/faces/armand.png"),
-          title: "Frontend Developer",
-        },
-        {
-          name: "Christian",
-          image: require("@/assets/img/faces/christian.png"),
-          title: "Frontend Developer",
-        },
-        {
-          name: "David",
-          image: require("@/assets/img/faces/david.png"),
-          title: "Fullstack Developer",
-        },
-      ],
-    };
-  },
-  mounted() {
-    console.log(this.links);
-  },
-};
-</script>
 
 
 <style lang="scss" scoped>
