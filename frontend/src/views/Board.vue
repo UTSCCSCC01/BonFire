@@ -39,8 +39,15 @@
 					>
 						<p class="board-states-item-title">
 							{{ state.title }}
+								<v-btn class="board-states-item-btn" color="#f7f7f7"
+									@click="showNewCard(state)"
+									x-small
+									elevation="0"
+								>
+									<v-icon left x-small>fa fa-plus</v-icon>
+									card
+								</v-btn>
 						</p>
-
 						<v-draggable
 							:list="state.cards"
 							:animation="200"
@@ -61,26 +68,77 @@
       </v-row>
     </div>
 
-    <board-dialog
-      v-if="board"
-      :open-dialog="editBoardDialog"
-      :board="board"
-			@save="saveBoard"
-      @close="editBoardDialog = false"
-    />
-		<state-dialog
-      v-if="board"
-			title="Create new state"
-      :open-dialog="newState"
-			@save="createState"
-      @close="newState = false"
-    >
-			<v-text-field
-				v-model="stateName"
-				label="New State Name"
-				required
+		<div class="dialogs">
+			<board-dialog
+				v-if="board"
+				:open-dialog="editBoardDialog"
+				:board="board"
+				@save="saveBoard"
+				@close="editBoardDialog = false"
 			/>
-		</state-dialog>
+			<state-dialog
+				v-if="board"
+				title="Create new state"
+				:open-dialog="newState"
+				@save="createState"
+				@close="newState = false"
+			>
+				<v-text-field
+					v-model="stateName"
+					label="New State Name"
+					required
+				/>
+			</state-dialog>
+
+			<card-dialog
+				v-if="board && card.state"
+				:title="`Create new ${card.state.title} Card`"
+				:open-dialog="newCard"
+				@save="createCard"
+				@close="newCard = false"
+			>
+				<v-text-field
+					v-model="card.title"
+					label="New Card Name"
+					maxlength="191"
+					required
+				/>
+
+				<v-textarea
+					name="input-7-1"
+					filled
+					label="Card Description"
+					auto-grow
+					v-model="card.desc"
+					maxlength="191"
+				></v-textarea>
+
+				<v-menu
+					ref="menu"
+					v-model="menu"
+					:close-on-content-click="false"
+					transition="scale-transition"
+					offset-y
+					min-width="auto"
+				>
+					<template v-slot:activator="{ on, attrs }">
+						<v-text-field
+							v-model="card.due_date"
+							label="Due Date"
+							prepend-icon="fa fa-calendar"
+							readonly
+							v-bind="attrs"
+							v-on="on"
+						></v-text-field>
+					</template>
+					<v-date-picker
+						v-model="card.due_date"
+						no-title
+						scrollable
+					/>
+				</v-menu>
+			</card-dialog>
+		</div>
   </div>
 </template>
 <script>
@@ -93,12 +151,17 @@
 		components: {
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
+			'card-dialog': Dialog,
 			'state-dialog': Dialog,
 			'v-draggable': Draggable
 		},
 		props: {
 			boardId: {
 				type: String,
+				required: true
+			},
+			currentUser: {
+				type: Object,
 				required: true
 			},
 		},
@@ -108,7 +171,10 @@
 				editBoardDialog: false,
 				states: [],
 				newState: false,
-				stateName: ''
+				stateName: '',
+				newCard: false,
+				card: {},
+				menu: false,
 			};
 		},
 		watch: {
@@ -124,6 +190,43 @@
 			saveBoard(data) {
 				this.board = data;
 			},
+			showNewCard(state) {
+				this.card = {
+					state,
+				}
+				this.newCard = true;
+			},
+			createCard() {
+				this.newCard = false;
+				this.card.state_id = this.card.state.id;
+				delete this.card.state;
+
+				if (this.card.due_date) {
+					let date = this.card.due_date.split('-');
+					this.card.due_date = new Date(date[0], date[1] - 1, date[2]).toISOString()
+				}
+
+				this.$http.post('cards', this.card)
+					.then(res => {
+						this.$notify({
+							type: "success",
+							title: "Successfully Create a new card",
+						});
+
+						this.states.find(state => state.id == res.data.state_id).cards.push(res.data);
+					})
+					.catch(err => {
+						this.$notify({
+							type: "error",
+							title: "Failed to create card",
+							text: `Failed to create ${this.card.title}`,
+						});
+						console.error(err);
+					})
+					.finally(() => {
+						this.card = {};
+					})
+			},
 			createState() {
 				this.$http.post('states', { board_id: this.boardId, title: this.stateName })
 					.then(res => {
@@ -131,7 +234,7 @@
 							type: "success",
 							title: "Successfully Create a new state",
 						});
-						this.states.push(res.data);
+						this.states.push({ cards: [], ...res.data });
 						this.reorganizeStates();
 					})
 					.catch(err => {
@@ -170,6 +273,12 @@
 					return;
 				}
 				this.$http.put(`boards/${this.boardId}/reorder-states`, event.moved)
+					.then(() => {
+						this.$notify({
+							type: "success",
+							title: "Reorganized states",
+						});
+					})
 					.catch(err => {
 						this.reorderStates(event.moved.oldIndex, event.moved.newIndex);
 						console.error(err);
@@ -184,9 +293,13 @@
 				this.getStates();
 			},
 			getStates() {
-				this.$http.get(`boards/${this.boardId}/states`)
+				this.$http.get(`boards/${this.boardId}/states?include=cards`)
 					.then(res => {
 						this.states = res.data;
+						this.states.forEach(state => {
+							if (!state.cards) this.$set(state, 'cards', [])
+						});
+
 						this.reorganizeStates();
 					})
 					.catch(err => {
@@ -256,7 +369,11 @@
 				padding: 20px;
 				height: 100%;
 				min-width: 350px;
-				min-height: 200px;
+				min-height: 400px;
+
+				&-btn {
+					float: right;
+				}
 
 				&-draggable {
 					height: 100%;

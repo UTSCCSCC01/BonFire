@@ -25,3 +25,17 @@ export class CardDto {
   @ApiProperty()
   readonly updated_at: Date;
 }
+
+export class CreateCardDto {
+  @ApiProperty()
+  readonly state_id: number;
+
+  @ApiProperty()
+  readonly title: string;
+
+  @ApiProperty()
+  readonly desc?: string;
+
+  @ApiProperty()
+  readonly due_date?: Date;
+}
