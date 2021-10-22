@@ -42,6 +42,7 @@
         <div class="content">
           <router-view
             class="router-view"
+            :currentUser="currentUser"
           />
           <notifications position="bottom" />
         </div>
@@ -64,10 +65,27 @@ export default {
         { name: "Register", to: "/register" },
         { name: "Sign In", to: "/signin" },
       ],
+      currentUser: {},
     };
   },
+  methods: {
+    getCurrentUser() {
+      this.$http.get('auth/user')
+        .then(res => {
+         this.currentUser = res.data;
+        })
+        .catch(err => {
+          this.$notify({
+            type: "error",
+            title: "Failed to authenticate",
+          });
+          this.$router.push({ name: 'Home' });
+          console.error(err);
+        })
+    }
+  },
   mounted() {
-    console.log(this.links);
+    this.getCurrentUser();
   },
 };
 </script>
