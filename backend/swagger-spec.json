@@ -379,7 +379,7 @@
         ]
       }
     },
-    "/classroom": {
+    "/classrooms": {
       "post": {
         "operationId": "create",
         "summary": "Creates and returns a new classroom, given ",
@@ -390,7 +390,7 @@
           }
         },
         "tags": [
-          "classroom"
+          "classrooms"
         ],
         "security": [
           {
@@ -399,7 +399,7 @@
         ]
       }
     },
-    "/classroom/{id}": {
+    "/classrooms/{id}": {
       "get": {
         "operationId": "getClassroom",
         "summary": "Returns a classroom by specific ID",
@@ -426,7 +426,7 @@
           }
         },
         "tags": [
-          "classroom"
+          "classrooms"
         ],
         "security": [
           {

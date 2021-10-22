@@ -8,7 +8,7 @@
     <create-classroom-dialog
       :open-dialog="createNewClassroom"
       @close-dialog="createNewClassroom = false"
-      @add-Classroom="addClassroom"
+      @add-classroom="addClassroom"
     />
     <v-navigation-drawer
       class="pt-4"
@@ -43,11 +43,15 @@
         nav
         dense
       >
-        <v-list-item to="/board/10">
-          <v-list-item-icon> C43 </v-list-item-icon>
-          <v-list-item-title>
-            CSCC43 - Introduction to Somthing
-          </v-list-item-title>
+        <v-list-item
+          v-for="classroom in classrooms"
+          :key="classroom.id"
+          :to="`/classroom/${classroom.id}`"
+        >
+          <v-list-item-icon>
+            <v-icon>fas fa-fire-alt</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>{{ classroom.name }}</v-list-item-title>
         </v-list-item>
         <v-list-item @click="createNewClassroom = true">
           <v-list-item-icon>
@@ -127,6 +131,7 @@ export default {
       createNewBoard: false,
       createNewClassroom: false,
       boards: [],
+      classrooms: [],
       collapsed: true,
     };
   },
@@ -138,7 +143,6 @@ export default {
       localStorage.removeItem('token');
       this.$router.push('/');
     },
-
     getUserBoards() {
       this.$http.get('boards')
       .then(res => {
@@ -148,9 +152,11 @@ export default {
         console.error(err);
       })
     },
-
     addBoard(data) {
       this.boards.push(data);
+    },
+    addClassroom(data) {
+      this.classrooms.push(data);
     },
 
   },

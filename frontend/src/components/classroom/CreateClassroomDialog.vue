@@ -68,12 +68,12 @@ export default {
   methods: {
     saveClassroom() {
       this.saving = true;
-      this.$http.post('/classroom', this.classroom)
+      this.$http.post('/classrooms', this.classroom)
         .then(res => {
           this.$notify({
             type: 'success',
             title: 'Successfully Created Classroom',
-            text: `You successfully created a new classroom called: ${res.data.title}, with invite token ${res.data.token} reload the page to see the classroom`
+            text: `You successfully created a new classroom called: ${res.data.title}, with invite token ${res.data.token}`
           });
           this.$emit("add-classroom" , res.data);
           this.closeDialog();

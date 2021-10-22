@@ -23,8 +23,8 @@ import { RequestUser } from 'src/constants/auth';
 import { ClassroomService } from './classroom.service';
 import { ClassroomDto } from '../constants/classroom';
 
-@Controller('classroom')
-@ApiTags('classroom')
+@Controller('classrooms')
+@ApiTags('classrooms')
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class ClassroomController {
