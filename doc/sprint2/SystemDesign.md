@@ -18,17 +18,17 @@
 ### BoardController
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| AuthModule | RESTFUL: Get board, create board, update board |
+| AuthModule | RESTFUL: Get board, create board, update board, delete board, get board states |
 
 ### StateController
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| AuthModule | RESTFUL: Get state, create state, get state's cards |
+| AuthModule | RESTFUL: Get state, create state, get state cards, delete state |
 
 ### CardController
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| AuthModule | RESTFUL: Get card |
+| AuthModule | RESTFUL: Get card, delete card |
 
 ### AuthService
 | Collaborators | Responsibilities |
@@ -43,19 +43,19 @@
 ### BoardService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Get, create board <br> Find board's states |
+| PrismaService | Get, create board, delete board, update board <br> Find board's states |
 
 
 ### StateService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Get, create state <br> Find state's board <br> Get state's cards |
+| PrismaService | Get, create state, update, delete, get cards <br> Find state's board <br> Get state's cards |
 
 
 ### CardService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Find card |
+| PrismaService | Find card, delete card |
 
 ### PrismaService
 | Collaborators | Responsibilities |
