@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -23,6 +24,7 @@ import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { BoardDetailsDto, BoardDto } from 'src/constants/board';
 import { StateDto } from 'src/constants/state';
+import { StateService } from 'src/state/state.service';
 import { BoardService } from './board.service';
 
 @Controller('boards')
@@ -30,7 +32,7 @@ import { BoardService } from './board.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class BoardController {
-  constructor(private readonly boardService: BoardService) { }
+  constructor(private readonly boardService: BoardService, private readonly stateService: StateService) {}
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new board' })
@@ -43,7 +45,11 @@ export class BoardController {
     @RequestUser() user: User,
     @Body() board: Board,
   ): Promise<Board> {
-    return this.boardService.create(user, board);
+    const boardItem: Board = await this.boardService.create(user, board);
+    await this.stateService.create({ board_id: boardItem.id, title: 'To Do' }, 'TODO');
+    await this.stateService.create({ board_id: boardItem.id, title: 'Done' }, 'DONE');
+
+    return boardItem;
   }
 
   @Get()
@@ -91,6 +97,23 @@ export class BoardController {
     return boardResult;
   }
 
+  @Put(':id/reorder-states')
+  @ApiOperation({ summary: 'Reorder a boards states' })
+  @ApiOkResponse({
+    description: 'Board details',
+    type: BoardDetailsDto,
+  })
+  public async reorderStates(
+    @RequestUser() user: User,
+    @Param('id') id: number,
+    @Body() body: {
+      oldIndex: number,
+      newIndex: number
+    },
+  ) {
+    return await this.boardService.reorderStates(user, +id, body.oldIndex, body.newIndex);
+  }
+
   @Get(':id/states')
   @ApiOperation({ summary: 'Returns all states tied to a specific board' })
   @ApiOkResponse({
@@ -99,8 +122,16 @@ export class BoardController {
   public async getStates(
     @RequestUser() user: User,
     @Param('id') boardId: number,
+    @Query('include') include: String,
   ): Promise<StateDto[]> {
-    const statesResult = await this.boardService.findStates(user, +boardId);
+    let includes = include.split(',').reduce((acc, field) => {
+      if (['cards', 'board'].includes(field)) acc[field] = true;
+      return acc;
+    }, {});
+
+    if (Object.keys(includes).length == 0) includes = null;
+
+    const statesResult = await this.boardService.findStates(user, +boardId, includes);
     if (!statesResult) {
       throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }

@@ -41,7 +41,7 @@ export class StateController {
     return stateResult;
   }
 
-  @Post(':id')
+  @Post()
   @ApiOperation({
     summary: 'Creates a new state in the board given a board id and state name',
   })

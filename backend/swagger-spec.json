@@ -207,6 +207,42 @@
         ]
       }
     },
+    "/boards/{id}/reorder-states": {
+      "put": {
+        "operationId": "reorderStates",
+        "summary": "Reorder a boards states",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Board details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/BoardDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "boards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/boards/{id}/states": {
       "get": {
         "operationId": "getStates",
@@ -218,6 +254,14 @@
             "in": "path",
             "schema": {
               "type": "number"
+            }
+          },
+          {
+            "name": "include",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
             }
           }
         ],
@@ -270,7 +314,9 @@
             "bearer": []
           }
         ]
-      },
+      }
+    },
+    "/states": {
       "post": {
         "operationId": "create",
         "summary": "Creates a new state in the board given a board id and state name",
@@ -360,6 +406,43 @@
         "responses": {
           "200": {
             "description": "Card details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "cards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/cards": {
+      "post": {
+        "operationId": "create",
+        "summary": "Creates a new card in the state given a state id",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns newly created card",
             "content": {
               "application/json": {
                 "schema": {
@@ -641,6 +724,9 @@
           "updated_at": {
             "format": "date-time",
             "type": "string"
+          },
+          "type": {
+            "type": "string"
           }
         },
         "required": [
@@ -648,7 +734,8 @@
           "title",
           "order",
           "created_at",
-          "updated_at"
+          "updated_at",
+          "type"
         ]
       },
       "CreateStateDto": {
@@ -739,6 +826,30 @@
           "created_at",
           "updated_at",
           "creator_id"
+          ]
+      },
+      "CreateCardDto": {
+        "type": "object",
+        "properties": {
+          "state_id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "due_date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state_id",
+          "title",
+          "desc",
+          "due_date"
         ]
       }
     }

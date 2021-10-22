@@ -1,9 +1,11 @@
 import {
+  Body,
   Controller,
   Get,
   HttpException,
   HttpStatus,
   Param,
+  Post,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -13,7 +15,9 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { CardDto } from 'src/constants/card';
+import { User } from '@prisma/client';
+import { RequestUser } from 'src/constants/auth';
+import { CardDto, CreateCardDto } from 'src/constants/card';
 import { CardService } from './card.service';
 
 @Controller('cards')
@@ -35,5 +39,20 @@ export class CardController {
       throw new HttpException('Invalid card id', HttpStatus.NOT_FOUND);
     }
     return cardResult;
+  }
+
+  @Post()
+  @ApiOperation({
+    summary: 'Creates a new card in the state given a state id',
+  })
+  @ApiOkResponse({
+    description: 'Returns newly created card',
+    type: CardDto,
+  })
+  async create(
+    @RequestUser() user: User,
+    @Body() card: CreateCardDto
+  ): Promise<CardDto> {
+    return await this.cardService.create(card, user);
   }
 }
