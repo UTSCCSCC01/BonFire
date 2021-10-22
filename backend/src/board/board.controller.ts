@@ -118,7 +118,7 @@ export class BoardController {
     @RequestUser() user: User,
     @Param('id') boardId: number,
   ): Promise<Board> {
-    return this.boardService.delete(user, boardId);
+    return this.boardService.delete(user, +boardId);
   }
 
 }
