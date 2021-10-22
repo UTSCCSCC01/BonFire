@@ -65,9 +65,12 @@
           :to="`/board/${board.id}`"
         >
           <v-list-item-icon>
-            <v-icon>fas fa-fire</v-icon>
+            <v-icon icon color="dark-grey">fas fa-fire</v-icon>
           </v-list-item-icon>
           <v-list-item-title>{{ board.title }}</v-list-item-title>
+          <v-btn align="right" icon color="dark-grey" @click="deleteBoard(board)"> 
+            <v-icon x-small> fa fa-times </v-icon> 
+          </v-btn>
         </v-list-item>
 
         <v-list-item @click="createNewBoard = true">
@@ -134,6 +137,22 @@ export default {
 
     addBoard(data) {
       this.boards.push(data);
+    },
+
+    deleteBoard(board) {
+
+      let confirmation = confirm(`Are you sure you want to delete board ${board.title}`);
+
+      if (confirmation) {
+        this.$http.delete(`boards/${board.id}`)
+        .then(() => {
+          if (board.id == this.$route.params.boardId) this.$router.push({ name: 'Dashboard' });
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      }
+      
     },
 
   },
