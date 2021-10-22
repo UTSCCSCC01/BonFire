@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
   Put,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -121,8 +122,16 @@ export class BoardController {
   public async getStates(
     @RequestUser() user: User,
     @Param('id') boardId: number,
+    @Query('include') include: String,
   ): Promise<StateDto[]> {
-    const statesResult = await this.boardService.findStates(user, +boardId);
+    let includes = include.split(',').reduce((acc, field) => {
+      if (['cards', 'board'].includes(field)) acc[field] = true;
+      return acc;
+    }, {});
+
+    if (Object.keys(includes).length == 0) includes = null;
+
+    const statesResult = await this.boardService.findStates(user, +boardId, includes);
     if (!statesResult) {
       throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }

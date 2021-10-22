@@ -80,7 +80,7 @@ export class BoardService {
    * @param  {number} boardId
    * @returns Promise
    */
-  async findStates(user: User, boardId: number): Promise<StateDto[]> {
+  async findStates(user: User, boardId: number, include?: Prisma.StateInclude): Promise<StateDto[]> {
     // Find all states tied to a boardId with a specifc user
     const boardWhereInput: Prisma.BoardWhereInput = {
       user_id: user.id,
@@ -94,6 +94,7 @@ export class BoardService {
     const stateWhereInput: Prisma.StateWhereInput = {
       board_id: board.id,
     };
+
     return this.prisma.state.findMany({
       where: stateWhereInput,
       orderBy: [
@@ -101,6 +102,7 @@ export class BoardService {
           order: 'asc',
         },
       ],
+      include
     });
   }
 
