@@ -91,33 +91,9 @@ export class CardService {
       where: cardWhereUniqueInput,
     });
 
-    const stateWhereUniqueInput = {
-      id: card.state_id,
-    };
-
-    const state = await this.prisma.state.findFirst({
-      where: stateWhereUniqueInput,
+    return this.prisma.card.delete({
+      where: cardWhereUniqueInput,
     });
-
-    const boardWhereUniqueInput = {
-      id: state.board_id,
-    };
-
-    const board = await this.prisma.board.findFirst({
-      where: boardWhereUniqueInput,
-    });
-
-    if (board.user_id == user.id) {
-
-      return this.prisma.card.delete({
-        where: cardWhereUniqueInput,
-      });
-
-    } else {
-
-      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
-
-    }
 
   };
 
