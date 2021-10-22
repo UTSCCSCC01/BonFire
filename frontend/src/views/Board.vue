@@ -60,14 +60,7 @@
 								:key="task.id"
 								:task="task"
 								class="mt-3 cursor-move"
-							> 
-								<state-card-actions>
-									<v-btn align="right" icon color="dark-grey" @click="deleteCard(card)"> 
-										<v-icon x-small> fa fa-times </v-icon> 
-									</v-btn>
-								</state-card-actions>
-								
-							</state-card>
+							/> 
 							
 						</v-draggable>
 					</v-sheet>
@@ -190,6 +183,7 @@
 				// If the board id changes, reload all board content
 				this.reloadPageContent()
 			},
+			
 		},
 		mounted() {
 			this.reloadPageContent();
@@ -322,22 +316,6 @@
 					.catch(err => {
 						console.error(err);
 					})
-			},
-
-			deleteCard(card) {
-
-				let confirmation = confirm(`Are you sure you want to delete board ${card.title}`);
-
-				if (confirmation) {
-					this.$http.delete(`cards/${card.id}`)
-					.then(() => {
-						//Good
-					})
-					.catch(err => {
-					console.error(err);
-					})
-				}
-			
 			},
 
 		},
