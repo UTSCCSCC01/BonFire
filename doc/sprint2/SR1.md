@@ -1,7 +1,22 @@
-# Sprint Retrospective 1
+## Participants:
+Ahmed Halat, Armand Sarkezians, Christian Chen Liu, David Petrov, Mohamed Halat
 
-As you complete the previous sprint, you must have SRn.md (n is your previous sprint number) in doc/sprint(n+1).
-Once the sprint retrospective finishes, you must hold the next sprint planning meeting and record it in sprintn.md where of course n is the new sprint number.
+## Unfinished tasks and group them into stories:
+No Tasks were incomplete
 
-Example:
-After finishing sprint 1, Team Collabcloud creates a SR1.md in doc/sprint2 and sprint2.md in doc/sprint2.
+## What are practices that you should continue during next sprint:
+ - Having meaningful and short stand up meetings
+ - Having multiple reviewers per PR
+ - Proper time allocations for working on the project
+
+## What are some new practices that you might want to use during next sprint:
+- Add a definition of done before starting a ticket
+- Add meaningful commit messages
+
+## What are (if any) harmful practices you should stop using during next sprint:
+- Finishing a feature without a creating a story
+- Mismanaging time for a sprint, having to cram to finish tasks
+
+## What was your best/worst experience during sprint 1:
+- Worst: Having to work on the project during reading week and while having many midterms going on
+- Best: Learning new stuff and seeing the project coming all together

@@ -5,7 +5,7 @@
 - tasks breakdown is done.
 
 ## Sprint goal:
- - Finish user stories: __WRLD-141__, __WRLD-140__, __WRLD-137__, __WRLD-138__, __WRLD-15__, __WRLD-16__, __WRLD-17__, __WRLD-18__, __WRLD-19__
+ - Finish user stories: __WRLD-141__, __WRLD-140__, __WRLD-137__, __WRLD-138__, __WRLD-15__, __WRLD-16__, __WRLD-17__, __WRLD-18__, __WRLD-19__, __WRLD-20__, __WRLD-34__
 
  Associated Tasks:
 
@@ -94,6 +94,22 @@ Tasks:
  - Board name display (modifiable name)
  - States display (modifiable name)
  - Cards display (modifiable text)
+
+ Story: __WRLD-20__
+
+ Tasks:
+ - Endpoint for deleting a specific board, given ID and being the owner
+ - Side bar boards deletion icon display
+ - Update board deletion option display
+ - Board deletion confirmation modal
+ - Redirection after board deletion if inside board
+
+ Story: __WRLD-34__
+
+ Tasks:
+ - Endpoint for deleting a specific card, given ID and being the owner
+ - Card deletion option display
+ - Card deletion confirmation modal
 
 ---
 
