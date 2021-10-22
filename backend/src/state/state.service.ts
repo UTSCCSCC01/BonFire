@@ -21,14 +21,16 @@ export class StateService {
     cursor?: Prisma.StateWhereUniqueInput;
     where?: Prisma.StateWhereInput;
     orderBy?: Prisma.StateOrderByWithRelationInput;
+    include?: Prisma.StateInclude;
   }): Promise<StateDto[]> {
-    const { skip, take, cursor, where, orderBy } = params;
+    const { skip, take, cursor, where, orderBy, include } = params;
     return this.prisma.state.findMany({
       skip,
       take,
       cursor,
       where,
       orderBy,
+      include,
     });
   }
 
