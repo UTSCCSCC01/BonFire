@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -54,5 +55,18 @@ export class CardController {
     @Body() card: CreateCardDto
   ): Promise<CardDto> {
     return await this.cardService.create(card, user);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deletes a card board' })
+  @ApiOkResponse({
+    description: 'Deleted Card',
+    status: 201,
+  })
+  public async deleteCard(
+    @RequestUser() user: User,
+    @Param('id') cardId: number,
+  ): Promise<CardDto> {
+    return this.cardService.delete(user, +cardId);
   }
 }

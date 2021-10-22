@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Card, Prisma, User } from '@prisma/client';
 import { CardDto, CreateCardDto } from 'src/constants/card';
 import { PrismaService } from 'src/prisma.service';
@@ -75,4 +75,50 @@ export class CardService {
       data: cardCreateInput,
     });
   }
+
+
+  /** Delete a card by id
+ * @param  {number} cardId
+ * @returns Promise
+ */
+  async delete(user: User, cardId: number): Promise<Card> {
+
+    const cardWhereUniqueInput = {
+      id: cardId,
+    };
+
+    const card = await this.prisma.card.findFirst({
+      where: cardWhereUniqueInput,
+    });
+
+    const stateWhereUniqueInput = {
+      id: card.state_id,
+    };
+
+    const state = await this.prisma.state.findFirst({
+      where: stateWhereUniqueInput,
+    });
+
+    const boardWhereUniqueInput = {
+      id: state.board_id,
+    };
+
+    const board = await this.prisma.board.findFirst({
+      where: boardWhereUniqueInput,
+    });
+
+    if (board.user_id == user.id) {
+
+      return this.prisma.card.delete({
+        where: cardWhereUniqueInput,
+      });
+
+    } else {
+
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+
+    }
+
+  };
+
 }
