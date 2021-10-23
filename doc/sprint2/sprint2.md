@@ -9,18 +9,17 @@
 
  Associated Tasks:
 
-
 ---
 
 ## Tasks Breakdown:
 ### Epic: Project Setup
-Setup project backend
+This epic is for setting up the project such as the updating the database
 
 Story: __WRLD-183__
 
 Tasks:
- - ????
-
+ - Create classroom table in database
+ - Create joint table between users and classrooms
 
 ---
 
@@ -28,15 +27,15 @@ Tasks:
 This epic is for creating any pages that don't require a signed in user or pertain to app functionality
 
 Story: __WRLD-138__
+
+Tasks:
  - Create modal for questioning the user
  - Adjust the user parameters in the database accordingly
-
 
 ---
 
 ### Epic: Users Personal KanBan Board
 This epic is for making the basic components for the creation/deletion and view of person KanBan boards
-
 
 Story: __WRLD-159__
 
@@ -72,31 +71,37 @@ Tasks:
 
 ---
 
-
 ### Epic: Board customization
 This epic is for adding customization to boards
 
 Story: __WRLD-27__
+
+Tasks:
  - Display option to change board information
  - Update the board information accordingly
  - Display the updated board information
 
 Story: __WRLD-31__
+
+Tasks:
  - Display option to delete state in a board
  - Update the states of the board accordingly
  - Display the updated board
 
- Story: __WRLD-162__
+Story: __WRLD-162__
+
+Tasks:
  - Display option to create states in a board
  - Update the states of the board accordingly
  - Display the updated board
 
- Story: __WRLD-33__
+Story: __WRLD-33__
+
+Tasks:
  - Ability to drag and drop cards into other states
  - Display the updated board
 
 ---
-
 
 ### Epic: Teacher classrom
 This epic is for creating a board that a teacher user would create in order to share it with their students
@@ -115,14 +120,12 @@ Story: __WRLD-23__
 
 ---
 
-
 ## Spikes:
  - Creating functional Vue and CSS components for the top navbar and side navbar were difficult.
  - Ensuring Authentication works fine.
  - Connecting swagger-ui to authenticated endpoints
 
 ---
-
 
 ## Capacity
 | Name | Capacity (hours per day) |
