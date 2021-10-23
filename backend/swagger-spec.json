@@ -453,7 +453,7 @@
       },
       "delete": {
         "operationId": "deleteCard",
-        "summary": "Deletes a card board",
+        "summary": "Deletes a card",
         "parameters": [
           {
             "name": "id",
