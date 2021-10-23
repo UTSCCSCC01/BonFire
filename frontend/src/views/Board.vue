@@ -60,7 +60,8 @@
 								:key="task.id"
 								:task="task"
 								class="mt-3 cursor-move"
-							/>
+							/> 
+							
 						</v-draggable>
 					</v-sheet>
 				</v-col>
@@ -182,6 +183,7 @@
 				// If the board id changes, reload all board content
 				this.reloadPageContent()
 			},
+			
 		},
 		mounted() {
 			this.reloadPageContent();
@@ -315,6 +317,7 @@
 						console.error(err);
 					})
 			},
+
 		},
 
 	}

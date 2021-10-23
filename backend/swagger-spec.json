@@ -423,6 +423,33 @@
             "bearer": []
           }
         ]
+      },
+      "delete": {
+        "operationId": "deleteCard",
+        "summary": "Deletes a card board",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted Card"
+          }
+        },
+        "tags": [
+          "cards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/cards": {

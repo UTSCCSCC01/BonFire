@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Card, Prisma, User } from '@prisma/client';
 import { CardDto, CreateCardDto } from 'src/constants/card';
 import { PrismaService } from 'src/prisma.service';
@@ -75,4 +75,15 @@ export class CardService {
       data: cardCreateInput,
     });
   }
+
+  /** Delete a card by id
+ * @param  {number} cardId
+ * @returns Promise
+ */
+  async delete(user: User, cardId: number): Promise<Card> {
+    return this.prisma.card.delete({
+      where: { id: cardId },
+    });
+  };
+
 }
