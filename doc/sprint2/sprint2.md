@@ -40,12 +40,7 @@ This epic is for making the basic components for the creation/deletion and view 
 Story: __WRLD-159__
 
 Tasks:
- - Database entry insertion
- - Endpoint for creating boards
- - Modal for configuring the board (Name, Color, Preset/Custom)
- - Button to redirect to the new board
- - Make a default empty board based on present/custom value
- - Make an option to stop creating (close the modal: X button)
+ - User verification for endpoints usage
 
 Story: __WRLD-20__
 
