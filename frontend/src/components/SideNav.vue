@@ -10,6 +10,11 @@
       @close-dialog="createNewClassroom = false"
       @add-classroom="addClassroom"
     />
+    <join-classroom-dialog
+      :open-dialog="joinSearchedClassroom"
+      @close-dialog="joinSearchedClassroom = false"
+      @add-classroom="addClassroom"
+    />
     <v-navigation-drawer
       class="pt-4"
       color="#FBE7D3"
@@ -60,6 +65,14 @@
             </v-icon>
           </v-list-item-icon>
           <v-list-item-title>Create Campsite</v-list-item-title>
+        </v-list-item>
+        <v-list-item @click="joinSearchedClassroom = true">
+          <v-list-item-icon>
+            <v-icon color="blue">
+              fas fa-search
+            </v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Join Campsite</v-list-item-title>
         </v-list-item>
       </v-list>
 
@@ -121,18 +134,21 @@
 <script>
 import CreateBoardDialog from './board/CreateBoardDialog';
 import CreateClassroomDialog from './classroom/CreateClassroomDialog';
+import JoinClassroomDialog from './classroom/JoinClassroomDialog';
 
 
 export default {
   components: {
     'create-board-dialog': CreateBoardDialog,
     'create-classroom-dialog': CreateClassroomDialog,
+    'join-classroom-dialog': JoinClassroomDialog,
   },
   data() {
     return {
       drawer: [],
       createNewBoard: false,
       createNewClassroom: false,
+      joinSearchedClassroom: false,
       boards: [],
       classrooms: [],
       collapsed: true,
@@ -159,6 +175,9 @@ export default {
       this.boards.push(data);
     },
     addClassroom(data) {
+      this.classrooms.push(data);
+    },
+    joinClassroom(data) {
       this.classrooms.push(data);
     },
 

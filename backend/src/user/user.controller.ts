@@ -16,7 +16,7 @@ import {
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { UserDto } from 'src/constants/user';
 import { UserService } from './user.service';
@@ -36,9 +36,8 @@ export class UserController {
   })
   public async joinClassroom(
     @RequestUser() user: User,
-    @Param('id') token: string,
+    @Body() classroom: Classroom,
   ): Promise<ClassroomDto> {
-    return await this.userService.joinClassroom(user, token);
+    return await this.userService.joinClassroom(user, classroom.token);
   }
-
 }

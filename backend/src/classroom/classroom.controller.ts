@@ -58,5 +58,4 @@ export class ClassroomController {
     }
     return boardResult;
   }
-
 }

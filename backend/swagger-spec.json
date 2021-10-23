@@ -576,16 +576,7 @@
       "put": {
         "operationId": "joinClassroom",
         "summary": "Adds a student to a specific classroom",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": "Added a student to classroom"
@@ -849,6 +840,30 @@
           "updated_at"
         ]
       },
+      "CreateCardDto": {
+        "type": "object",
+        "properties": {
+          "state_id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "due_date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "state_id",
+          "title",
+          "desc",
+          "due_date"
+        ]
+      },
       "ClassroomDto": {
         "type": "object",
         "properties": {
@@ -880,30 +895,6 @@
           "created_at",
           "updated_at",
           "creator_id"
-          ]
-      },
-      "CreateCardDto": {
-        "type": "object",
-        "properties": {
-          "state_id": {
-            "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "desc": {
-            "type": "string"
-          },
-          "due_date": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "state_id",
-          "title",
-          "desc",
-          "due_date"
         ]
       }
     }
