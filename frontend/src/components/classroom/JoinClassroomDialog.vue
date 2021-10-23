@@ -8,7 +8,7 @@
       <!-- Dialog Card -->
       <v-card>
         <v-card-title>
-          Create a New Campsite
+          Join a Campsite
         </v-card-title>
         <v-card-text>
           <v-container>
@@ -19,8 +19,8 @@
                 md="12"
               >
                 <v-text-field
-                  v-model="classroom.name"
-                  label="Classroom Name (Eg: CSCC01)"
+                  v-model="classroom.token"
+                  label="Classroom invite token (Eg: Campsite#00000000)"
                   required
                 />
               </v-col>
@@ -39,11 +39,11 @@
           <v-btn
             color="blue darken-1"
             text
-            :disabled="!classroom.name"
-            :loading="saving"
-            @click="saveClassroom"
+            :disabled="!classroom.token"
+            :loading="joining"
+            @click="joinClassroom"
           >
-            Save
+            Join
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -66,14 +66,14 @@ export default {
     }
   },
   methods: {
-    saveClassroom() {
+    joinClassroom() {
       this.saving = true;
-      this.$http.post('/classrooms', this.classroom)
+      this.$http.put('/user/classroom', this.classroom)
         .then(res => {
           this.$notify({
             type: 'success',
-            title: 'Successfully Created Classroom',
-            text: `You successfully created a new classroom called: ${res.data.title}, with invite token ${res.data.token}`
+            title: 'Successfully Joined Classroom',
+            text: `You successfully joined an existing classroom called: ${res.data.title}, with invite token ${res.data.token}`
           });
           this.$emit("add-classroom" , res.data);
           this.closeDialog();
@@ -83,7 +83,7 @@ export default {
           console.error(err);
           this.$notify({
             type: 'error',
-            title: 'Failed to create the classroom',
+            title: 'Failed to join the classroom',
             text: err?.response ?.data?.message || 'Unknown Error'
           });
         })

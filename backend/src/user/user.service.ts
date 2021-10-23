@@ -83,7 +83,7 @@ export class UserService {
       where: { token },
     });
 
-    if (!classroom) {
+    if (!classroom || classroom.token !== token) {
       throw new HttpException('Invalid board token', HttpStatus.NOT_FOUND);
     }
 

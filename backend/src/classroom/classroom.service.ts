@@ -34,7 +34,7 @@ export class ClassroomService {
 
     return classroom;
   }
-  
+
   generateClassroomToken(): string {
     let code = '';
     for (let i = 0; i < 8; i++) {
