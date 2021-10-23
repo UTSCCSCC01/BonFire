@@ -120,13 +120,6 @@ Story: __WRLD-23__
 
 ---
 
-## Spikes:
- - Creating functional Vue and CSS components for the top navbar and side navbar were difficult.
- - Ensuring Authentication works fine.
- - Connecting swagger-ui to authenticated endpoints
-
----
-
 ## Capacity
 | Name | Capacity (hours per day) |
 | --- | --- |
