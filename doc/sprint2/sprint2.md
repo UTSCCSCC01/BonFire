@@ -5,7 +5,7 @@
 - tasks breakdown is done.
 
 ## Sprint goal:
- - Finish user stories: __WRLD-141__, __WRLD-140__, __WRLD-137__, __WRLD-138__, __WRLD-15__, __WRLD-16__, __WRLD-17__, __WRLD-18__, __WRLD-19__, __WRLD-20__, __WRLD-34__
+ - Finish user stories:  __WRLD-138__, __WRLD-159__, __WRLD-20__, __WRLD-34__, __WRLD-32__ , __WRLD-31__, __WRLD-33__, __WRLD-22__, __WRLD-23__, __WRLD-21__, __WRLD-27__, __WRLD-183__, __WRLD-162__
 
  Associated Tasks:
 
@@ -14,62 +14,31 @@
 
 ## Tasks Breakdown:
 ### Epic: Project Setup
-Setup project wireframe and app routing
+Setup project backend
 
-Story: __WRLD-141__
-
-Tasks:
- - Add main page routing
- - Initialize vue frontend and router
- - Create basic vue components
- - Add axios for api calls
- - Add bootstrap for css
- - Add vuetify for builtins
-
-Story: __WRLD-140__
+Story: __WRLD-183__
 
 Tasks:
- - Add swagger to the package
- - Add swagger-ui for api documentation
+ - ????
+
 
 ---
 
 ### Epic: Application Static Pages
 This epic is for creating any pages that don't require a signed in user or pertain to app functionality
 
-Story: __WRLD-137__
-
-Tasks:
- - Setup app design languages
- - Create index Page
- - Add navigation menu
-
 Story: __WRLD-138__
+ - Create modal for questioning the user
+ - Adjust the user parameters in the database accordingly
 
-Tasks:
- - Setup app design language
- - Create welcome pages
- - Add navigation menu
 
-Story: __WRLD-15__
-
-Tasks:
- - Create users in db
- - Add jwts, register + login
-
-Story: __WRLD-16__
-
-Tasks:
- - Insert appropriate icons for sign in options
- - Ask if they don't have an account -> Redirect to sign up page
- - Insert a backwards button to go back to the index page
 ---
 
 ### Epic: Users Personal KanBan Board
 This epic is for making the basic components for the creation/deletion and view of person KanBan boards
 
 
-Story: __WRLD-17__
+Story: __WRLD-159__
 
 Tasks:
  - Database entry insertion
@@ -79,21 +48,6 @@ Tasks:
  - Make a default empty board based on present/custom value
  - Make an option to stop creating (close the modal: X button)
 
-Story: __WRLD-18__
-
-Tasks:
- - Database search query
- - Endpoint for retrieving boards
- - List of boards that correspond to me
- - A visual representation together with the board name for each of the user’s boards
-
-Story: __WRLD-19__
-
-Tasks:
- - Endpoint for retrieving all specifications of a specific board, given ID
- - Board name display (modifiable name)
- - States display (modifiable name)
- - Cards display (modifiable text)
 
  Story: __WRLD-20__
 
@@ -111,7 +65,52 @@ Tasks:
  - Card deletion option display
  - Card deletion confirmation modal
 
+
+Story: __WRLD-32__
+
+ Tasks:
+ - Endpoint for creating a specific card in a specific state
+ - Card addition for a state option display
+
 ---
+
+
+### Epic: Board customization
+This epic is for adding customization to boards
+
+Story: __WRLD-27__
+ - Display option to change board information
+ - Update the board information accordingly
+ - Display the updated board information
+
+
+Story: __WRLD-31__
+ - Display option to delete state in a board
+ - Update the states of the board accordingly
+ - Display the updated board
+
+ Story: __WRLD-162__
+ - Display option to create states in a board
+ - Update the states of the board accordingly
+ - Display the updated board
+
+ Story: __WRLD-33__
+ - Ability to drag and drop cards into other states
+ - Display the updated board
+
+---
+
+
+### Epic: Teacher classrom
+This epic is for creating a board that a teacher user would create in order to share it with their students
+
+Story: __WRLD-22__
+ - Create modal for questioning the user
+ - Adjust the user parameters in the database accordingly
+
+
+---
+
 
 ## Spikes:
  - Creating functional Vue and CSS components for the top navbar and side navbar were difficult.
@@ -119,6 +118,7 @@ Tasks:
  - Connecting swagger-ui to authenticated endpoints
 
 ---
+
 
 ## Capacity
 | Name | Capacity (hours per day) |
