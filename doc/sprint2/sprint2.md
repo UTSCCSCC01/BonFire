@@ -120,6 +120,11 @@ Story: __WRLD-23__
 
 ---
 
+## Spikes:
+ - None
+
+---
+
 ## Capacity
 | Name | Capacity (hours per day) |
 | --- | --- |
