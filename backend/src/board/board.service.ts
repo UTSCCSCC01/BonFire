@@ -30,12 +30,12 @@ export class BoardService {
    * @returns Promise
    */
   async find(user: User, boardId: number): Promise<BoardDto> {
-    const boardWhereInput: Prisma.BoardWhereInput = {
+    const boardWhereUniqueInput: Prisma.BoardWhereInput = {
       user_id: user.id,
       id: boardId,
     };
     const board = await this.prisma.board.findFirst({
-      where: boardWhereInput,
+      where: boardWhereUniqueInput,
     });
 
     if (!board) {
@@ -50,11 +50,11 @@ export class BoardService {
    * @returns Promise
    */
   async findAll(user: User): Promise<BoardDto[]> {
-    const boardWhereInput: Prisma.BoardWhereInput = {
+    const boardWhereUniqueInput: Prisma.BoardWhereInput = {
       user_id: user.id,
     };
     return this.prisma.board.findMany({
-      where: boardWhereInput,
+      where: boardWhereUniqueInput,
     });
   }
 
@@ -82,12 +82,12 @@ export class BoardService {
    */
   async findStates(user: User, boardId: number, include?: Prisma.StateInclude): Promise<StateDto[]> {
     // Find all states tied to a boardId with a specifc user
-    const boardWhereInput: Prisma.BoardWhereInput = {
-      user_id: user.id,
-      id: boardId,
-    };
+
     const board = await this.prisma.board.findFirst({
-      where: boardWhereInput,
+      where: {
+        user_id: user.id,
+        id: boardId,
+      },
     });
 
     // Find all states tied to a boardId with a specifc user
@@ -153,5 +153,26 @@ export class BoardService {
     await Promise.all(promises);
 
     return;
+  }
+
+  /** Delete a board by id
+   * @param  {number} boardId
+   * @returns Promise
+   */
+  async delete(user: User, boardId: number): Promise<Board> {
+    const board = await this.prisma.board.findFirst({
+      where: {
+        user_id: user.id,
+        id: boardId,
+        },
+    });
+    if (!board) {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    } 
+    return this.prisma.board.delete({
+      where: {
+        id: boardId,
+      },
+    });
   }
 }

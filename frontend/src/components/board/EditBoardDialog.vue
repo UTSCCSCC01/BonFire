@@ -19,6 +19,7 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
+          <v-btn color="blue darken-1" text @click="deleteBoard(board); closeDialog();"> Delete </v-btn>
           <v-btn color="blue darken-1" text @click="closeDialog"> Close </v-btn>
           <v-btn
             color="blue darken-1"
@@ -89,10 +90,28 @@ export default {
           this.saving = false;
         });
     },
+    
     closeDialog() {
       this.$emit('save', this.board);
       this.$emit("close");
     },
+
+    deleteBoard(board) {
+
+      let confirmation = confirm(`Are you sure you want to delete board ${board.title}`);
+
+      if (confirmation) {
+        this.$http.delete(`boards/${board.id}`)
+        .then(() => {
+           if (board.id == this.$route.params.boardId) this.$router.push({ name: 'Dashboard' });
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      }
+      
+    },
+
   },
 };
 </script>
