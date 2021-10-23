@@ -5,7 +5,7 @@
 - tasks breakdown is done.
 
 ## Sprint goal:
- - Finish user stories:  __WRLD-138__, __WRLD-159__, __WRLD-20__, __WRLD-34__, __WRLD-32__ , __WRLD-31__, __WRLD-33__, __WRLD-22__, __WRLD-23__, __WRLD-21__, __WRLD-27__, __WRLD-183__, __WRLD-162__
+ - Finish user stories:  __WRLD-138__, __WRLD-159__, __WRLD-20__, __WRLD-34__, __WRLD-32__ , __WRLD-31__, __WRLD-33__, __WRLD-22__, __WRLD-23__, __WRLD-27__, __WRLD-183__, __WRLD-162__
 
  Associated Tasks:
 
@@ -48,27 +48,25 @@ Tasks:
  - Make a default empty board based on present/custom value
  - Make an option to stop creating (close the modal: X button)
 
+Story: __WRLD-20__
 
- Story: __WRLD-20__
-
- Tasks:
+Tasks:
  - Endpoint for deleting a specific board, given ID and being the owner
  - Side bar boards deletion icon display
  - Update board deletion option display
  - Board deletion confirmation modal
  - Redirection after board deletion if inside board
 
- Story: __WRLD-34__
+Story: __WRLD-34__
 
- Tasks:
+Tasks:
  - Endpoint for deleting a specific card, given ID and being the owner
  - Card deletion option display
  - Card deletion confirmation modal
 
-
 Story: __WRLD-32__
 
- Tasks:
+Tasks:
  - Endpoint for creating a specific card in a specific state
  - Card addition for a state option display
 
@@ -82,7 +80,6 @@ Story: __WRLD-27__
  - Display option to change board information
  - Update the board information accordingly
  - Display the updated board information
-
 
 Story: __WRLD-31__
  - Display option to delete state in a board
@@ -105,9 +102,16 @@ Story: __WRLD-31__
 This epic is for creating a board that a teacher user would create in order to share it with their students
 
 Story: __WRLD-22__
- - Create modal for questioning the user
- - Adjust the user parameters in the database accordingly
+ - Display option to create a classroom
+ - Create a classroom in the database
+ - Assign the classroom to the user
+ - Display the classroom 
 
+Story: __WRLD-23__
+ - Display option to share and join a classroom
+ - Attach the classroom to the user joining it
+ - Display the classroom 
+ - Generate link to join a classroom
 
 ---
 
