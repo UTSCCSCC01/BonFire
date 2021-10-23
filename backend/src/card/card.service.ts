@@ -76,25 +76,14 @@ export class CardService {
     });
   }
 
-
   /** Delete a card by id
  * @param  {number} cardId
  * @returns Promise
  */
   async delete(user: User, cardId: number): Promise<Card> {
-
-    const cardWhereUniqueInput = {
-      id: cardId,
-    };
-
-    const card = await this.prisma.card.findFirst({
-      where: cardWhereUniqueInput,
-    });
-
     return this.prisma.card.delete({
-      where: cardWhereUniqueInput,
+      where: { id: cardId },
     });
-
   };
 
 }

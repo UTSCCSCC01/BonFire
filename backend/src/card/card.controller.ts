@@ -58,7 +58,7 @@ export class CardController {
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Deletes a card board' })
+  @ApiOperation({ summary: 'Deletes a card' })
   @ApiOkResponse({
     description: 'Deleted Card',
     status: 201,
