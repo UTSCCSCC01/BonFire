@@ -21,7 +21,7 @@ model User {
   student_classrooms StudentClassrooms[]
   classrooms         Classroom[]
   cards              Card[]
-  boards              Board[]
+  boards             Board[]
 }
 
 enum Role {
@@ -69,14 +69,14 @@ enum StateType {
 }
 
 model State {
-  id         Int      @id @default(autoincrement())
+  id         Int       @id @default(autoincrement())
   board_id   Int
   title      String
-  created_at DateTime @default(now())
-  updated_at DateTime @updatedAt
+  created_at DateTime  @default(now())
+  updated_at DateTime  @updatedAt
   order      Int
   type       StateType
-  board      Board    @relation(fields: [board_id], references: [id])
+  board      Board     @relation(fields: [board_id], references: [id])
   cards      Card[]
 
   @@index([board_id])
@@ -95,6 +95,19 @@ model Card {
   updated_at DateTime  @updatedAt
   creator    User      @relation(fields: [creator_id], references: [id])
   state      State     @relation(fields: [state_id], references: [id])
+  tags       Tag[]
 
   @@index([creator_id, state_id])
+}
+
+model Tag {
+  id         Int      @id @default(autoincrement())
+  name       String
+  order      Int
+  card_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  card       Card     @relation(fields: [card_id], references: [id])
+
+  @@index([card_id])
 }
