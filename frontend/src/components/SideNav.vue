@@ -30,7 +30,7 @@
               My Dashboard
             </v-list-item-title>
             <v-list-item-subtitle v-if="!collapsed">
-              Student Dashboard
+              {{ currentUser.first_name }} {{ currentUser.last_name }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -57,6 +57,9 @@
             <v-icon>fas fa-fire-alt</v-icon>
           </v-list-item-icon>
           <v-list-item-title>{{ classroom.name }}</v-list-item-title>
+          <v-list-item-icon v-if="classroom.creator_id == currentUser.id">
+            <v-icon>fas fa-crown</v-icon>
+          </v-list-item-icon>
         </v-list-item>
         <v-list-item @click="createNewClassroom = true">
           <v-list-item-icon>
@@ -95,11 +98,23 @@
           :to="`/board/${board.id}`"
         >
           <v-list-item-icon>
-            <v-icon icon color="dark-grey">fas fa-fire</v-icon>
+            <v-icon
+              icon
+              color="dark-grey"
+            >
+              fas fa-fire
+            </v-icon>
           </v-list-item-icon>
           <v-list-item-title>{{ board.title }}</v-list-item-title>
-          <v-btn align="right" icon color="dark-grey" @click="deleteBoard(board)"> 
-            <v-icon x-small> fa fa-times </v-icon> 
+          <v-btn
+            align="right"
+            icon
+            color="dark-grey"
+            @click="deleteBoard(board)"
+          > 
+            <v-icon x-small>
+              fa fa-times
+            </v-icon> 
           </v-btn>
         </v-list-item>
 
@@ -152,6 +167,7 @@ export default {
       boards: [],
       classrooms: [],
       collapsed: true,
+      currentUser: this.$currentUser,
     };
   },
   mounted() {

@@ -79,12 +79,38 @@ export class UserService {
   }
 
   async joinClassroom(user: User, token: string): Promise<ClassroomDto> {
+    // check if the token is valid
     const classroom = await this.prisma.classroom.findFirst({
       where: { token },
     });
 
     if (!classroom || classroom.token !== token) {
       throw new HttpException('Invalid board token', HttpStatus.NOT_FOUND);
+    }
+
+    // Check if user is already in the classroom or if he is the owner
+    const userInClassroom = await this.prisma.user.findFirst({
+      where: {
+        id: user.id,
+        OR: [
+          {
+            id: classroom.creator_id,
+          },
+          {
+            classrooms: {
+              some: {
+                id: classroom.id,
+              },
+            },
+          },
+        ],
+      },
+    });
+    if (userInClassroom) {
+      throw new HttpException(
+        'User is already in the classroom',
+        HttpStatus.BAD_REQUEST,
+      );
     }
 
     // add user to classroom with id classroomId

@@ -16,6 +16,20 @@ export class BoardService {
    * @returns Promise
    */
   async create(user: User, boardData: Board): Promise<Board> {
+    //check if board already exists with the same name
+    const board = await this.prisma.board.findFirst({
+      where: {
+        title: boardData.title,
+        user_id: user.id,
+      },
+    });
+    if (board) {
+      throw new HttpException(
+        'Already created a board with the same name',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     boardData.user_id = user.id;
 
     try {
@@ -93,7 +107,7 @@ export class BoardService {
       },
     });
 
-    // Find all states tied to a boardId with a specifc user
+    // Find all states tied to a boardId with a specific user
     const stateWhereInput: Prisma.StateWhereInput = {
       board_id: board.id,
     };

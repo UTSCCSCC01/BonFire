@@ -14,6 +14,20 @@ export class ClassroomService {
    * @returns Promise
    */
   async create(user: User, classroomData: Classroom): Promise<Classroom> {
+    //check if classroom already exists with the same name
+    const classroomExist = await this.prisma.classroom.findFirst({
+      where: {
+        name: classroomData.name,
+        creator_id: user.id,
+      },
+    });
+    if (classroomExist) {
+      throw new HttpException(
+        'Already created a classroom with the same name',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
     const token: string = this.generateClassroomToken();
     classroomData.token = token;
     classroomData.creator_id = user.id;
