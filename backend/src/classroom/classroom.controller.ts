@@ -39,7 +39,7 @@ export class ClassroomController {
   public async create(
     @RequestUser() user: User,
     @Body() classroom: Classroom,
-  ): Promise<Classroom> {
+  ): Promise<ClassroomDto> {
     return this.classroomService.create(user, classroom);
   }
 
@@ -57,5 +57,14 @@ export class ClassroomController {
       throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
     return boardResult;
+  }
+
+  @Get()
+  @ApiOperation({ summary: 'Returns all classrooms tied to a specific user' })
+  @ApiOkResponse({
+    description: 'List of Classrooms',
+  })
+  public async getClassrooms(@RequestUser() user): Promise<ClassroomDto[]> {
+    return this.classroomService.findAll(user);
   }
 }

@@ -42,4 +42,12 @@ export class ClassroomService {
     }
     return 'Campsite#'.concat(code);
   }
+
+  async findAll(user: User): Promise<ClassroomDto[]> {
+    return this.prisma.classroom.findMany({
+      where: {
+        creator_id: user.id,
+      },
+    });
+  }
 }

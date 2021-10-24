@@ -50,11 +50,10 @@ export class BoardService {
    * @returns Promise
    */
   async findAll(user: User): Promise<BoardDto[]> {
-    const boardWhereUniqueInput: Prisma.BoardWhereInput = {
-      user_id: user.id,
-    };
     return this.prisma.board.findMany({
-      where: boardWhereUniqueInput,
+      where: {
+        user_id: user.id,
+      },
     });
   }
 
@@ -80,7 +79,11 @@ export class BoardService {
    * @param  {number} boardId
    * @returns Promise
    */
-  async findStates(user: User, boardId: number, include?: Prisma.StateInclude): Promise<StateDto[]> {
+  async findStates(
+    user: User,
+    boardId: number,
+    include?: Prisma.StateInclude,
+  ): Promise<StateDto[]> {
     // Find all states tied to a boardId with a specifc user
 
     const board = await this.prisma.board.findFirst({
@@ -102,7 +105,7 @@ export class BoardService {
           order: 'asc',
         },
       ],
-      include
+      include,
     });
   }
 
@@ -121,7 +124,10 @@ export class BoardService {
     } else if (oldIndex < 0 || newIndex < 0) {
       throw new HttpException('State index cannot be negative', 400);
     } else if (oldIndex > states.length || newIndex > states.length) {
-      throw new HttpException('State index cannot be greater than number of states', 400);
+      throw new HttpException(
+        'State index cannot be greater than number of states',
+        400,
+      );
     }
 
     states = states.sort((a, b) => {
@@ -134,20 +140,21 @@ export class BoardService {
       return a.order - b.order;
     });
 
-    let moved = states.splice(newIndex, 1);
+    const moved = states.splice(newIndex, 1);
     states.splice(oldIndex, 0, moved[0]);
 
     const promises = [];
     states.forEach((state, i) => {
-
-      promises.push(this.prisma.state.update({
-        where: {
+      promises.push(
+        this.prisma.state.update({
+          where: {
             id: state.id,
-        },
-        data: {
-          order: i - 1
-        }
-      }))
+          },
+          data: {
+            order: i - 1,
+          },
+        }),
+      );
     });
 
     await Promise.all(promises);
@@ -159,16 +166,16 @@ export class BoardService {
    * @param  {number} boardId
    * @returns Promise
    */
-  async delete(user: User, boardId: number): Promise<Board> {
+  async delete(user: User, boardId: number): Promise<BoardDto> {
     const board = await this.prisma.board.findFirst({
       where: {
         user_id: user.id,
         id: boardId,
-        },
+      },
     });
     if (!board) {
       throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
-    } 
+    }
     return this.prisma.board.delete({
       where: {
         id: boardId,

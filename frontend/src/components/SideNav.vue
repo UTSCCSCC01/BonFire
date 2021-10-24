@@ -156,6 +156,8 @@ export default {
   },
   mounted() {
     this.getUserBoards();
+    this.getUserClassrooms();
+
   },
   methods: {
     signOut() {
@@ -166,6 +168,15 @@ export default {
       this.$http.get('boards')
       .then(res => {
         this.boards = res.data;
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    },
+    getUserClassrooms(){
+      this.$http.get('classrooms')
+      .then(res => {
+        this.classrooms = res.data;
       })
       .catch(err => {
         console.error(err);
