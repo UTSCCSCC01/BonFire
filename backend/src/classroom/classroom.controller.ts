@@ -58,4 +58,13 @@ export class ClassroomController {
     }
     return boardResult;
   }
+
+  @Get()
+  @ApiOperation({ summary: 'Returns all classrooms tied to a specific user' })
+  @ApiOkResponse({
+    description: 'List of Classrooms',
+  })
+  public async getClassrooms(@RequestUser() user): Promise<ClassroomDto[]> {
+    return this.classroomService.findAll(user);
+  }
 }

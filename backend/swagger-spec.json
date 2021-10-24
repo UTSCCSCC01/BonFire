@@ -534,6 +534,24 @@
             "bearer": []
           }
         ]
+      },
+      "get": {
+        "operationId": "getClassrooms",
+        "summary": "Returns all classrooms tied to a specific user",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "List of Classrooms"
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/classrooms/{id}": {
