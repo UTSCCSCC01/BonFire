@@ -42,17 +42,17 @@
         <div class="content">
           <router-view
             class="router-view"
-            :currentUser="currentUser"
+            :current-user="currentUser"
           />
           <notifications position="bottom" />
         </div>
-
       </v-content>
     </v-app>
   </div>
 </template>
 <script>
 import SideNav from "./components/SideNav";
+import Vue from "vue";
 
 export default {
   components: {
@@ -68,11 +68,15 @@ export default {
       currentUser: {},
     };
   },
+  mounted() {
+    this.getCurrentUser();
+  },
   methods: {
     getCurrentUser() {
       this.$http.get('auth/user')
         .then(res => {
          this.currentUser = res.data;
+         Vue.prototype.$currentUser = this.currentUser;
         })
         .catch(err => {
           this.$notify({
@@ -83,9 +87,6 @@ export default {
           console.error(err);
         })
     }
-  },
-  mounted() {
-    this.getCurrentUser();
   },
 };
 </script>

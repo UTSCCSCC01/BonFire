@@ -39,7 +39,7 @@ export class ClassroomController {
   public async create(
     @RequestUser() user: User,
     @Body() classroom: Classroom,
-  ): Promise<Classroom> {
+  ): Promise<ClassroomDto> {
     return this.classroomService.create(user, classroom);
   }
 
