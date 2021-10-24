@@ -45,7 +45,7 @@ export class CardService {
    * @param  {CreateCardDto} data
    * @returns Promise
    */
-  async create(card: CreateCardDto, user: User): Promise<CardDto> {
+  async create(card: CreateCardDto, user: User): Promise<Card> {
     const cardOrder = await this.prisma.card.count({
       where: {
         state: {
@@ -57,7 +57,9 @@ export class CardService {
     const { title, desc, due_date } = card;
 
     const cardCreateInput: Prisma.CardCreateInput = {
-      title, desc, due_date,
+      title,
+      desc,
+      due_date,
       state: {
         connect: {
           id: +card.state_id,
@@ -66,9 +68,9 @@ export class CardService {
       creator: {
         connect: {
           id: +user.id,
-        }
+        },
       },
-      order: cardOrder + 1
+      order: cardOrder + 1,
     };
 
     return this.prisma.card.create({
@@ -77,13 +79,12 @@ export class CardService {
   }
 
   /** Delete a card by id
- * @param  {number} cardId
- * @returns Promise
- */
+   * @param  {number} cardId
+   * @returns Promise
+   */
   async delete(user: User, cardId: number): Promise<Card> {
     return this.prisma.card.delete({
       where: { id: cardId },
     });
-  };
-
+  }
 }

@@ -1,4 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
+import { TagDto } from './tag';
 
 export class CardDto {
   @ApiProperty()

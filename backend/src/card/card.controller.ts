@@ -16,9 +16,10 @@ import {
   ApiOperation,
   ApiTags,
 } from '@nestjs/swagger';
-import { User } from '@prisma/client';
+import { User, Card } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { CardDto, CreateCardDto } from 'src/constants/card';
+import { TagDto } from 'src/constants/tag';
 import { CardService } from './card.service';
 
 @Controller('cards')
@@ -52,8 +53,8 @@ export class CardController {
   })
   async create(
     @RequestUser() user: User,
-    @Body() card: CreateCardDto
-  ): Promise<CardDto> {
+    @Body() card: CreateCardDto,
+  ): Promise<Card> {
     return await this.cardService.create(card, user);
   }
 
@@ -66,7 +67,7 @@ export class CardController {
   public async deleteCard(
     @RequestUser() user: User,
     @Param('id') cardId: number,
-  ): Promise<CardDto> {
+  ): Promise<Card> {
     return this.cardService.delete(user, +cardId);
   }
 }

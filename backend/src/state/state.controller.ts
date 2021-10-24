@@ -19,6 +19,7 @@ import { StateService } from './state.service';
 import { StateDto } from '../constants/state';
 import { CreateStateDto } from '../constants/state';
 import { CardDto } from 'src/constants/card';
+import { Card } from '@prisma/client';
 
 @Controller('states')
 @ApiTags('states')
@@ -57,9 +58,8 @@ export class StateController {
   @ApiOperation({ summary: 'Returns all cards tied to a specific state' })
   @ApiOkResponse({
     description: 'List of Cards',
-    type: CardDto,
   })
-  public async getCards(@Param('id') stateId: number): Promise<CardDto[]> {
+  public async getCards(@Param('id') stateId: number): Promise<Card[]> {
     const statesResult = await this.stateService.find(+stateId);
     if (!statesResult) {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);

@@ -18,25 +18,21 @@ model User {
   created_at         DateTime            @default(now())
   updated_at         DateTime            @updatedAt
   role               Role?
-  student_classrooms StudentClassrooms[]
-  classrooms         Classroom[]
-  cards              Card[]
   boards             Board[]
-}
-
-enum Role {
-  Student
-  Facilitator
+  cards              Card[]
+  classrooms         Classroom[]
+  student_classrooms StudentClassrooms[]
 }
 
 model StudentClassrooms {
-  classroom    Classroom @relation(fields: [classroom_id], references: [id])
   classroom_id Int
-  student      User      @relation(fields: [student_id], references: [id])
   student_id   Int
   created_at   DateTime  @default(now())
+  classroom    Classroom @relation(fields: [classroom_id], references: [id])
+  student      User      @relation(fields: [student_id], references: [id])
 
   @@id([classroom_id, student_id])
+  @@index([student_id], map: "StudentClassrooms_student_id_fkey")
 }
 
 model Classroom {
@@ -45,9 +41,11 @@ model Classroom {
   name       String
   created_at DateTime            @default(now())
   updated_at DateTime            @updatedAt
-  creator    User                @relation(fields: [creator_id], references: [id])
   creator_id Int
+  creator    User                @relation(fields: [creator_id], references: [id])
   students   StudentClassrooms[]
+
+  @@index([creator_id], map: "Classroom_creator_id_fkey")
 }
 
 model Board {
@@ -60,12 +58,6 @@ model Board {
   states     State[]
 
   @@index([user_id], map: "Board_user_id_fkey")
-}
-
-enum StateType {
-  TODO
-  DONE
-  CUSTOM
 }
 
 model State {
@@ -97,17 +89,30 @@ model Card {
   state      State     @relation(fields: [state_id], references: [id])
   tags       Tag[]
 
+  @@index([creator_id])
   @@index([creator_id, state_id])
+  @@index([state_id])
 }
 
 model Tag {
   id         Int      @id @default(autoincrement())
   name       String
-  order      Int
   card_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  color      String?
   card       Card     @relation(fields: [card_id], references: [id])
 
   @@index([card_id])
+}
+
+enum Role {
+  Student
+  Facilitator
+}
+
+enum StateType {
+  TODO
+  DONE
+  CUSTOM
 }

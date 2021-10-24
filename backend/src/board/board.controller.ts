@@ -33,7 +33,10 @@ import { BoardService } from './board.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class BoardController {
-  constructor(private readonly boardService: BoardService, private readonly stateService: StateService) {}
+  constructor(
+    private readonly boardService: BoardService,
+    private readonly stateService: StateService,
+  ) {}
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new board' })
@@ -47,8 +50,14 @@ export class BoardController {
     @Body() board: Board,
   ): Promise<Board> {
     const boardItem: Board = await this.boardService.create(user, board);
-    await this.stateService.create({ board_id: boardItem.id, title: 'To Do' }, 'TODO');
-    await this.stateService.create({ board_id: boardItem.id, title: 'Done' }, 'DONE');
+    await this.stateService.create(
+      { board_id: boardItem.id, title: 'To Do' },
+      'TODO',
+    );
+    await this.stateService.create(
+      { board_id: boardItem.id, title: 'Done' },
+      'DONE',
+    );
 
     return boardItem;
   }
@@ -94,7 +103,10 @@ export class BoardController {
     if (!canAccess) {
       throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
-    const boardResult = await this.boardService.update({ where: {id: +id}, data: board});
+    const boardResult = await this.boardService.update({
+      where: { id: +id },
+      data: board,
+    });
     return boardResult;
   }
 
@@ -107,12 +119,18 @@ export class BoardController {
   public async reorderStates(
     @RequestUser() user: User,
     @Param('id') id: number,
-    @Body() body: {
-      oldIndex: number,
-      newIndex: number
+    @Body()
+    body: {
+      oldIndex: number;
+      newIndex: number;
     },
   ) {
-    return await this.boardService.reorderStates(user, +id, body.oldIndex, body.newIndex);
+    return await this.boardService.reorderStates(
+      user,
+      +id,
+      body.oldIndex,
+      body.newIndex,
+    );
   }
 
   @Get(':id/states')
@@ -123,7 +141,7 @@ export class BoardController {
   public async getStates(
     @RequestUser() user: User,
     @Param('id') boardId: number,
-    @Query('include') include: String,
+    @Query('include') include: string,
   ): Promise<StateDto[]> {
     let includes = include.split(',').reduce((acc, field) => {
       if (['cards', 'board'].includes(field)) acc[field] = true;
@@ -132,7 +150,11 @@ export class BoardController {
 
     if (Object.keys(includes).length == 0) includes = null;
 
-    const statesResult = await this.boardService.findStates(user, +boardId, includes);
+    const statesResult = await this.boardService.findStates(
+      user,
+      +boardId,
+      includes,
+    );
     if (!statesResult) {
       throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
     }
@@ -151,5 +173,4 @@ export class BoardController {
   ): Promise<Board> {
     return this.boardService.delete(user, +boardId);
   }
-
 }

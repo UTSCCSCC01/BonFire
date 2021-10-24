@@ -8,6 +8,7 @@ import { PassportModule } from '@nestjs/passport';
 import { ClassroomModule } from './classroom/classroom.module';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     PassportModule,
     ClassroomModule,
     UserModule,
+    TagModule,
   ],
   controllers: [],
   providers: [],
