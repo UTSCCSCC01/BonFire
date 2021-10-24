@@ -396,14 +396,7 @@
         ],
         "responses": {
           "200": {
-            "description": "List of Cards",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/CardDto"
-                }
-              }
-            }
+            "description": "List of Cards"
           }
         },
         "tags": [
@@ -584,6 +577,77 @@
         },
         "tags": [
           "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/tags": {
+      "post": {
+        "operationId": "create",
+        "summary": "Creates a new tag in the board given a card id and tag name",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTagDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns newly created state",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "tags"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "get": {
+        "operationId": "getTags",
+        "summary": "Returns tags attached to a specific card ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tags",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TagDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "tags"
         ],
         "security": [
           {
@@ -895,6 +959,54 @@
           "created_at",
           "updated_at",
           "creator_id"
+        ]
+      },
+      "CreateTagDto": {
+        "type": "object",
+        "properties": {
+          "card_id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "card_id",
+          "name",
+          "color"
+        ]
+      },
+      "TagDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "color": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "color",
+          "created_at",
+          "updated_at"
         ]
       }
     }

@@ -1,5 +1,5 @@
 <template>
-  <div class="state-card">
+  <div class="state-card" @click="modifyCard(task)">
     <v-card
       class="mx-auto shadow-sm"
       outlined
@@ -9,7 +9,7 @@
           {{ task.title }}
         </p>
         <div class="text--primary">
-          {{ task.summary }}
+          {{ task.desc }}
         </div>
       </v-card-text>
 
@@ -29,10 +29,8 @@ export default {
     }
   },
 
-
   methods: {
     deleteCard(card) {
-
 				let confirmation = confirm(`Are you sure you want to delete card ${card.title}`);
 
 				if (confirmation) {

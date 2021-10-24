@@ -39,7 +39,7 @@ export class TagController {
   }
 
   @Get()
-  @ApiOperation({ summary: 'Returns tags by attached to a specific card ID' })
+  @ApiOperation({ summary: 'Returns tags attached to a specific card ID' })
   @ApiOkResponse({
     description: 'Tags',
     type: TagDto,
