@@ -151,54 +151,6 @@
           />
         </v-menu>
       </card-dialog>
-      <edit-card-dialog
-        v-if="board && card.state"
-        :title="`Edit Card`"
-        :open-dialog="newCard"
-        @save="createCard"
-        @close="newCard = false"
-      >
-        <v-text-field
-          v-model="card.title"
-          label="New Card Name"
-          maxlength="191"
-          required
-        />
-
-        <v-textarea
-          v-model="card.desc"
-          name="input-7-1"
-          filled
-          label="Card Description"
-          auto-grow
-          maxlength="191"
-        />
-
-        <v-menu
-          ref="menu"
-          v-model="menu"
-          :close-on-content-click="false"
-          transition="scale-transition"
-          offset-y
-          min-width="auto"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="card.due_date"
-              label="Due Date"
-              prepend-icon="fa fa-calendar"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            />
-          </template>
-          <v-date-picker
-            v-model="card.due_date"
-            no-title
-            scrollable
-          />
-        </v-menu>
-      </edit-card-dialog>
     </div>
   </div>
 </template>
@@ -206,13 +158,11 @@
 	import Draggable from "vuedraggable";
 	import StateCard from "@/components/board/StateCard";
 	import EditBoardDialog from "@/components/board/EditBoardDialog";
-	import EditCardDialog from "@/components/card/EditCardDialog";
 	import Dialog from "@/components/Dialog";
 
 	export default {
 		components: {
 			'board-dialog': EditBoardDialog,
-			'edit-card-dialog': EditCardDialog,
 			'state-card': StateCard,
 			'card-dialog': Dialog,
 			'state-dialog': Dialog,
