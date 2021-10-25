@@ -1,145 +1,193 @@
 <template>
   <div class="board mx-4">
     <div class="header">
-			{{ board.title || 'Board' }}
-			<v-spacer></v-spacer>
-			<v-btn icon>
-				<v-icon
-					class="fas fa-edit"
-					style="cursor:pointer;"
-					@click="editBoardDialog = true"
-				/>
-			</v-btn>
+      {{ board.title || 'Board' }}
+      <v-spacer />
+      <v-btn icon>
+        <v-icon
+          class="fas fa-edit"
+          style="cursor:pointer;"
+          @click="editBoardDialog = true"
+        />
+      </v-btn>
     </div>
     <div class="board-body">
-			<div class="toolbar">
-				<v-btn class="toolbar-btn" color="#f7f7f7" depressed tile
-					@click="newState = true"
-				>
-					<v-icon left>fa fa-plus</v-icon>
-					Add State
-				</v-btn>
-			</div>
+      <div class="toolbar">
+        <v-btn
+          class="toolbar-btn"
+          color="#f7f7f7"
+          depressed
+          tile
+          @click="newState = true"
+        >
+          <v-icon left>
+            fa fa-plus
+          </v-icon>
+          Add State
+        </v-btn>
+        <v-btn
+          class="toolbar-btn"
+          color="#f7f7f7"
+          depressed
+          tile
+          @click="newClass = true"
+        >
+          <v-icon left>
+            fa fa-plus
+          </v-icon>
+          Add Classroom
+        </v-btn>
+      </div>
       <v-row class="board-states">
-				<v-draggable
-					:list="states"
-					:animation="200"
-					:show-dropzone-areas="true"
-					group="states"
-					style="display: flex"
-					@change="orderChange"
-				>
-				<v-col
-					v-for="state in states"
-					:key="state.id"
-					class="board-states-col"
-				>
-					<v-sheet
-						class="rounded lg border shadow-sm board-states-item"
-					>
-						<p class="board-states-item-title">
-							{{ state.title }}
-								<v-btn class="board-states-item-btn" color="#f7f7f7"
-									@click="showNewCard(state)"
-									x-small
-									elevation="0"
-								>
-									<v-icon left x-small>fa fa-plus</v-icon>
-									card
-								</v-btn>
-						</p>
-						<v-draggable
-							:list="state.cards"
-							:animation="200"
-							:show-dropzone-areas="true"
-							group="tasks"
-							class="board-states-item-draggable"
-						>
-							<state-card
-								v-for="(task) in state.cards"
-								:key="task.id"
-								:task="task"
-								class="mt-3 cursor-move"
-							/> 
-							
-						</v-draggable>
-					</v-sheet>
-				</v-col>
-				</v-draggable>
+        <v-draggable
+          :list="states"
+          :animation="200"
+          :show-dropzone-areas="true"
+          group="states"
+          style="display: flex"
+          @change="orderChange"
+        >
+          <v-col
+            v-for="state in states"
+            :key="state.id"
+            class="board-states-col"
+          >
+            <v-sheet
+              class="rounded lg border shadow-sm board-states-item"
+            >
+              <p class="board-states-item-title">
+                {{ state.title }}
+                <v-btn
+                  class="board-states-item-btn"
+                  color="#f7f7f7"
+                  x-small
+                  elevation="0"
+                  @click="showNewCard(state)"
+                >
+                  <v-icon
+                    left
+                    x-small
+                  >
+                    fa fa-plus
+                  </v-icon>
+                  card
+                </v-btn>
+              </p>
+              <v-draggable
+                :list="state.cards"
+                :animation="200"
+                :show-dropzone-areas="true"
+                group="tasks"
+                class="board-states-item-draggable"
+              >
+                <state-card
+                  v-for="(task) in state.cards"
+                  :key="task.id"
+                  :task="task"
+                  class="mt-3 cursor-move"
+                />
+              </v-draggable>
+            </v-sheet>
+          </v-col>
+        </v-draggable>
       </v-row>
     </div>
 
-		<div class="dialogs">
-			<board-dialog
-				v-if="board"
-				:open-dialog="editBoardDialog"
-				:board="board"
-				@save="saveBoard"
-				@close="editBoardDialog = false"
-			/>
-			<state-dialog
-				v-if="board"
-				title="Create new state"
-				:open-dialog="newState"
-				@save="createState"
-				@close="newState = false"
-			>
-				<v-text-field
-					v-model="stateName"
-					label="New State Name"
-					required
-				/>
-			</state-dialog>
+    <div class="dialogs">
+      <board-dialog
+        v-if="board"
+        :open-dialog="editBoardDialog"
+        :board="board"
+        @save="saveBoard"
+        @close="editBoardDialog = false"
+      />
+      <state-dialog
+        v-if="board"
+        title="Create new state"
+        :open-dialog="newState"
+        @save="createState"
+        @close="newState = false"
+      >
+        <v-text-field
+          v-model="stateName"
+          label="New State Name"
+          required
+        />
+      </state-dialog>
 
-			<card-dialog
-				v-if="board && card.state"
-				:title="`Create new ${card.state.title} Card`"
-				:open-dialog="newCard"
-				@save="createCard"
-				@close="newCard = false"
-			>
-				<v-text-field
-					v-model="card.title"
-					label="New Card Name"
-					maxlength="191"
-					required
-				/>
+      <card-dialog
+        v-if="board && card.state"
+        :title="`Create new ${card.state.title} Card`"
+        :open-dialog="newCard"
+        @save="createCard"
+        @close="newCard = false"
+      >
+        <v-text-field
+          v-model="card.title"
+          label="New Card Name"
+          maxlength="191"
+          required
+        />
 
-				<v-textarea
-					name="input-7-1"
-					filled
-					label="Card Description"
-					auto-grow
-					v-model="card.desc"
-					maxlength="191"
-				></v-textarea>
+        <v-textarea
+          v-model="card.desc"
+          name="input-7-1"
+          filled
+          label="Card Description"
+          auto-grow
+          maxlength="191"
+        />
 
-				<v-menu
-					ref="menu"
-					v-model="menu"
-					:close-on-content-click="false"
-					transition="scale-transition"
-					offset-y
-					min-width="auto"
-				>
-					<template v-slot:activator="{ on, attrs }">
-						<v-text-field
-							v-model="card.due_date"
-							label="Due Date"
-							prepend-icon="fa fa-calendar"
-							readonly
-							v-bind="attrs"
-							v-on="on"
-						></v-text-field>
-					</template>
-					<v-date-picker
-						v-model="card.due_date"
-						no-title
-						scrollable
-					/>
-				</v-menu>
-			</card-dialog>
-		</div>
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="card.due_date"
+              label="Due Date"
+              prepend-icon="fa fa-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            />
+          </template>
+          <v-date-picker
+            v-model="card.due_date"
+            no-title
+            scrollable
+          />
+        </v-menu>
+      </card-dialog>
+      <class-dialog
+        v-if="board"
+        title="Add Classroom"
+        :open-dialog="newClass"
+        @save="createCard"
+        @close="newClass = false"
+      >
+        <v-select
+          :items="['cscc01', 'cscc02', 'cscc03', 'cscc04']"
+          :menu-props="{ maxHeight: '400' }"
+          label="Select"
+          multiple
+          hint="Choose classes"
+          persistent-hint
+        ></v-select>
+
+				<v-select
+          :items="states.map(s => s.title)"
+          :menu-props="{ maxHeight: '400' }"
+          label="Select"
+          hint="Entry State"
+          persistent-hint
+        ></v-select>
+      </class-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -153,6 +201,7 @@
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
 			'card-dialog': Dialog,
+			'class-dialog': Dialog,
 			'state-dialog': Dialog,
 			'v-draggable': Draggable
 		},
@@ -172,6 +221,7 @@
 				editBoardDialog: false,
 				states: [],
 				newState: false,
+				newClass: false,
 				stateName: '',
 				newCard: false,
 				card: {},
@@ -183,7 +233,7 @@
 				// If the board id changes, reload all board content
 				this.reloadPageContent()
 			},
-			
+
 		},
 		mounted() {
 			this.reloadPageContent();

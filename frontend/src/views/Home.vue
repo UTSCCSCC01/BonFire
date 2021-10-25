@@ -9,7 +9,7 @@
           style="background-image: url('assets/img/header-1.jpeg')"
         />
         <div class="container">
-          <div class="content">
+          <div class="content home-body">
             <div class="title-area">
               <p>Welcome To</p>
               <h1
@@ -207,6 +207,12 @@ export default {
 
 
 <style lang="scss" scoped>
+.home-body {
+  justify-content: center;
+  display: flex;
+  flex-direction: column;
+}
+
 .space {
   height: 130px;
   display: block;

@@ -1,12 +1,14 @@
-import { User, Board, Classroom } from '.prisma/client';
+import { User, Board, Classroom, Prisma } from '.prisma/client';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BoardService } from 'src/board/board.service';
 import { PrismaService } from 'src/prisma.service';
+import { StateService } from 'src/state/state.service';
 import { ClassroomDto } from '../constants/classroom';
 
 @Injectable()
 export class ClassroomService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private boardService: BoardService, private stateService: StateService) {}
 
   /** Create a new board
    * @param  {User} user
@@ -29,9 +31,26 @@ export class ClassroomService {
     }
 
     const token: string = this.generateClassroomToken();
+    const board = await this.boardService.create(user, ({ title: token } as Board));
+
+    //TODO(davidpetrov): Add in progress state that publishes cards to student boards
+    await this.stateService.create({ board_id: board.id, title: 'Tasks' }, 'TODO');
+    await this.stateService.create({ board_id: board.id, title: 'Done' }, 'DONE');
+
     classroomData.token = token;
     classroomData.creator_id = user.id;
+    classroomData.board_id = board.id;
     return this.prisma.classroom.create({ data: classroomData });
+  }
+
+  /** Find all boards by user id
+   * @param  {User} user
+   * @returns Promise
+   */
+  async findAll(user: User): Promise<ClassroomDto[]> {
+    return this.prisma.classroom.findMany({
+      where: { creator_id: user.id },
+    });
   }
 
   // get classroom by id and return ClassroomDto
@@ -57,11 +76,4 @@ export class ClassroomService {
     return 'Campsite#'.concat(code);
   }
 
-  async findAll(user: User): Promise<ClassroomDto[]> {
-    return this.prisma.classroom.findMany({
-      where: {
-        creator_id: user.id,
-      },
-    });
-  }
 }

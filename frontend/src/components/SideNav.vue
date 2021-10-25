@@ -30,7 +30,7 @@
               My Dashboard
             </v-list-item-title>
             <v-list-item-subtitle v-if="!collapsed">
-              {{ currentUser.first_name }} {{ currentUser.last_name }}
+              {{ $currentUser.first_name }} {{ $currentUser.last_name }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -54,12 +54,10 @@
           :to="`/classroom/${classroom.id}`"
         >
           <v-list-item-icon>
-            <v-icon>fas fa-fire-alt</v-icon>
+            <v-icon v-if="classroom.creator_id == $currentUser.id" color="blue">fas fa-fire-alt</v-icon>
+            <v-icon v-else>fas fa-fire-alt</v-icon>
           </v-list-item-icon>
           <v-list-item-title>{{ classroom.name }}</v-list-item-title>
-          <v-list-item-icon v-if="classroom.creator_id == currentUser.id">
-            <v-icon>fas fa-crown</v-icon>
-          </v-list-item-icon>
         </v-list-item>
         <v-list-item @click="createNewClassroom = true">
           <v-list-item-icon>
@@ -111,10 +109,10 @@
             icon
             color="dark-grey"
             @click="deleteBoard(board)"
-          > 
+          >
             <v-icon x-small>
               fa fa-times
-            </v-icon> 
+            </v-icon>
           </v-btn>
         </v-list-item>
 
@@ -167,7 +165,6 @@ export default {
       boards: [],
       classrooms: [],
       collapsed: true,
-      currentUser: this.$currentUser,
     };
   },
   mounted() {
@@ -221,7 +218,6 @@ export default {
           console.error(err);
         })
       }
-      
     },
 
   },

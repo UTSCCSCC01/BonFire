@@ -1,13 +1,21 @@
 <template>
   <div class="board-dialog">
-    <v-dialog v-model="openDialog" persistent max-width="600px">
+    <v-dialog
+      v-model="openDialog"
+      persistent
+      max-width="600px"
+    >
       <!-- Dialog Card -->
       <v-card>
         <v-card-title> Edit Board </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
-              <v-col cols="12" sm="12" md="12">
+              <v-col
+                cols="12"
+                sm="12"
+                md="12"
+              >
                 <v-text-field
                   v-model="boardData.title"
                   label="Board Title"
@@ -19,8 +27,20 @@
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn color="blue darken-1" text @click="deleteBoard(board); closeDialog();"> Delete </v-btn>
-          <v-btn color="blue darken-1" text @click="closeDialog"> Close </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="deleteBoard(board); closeDialog();"
+          >
+            Delete
+          </v-btn>
+          <v-btn
+            color="blue darken-1"
+            text
+            @click="closeDialog"
+          >
+            Close
+          </v-btn>
           <v-btn
             color="blue darken-1"
             text
@@ -56,13 +76,13 @@ export default {
       saving: false,
     };
   },
-  mounted() {
-    this.boardData = JSON.parse(JSON.stringify(this.board));
-  },
   watch: {
     board: function() {
       this.boardData = JSON.parse(JSON.stringify(this.board));
     },
+  },
+  mounted() {
+    this.boardData = JSON.parse(JSON.stringify(this.board));
   },
   methods: {
     saveBoard() {
