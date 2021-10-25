@@ -35,6 +35,7 @@ export class ClassroomService {
 
     //TODO(davidpetrov): Add in progress state that publishes cards to student boards
     await this.stateService.create({ board_id: board.id, title: 'Tasks' }, 'TODO');
+    await this.stateService.create({ board_id: board.id, title: 'In Progress' }, 'CUSTOM');
     await this.stateService.create({ board_id: board.id, title: 'Done' }, 'DONE');
 
     classroomData.token = token;

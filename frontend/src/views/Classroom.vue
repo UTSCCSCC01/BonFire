@@ -24,7 +24,7 @@
 						<v-icon left>
 							fa fa-plus
 						</v-icon>
-						Add Task
+						New Assignment
 					</v-btn>
 				</div>
 				<v-row class="board-states">
@@ -64,7 +64,7 @@
 						color="#f7f7f7"
 						depressed
 						tile
-						@click="showNewCard(states[0])"
+						@click="addStudent()"
 					>
 						<v-icon left>
 							fa fa-plus
@@ -76,7 +76,7 @@
 						color="#f7f7f7"
 						depressed
 						tile
-						@click="showNewCard(states[0])"
+						@click="closeClassroom()"
 					>
 						<v-icon left>
 							fa fa-plus
@@ -98,14 +98,14 @@
       />
 			<card-dialog
         v-if="card.state"
-        :title="`Create new ${card.state.title} Card`"
+        :title="`Create new Assignment`"
         :open-dialog="newCard"
         @save="createCard"
         @close="newCard = false"
       >
         <v-text-field
           v-model="card.title"
-          label="New Card Name"
+          label="Assignment Name"
           maxlength="191"
           required
         />
@@ -113,7 +113,7 @@
           v-model="card.desc"
           name="input-7-1"
           filled
-          label="Card Description"
+          label="Assignment Description (Ex: Acceptance Criteria, etc.)"
           auto-grow
           maxlength="191"
         />
@@ -191,6 +191,10 @@
 			this.reloadPageContent();
 		},
 		methods: {
+			addStudent(){
+			},
+			closeClassroom(){
+			},
 			saveRoom(data) {
 				this.room = data;
 			},
