@@ -241,36 +241,6 @@
 						this.card = {};
 					})
 			},
-			editCard() {
-				this.card.state_id = this.card.state.id;
-				delete this.card.state;
-
-				if (this.card.due_date) {
-					let date = this.card.due_date.split('-');
-					this.card.due_date = new Date(date[0], date[1] - 1, date[2]).toISOString()
-				}
-
-				this.$http.post('cards', this.card)
-					.then(res => {
-						this.$notify({
-							type: "success",
-							title: "Successfully edited the card",
-						});
-
-						this.states.find(state => state.id == res.data.state_id).cards.push(res.data);
-					})
-					.catch(err => {
-						this.$notify({
-							type: "error",
-							title: "Failed to edit card",
-							text: `Failed to edit ${this.card.title}`,
-						});
-						console.error(err);
-					})
-					.finally(() => {
-						this.card = {};
-					})
-			},
 			createState() {
 				this.$http.post('states', { board_id: this.boardId, title: this.stateName })
 					.then(res => {
