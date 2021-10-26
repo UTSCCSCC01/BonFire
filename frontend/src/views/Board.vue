@@ -60,6 +60,7 @@
 								v-for="(task) in state.cards"
 								:key="task.id"
 								:task="task"
+								@deleteCard="removeStateCard"
 								class="mt-3 cursor-move"
 							/>
 
@@ -198,6 +199,10 @@
 					state,
 				}
 				this.newCard = true;
+			},
+			removeStateCard(card) {
+				const state = this.states.find(state => state.id === card.state_id);
+				state.cards = state.cards.filter(stateCard => stateCard.id !== card.id);
 			},
 			moveCard(e) {
 				console.log({ e });
