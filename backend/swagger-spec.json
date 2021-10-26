@@ -270,6 +270,42 @@
         ]
       }
     },
+    "/boards/{id}/reorder-cards": {
+      "put": {
+        "operationId": "reorderCards",
+        "summary": "Reorder a boards card",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Card details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "boards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/boards/{id}/states": {
       "get": {
         "operationId": "getStates",
@@ -768,6 +804,48 @@
           "title"
         ]
       },
+      "CardDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "submit_url": {
+            "type": "string"
+          },
+          "order": {
+            "type": "number"
+          },
+          "due_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "desc",
+          "submit_url",
+          "order",
+          "due_date",
+          "created_at",
+          "updated_at"
+        ]
+      },
       "StateDto": {
         "type": "object",
         "properties": {
@@ -814,48 +892,6 @@
         "required": [
           "board_id",
           "title"
-        ]
-      },
-      "CardDto": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "number"
-          },
-          "title": {
-            "type": "string"
-          },
-          "desc": {
-            "type": "string"
-          },
-          "submit_url": {
-            "type": "string"
-          },
-          "order": {
-            "type": "number"
-          },
-          "due_date": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "created_at": {
-            "format": "date-time",
-            "type": "string"
-          },
-          "updated_at": {
-            "format": "date-time",
-            "type": "string"
-          }
-        },
-        "required": [
-          "id",
-          "title",
-          "desc",
-          "submit_url",
-          "order",
-          "due_date",
-          "created_at",
-          "updated_at"
         ]
       },
       "CreateCardDto": {

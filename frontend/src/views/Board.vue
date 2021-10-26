@@ -39,57 +39,52 @@
         </v-btn>
       </div>
       <v-row class="board-states">
-        <v-draggable
-          :list="states"
-          :animation="200"
-          :show-dropzone-areas="true"
-          group="states"
-          style="display: flex"
-          @change="orderChange"
-        >
-          <v-col
-            v-for="state in states"
-            :key="state.id"
-            class="board-states-col"
-          >
-            <v-sheet
-              class="rounded lg border shadow-sm board-states-item"
-            >
-              <p class="board-states-item-title">
-                {{ state.title }}
-                <v-btn
-                  class="board-states-item-btn"
-                  color="#f7f7f7"
-                  x-small
-                  elevation="0"
-                  @click="showNewCard(state)"
-                >
-                  <v-icon
-                    left
-                    x-small
-                  >
-                    fa fa-plus
-                  </v-icon>
-                  card
-                </v-btn>
-              </p>
-              <v-draggable
-                :list="state.cards"
-                :animation="200"
-                :show-dropzone-areas="true"
-                group="tasks"
-                class="board-states-item-draggable"
-              >
-                <state-card
-                  v-for="(task) in state.cards"
-                  :key="task.id"
-                  :task="task"
-                  class="mt-3 cursor-move"
-                />
-              </v-draggable>
-            </v-sheet>
-          </v-col>
-        </v-draggable>
+				<v-draggable
+					:list="states"
+					:animation="200"
+					:show-dropzone-areas="true"
+					group="states"
+					style="display: flex"
+					@change="orderChange"
+				>
+				<v-col
+					v-for="state in states"
+					:key="state.id"
+					class="board-states-col"
+				>
+					<v-sheet
+						class="rounded lg border shadow-sm board-states-item"
+					>
+						<p class="board-states-item-title">
+							{{ state.title }}
+								<v-btn class="board-states-item-btn" color="#f7f7f7"
+									@click="showNewCard(state)"
+									x-small
+									elevation="0"
+								>
+									<v-icon left x-small>fa fa-plus</v-icon>
+									card
+								</v-btn>
+						</p>
+						<v-draggable
+							:list="state.cards"
+							:animation="200"
+							:show-dropzone-areas="true"
+							group="tasks"
+							class="board-states-item-draggable"
+							@change="moveCard"
+						>
+							<state-card
+								v-for="(task) in state.cards"
+								:key="task.id"
+								:task="task"
+								class="mt-3 cursor-move"
+							/>
+
+						</v-draggable>
+					</v-sheet>
+				</v-col>
+				</v-draggable>
       </v-row>
     </div>
 
@@ -247,6 +242,22 @@
 					state,
 				}
 				this.newCard = true;
+			},
+			moveCard(e) {
+				console.log({ e });
+				const event = e.added || e.moved;
+				if (event) {
+					const newState = this.states.find(state => state.cards.find(card => card.id === event.element.id));
+					this.updateCardState(event.element.id, newState.id, event.newIndex);
+				}
+			},
+			updateCardState(card_id, state_id, order) {
+				this.$http.put(`/boards/${this.boardId}/reorder-cards`, { card_id, state_id, order })
+					.then(res => {
+						console.log({res})
+					}).catch(err => {
+						console.error({err});
+					});
 			},
 			createCard() {
 				this.newCard = false;
