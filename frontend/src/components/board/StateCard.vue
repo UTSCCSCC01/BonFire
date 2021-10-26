@@ -13,15 +13,8 @@
         </div>
       </v-card-text>
 
-      <v-btn
-        align="right"
-        icon
-        color="dark-grey"
-        @click="deleteCard(task)"
-      > 
-        <v-icon x-small>
-          fa fa-times
-        </v-icon> 
+      <v-btn align="right" icon color="dark-grey" @click="deleteCard(task)">
+        <v-icon x-small> fa fa-times </v-icon>
       </v-btn>
     </v-card>
   </div>
@@ -38,13 +31,12 @@ export default {
 
   methods: {
     deleteCard(card) {
-
 				let confirmation = confirm(`Are you sure you want to delete card ${card.title}`);
 
 				if (confirmation) {
 					this.$http.delete(`cards/${card.id}`)
 					.then(() => {
-						//Good
+            this.$emit('deleteCard', card);
 					})
 					.catch(err => {
 					console.error(err);
