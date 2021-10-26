@@ -68,7 +68,7 @@ export class CardService {
           id: +user.id,
         }
       },
-      order: cardOrder + 1
+      order: cardOrder,
     };
 
     return this.prisma.card.create({
