@@ -54,14 +54,15 @@
 							:show-dropzone-areas="true"
 							group="tasks"
 							class="board-states-item-draggable"
+							@change="moveCard"
 						>
 							<state-card
 								v-for="(task) in state.cards"
 								:key="task.id"
 								:task="task"
 								class="mt-3 cursor-move"
-							/> 
-							
+							/>
+
 						</v-draggable>
 					</v-sheet>
 				</v-col>
@@ -183,7 +184,7 @@
 				// If the board id changes, reload all board content
 				this.reloadPageContent()
 			},
-			
+
 		},
 		mounted() {
 			this.reloadPageContent();
@@ -197,6 +198,22 @@
 					state,
 				}
 				this.newCard = true;
+			},
+			moveCard(e) {
+				console.log({ e });
+				const event = e.added || e.moved;
+				if (event) {
+					const newState = this.states.find(state => state.cards.find(card => card.id === event.element.id));
+					this.updateCardState(event.element.id, newState.id, event.newIndex);
+				}
+			},
+			updateCardState(card_id, state_id, order) {
+				this.$http.put(`/boards/${this.boardId}/reorder-cards`, { card_id, state_id, order })
+					.then(res => {
+						console.log({res})
+					}).catch(err => {
+						console.error({err});
+					});
 			},
 			createCard() {
 				this.newCard = false;

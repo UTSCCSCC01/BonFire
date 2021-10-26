@@ -2,6 +2,7 @@ import { Board, Prisma } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import e from 'express';
+import { CardDto } from 'src/constants/card';
 import { StateDto } from 'src/constants/state';
 import { PrismaService } from 'src/prisma.service';
 import { BoardDto } from '../constants/board';
@@ -126,6 +127,7 @@ export class BoardService {
   /**
    * Reorganize board states
    *
+   * @param {user} User
    * @param {number} id
    * @param {number} oldIndex Previous state index
    * @param {number} newIndex New state index
@@ -176,6 +178,66 @@ export class BoardService {
     return;
   }
 
+  /**
+   * Given a card ID, move the card from the old state to the new state at the proper index and order.
+   * Change the order of the old state to account for the removed card
+   * NOTE: This is a very inefficient way to do this.
+   * TODO: Fix a reordering bug
+   * @param {number} card_id
+   * @param {number} new_state_id the cards new state id
+   * @param {number} new_index  the cards index in the new state
+   */
+  async reorganizeCards(card_id: number, new_state_id: number, new_index: number): Promise<CardDto> {
+    const card = await this.prisma.card.findFirst({
+      where: {
+        id: card_id,
+      },
+    });
+    const old_state_id = card.state_id;
+
+    // Update the new state cards
+    const updatedCards2 = await this.prisma.card.updateMany({
+      where: {
+        state_id: new_state_id,
+        order: {
+          gte: new_index,
+        },
+      },
+      data: {
+        order: {
+          increment: 1,
+        },
+      },
+    })
+
+    // update the old state
+    const updatedOldStateCards = await this.prisma.card.updateMany({
+      where: {
+        state_id: old_state_id,
+        order: {
+          gt: card.order,
+        }
+      },
+      data: {
+        order: {
+          decrement: 1,
+        },
+      },
+    })
+
+
+    // update the cards state and order
+    return await this.prisma.card.update({
+      where: {
+        id: card.id,
+      },
+      data: {
+        state_id: new_state_id,
+        order: new_index
+      },
+    });
+  }
+
   /** Delete a board by id
    * @param  {number} boardId
    * @returns Promise
@@ -187,9 +249,11 @@ export class BoardService {
         id: boardId,
       },
     });
+
     if (!board) {
       throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
     }
+
     return this.prisma.board.delete({
       where: {
         id: boardId,

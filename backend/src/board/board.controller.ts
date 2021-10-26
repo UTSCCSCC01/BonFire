@@ -24,6 +24,7 @@ import {
 import { Board, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { BoardDetailsDto, BoardDto } from 'src/constants/board';
+import { CardDto } from 'src/constants/card';
 import { StateDto } from 'src/constants/state';
 import { StateService } from 'src/state/state.service';
 import { BoardService } from './board.service';
@@ -133,6 +134,25 @@ export class BoardController {
     );
   }
 
+  @Put(':id/reorder-cards')
+  @ApiOperation({ summary: 'Reorder a boards card' })
+  @ApiOkResponse({
+    description: 'Card details',
+    type: CardDto,
+  })
+  public async reorderCards(
+    @RequestUser() user: User,
+    @Param('id') board_id: number,
+    @Body()
+    body: {
+      card_id: number;
+      state_id: number;
+      order: number;
+    },
+  ) {
+    return await this.boardService.reorganizeCards(body.card_id, body.state_id, body.order);
+  }
+
   @Get(':id/states')
   @ApiOperation({ summary: 'Returns all states tied to a specific board' })
   @ApiOkResponse({
@@ -143,8 +163,17 @@ export class BoardController {
     @Param('id') boardId: number,
     @Query('include') include: string,
   ): Promise<StateDto[]> {
+    const orderIndices = {
+      cards: {
+        orderBy: {
+          order: 'asc'
+        }
+      },
+      board: true
+    }
+
     let includes = include.split(',').reduce((acc, field) => {
-      if (['cards', 'board'].includes(field)) acc[field] = true;
+      if (orderIndices.hasOwnProperty(field)) acc[field] = orderIndices[field];
       return acc;
     }, {});
 
