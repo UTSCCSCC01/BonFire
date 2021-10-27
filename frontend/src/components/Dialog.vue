@@ -7,36 +7,36 @@
     >
       <!-- Dialog Card -->
       <v-card>
-				<slot name="header">
-					<v-card-title>
-						{{ title }}
-					</v-card-title>
-				</slot>
+        <slot name="header">
+          <v-card-title>
+            {{ title }}
+          </v-card-title>
+        </slot>
         <v-card-text>
           <v-container>
-						<slot></slot>
+            <slot />
           </v-container>
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-					<slot name="footer">
-						<v-btn
-							color="blue darken-1"
-							text
-							@click="$emit('close')"
-						>
-							Close
-						</v-btn>
-						<v-btn
-							color="blue darken-1"
-							text
-							:disabled="!saveable"
-							:loading="saving"
-							@click="$emit('save')"
-						>
-							Save
-						</v-btn>
-					</slot>
+          <slot name="footer">
+            <v-btn
+              color="blue darken-1"
+              text
+              @click="$emit('close')"
+            >
+              Close
+            </v-btn>
+            <v-btn
+              color="blue darken-1"
+              text
+              :disabled="!saveable"
+              :loading="saving"
+              @click="$emit('save')"
+            >
+              Save
+            </v-btn>
+          </slot>
         </v-card-actions>
       </v-card>
     </v-dialog>

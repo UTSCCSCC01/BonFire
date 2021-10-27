@@ -1,25 +1,43 @@
 <template>
   <div class="board mx-4">
     <div class="header">
-			{{ board.title || 'Board' }}
-			<v-spacer></v-spacer>
-			<v-btn icon>
-				<v-icon
-					class="fas fa-edit"
-					style="cursor:pointer;"
-					@click="editBoardDialog = true"
-				/>
-			</v-btn>
+      {{ board.title || 'Board' }}
+      <v-spacer />
+      <v-btn icon>
+        <v-icon
+          class="fas fa-edit"
+          style="cursor:pointer;"
+          @click="editBoardDialog = true"
+        />
+      </v-btn>
     </div>
     <div class="board-body">
-			<div class="toolbar">
-				<v-btn class="toolbar-btn" color="#f7f7f7" depressed tile
-					@click="newState = true"
-				>
-					<v-icon left>fa fa-plus</v-icon>
-					Add State
-				</v-btn>
-			</div>
+      <div class="toolbar">
+        <v-btn
+          class="toolbar-btn"
+          color="#f7f7f7"
+          depressed
+          tile
+          @click="newState = true"
+        >
+          <v-icon left>
+            fa fa-plus
+          </v-icon>
+          Add State
+        </v-btn>
+        <v-btn
+          class="toolbar-btn"
+          color="#f7f7f7"
+          depressed
+          tile
+          @click="newClass = true"
+        >
+          <v-icon left>
+            fa fa-plus
+          </v-icon>
+          Add Classroom
+        </v-btn>
+      </div>
       <v-row class="board-states">
 				<v-draggable
 					:list="states"
@@ -71,77 +89,101 @@
       </v-row>
     </div>
 
-		<div class="dialogs">
-			<board-dialog
-				v-if="board"
-				:open-dialog="editBoardDialog"
-				:board="board"
-				@save="saveBoard"
-				@close="editBoardDialog = false"
-			/>
-			<state-dialog
-				v-if="board"
-				title="Create new state"
-				:open-dialog="newState"
-				@save="createState"
-				@close="newState = false"
-			>
-				<v-text-field
-					v-model="stateName"
-					label="New State Name"
-					required
-				/>
-			</state-dialog>
+    <div class="dialogs">
+      <board-dialog
+        v-if="board"
+        :open-dialog="editBoardDialog"
+        :board="board"
+        @save="saveBoard"
+        @close="editBoardDialog = false"
+      />
+      <state-dialog
+        v-if="board"
+        title="Create new state"
+        :open-dialog="newState"
+        @save="createState"
+        @close="newState = false"
+      >
+        <v-text-field
+          v-model="stateName"
+          label="New State Name"
+          required
+        />
+      </state-dialog>
 
-			<card-dialog
-				v-if="board && card.state"
-				:title="`Create new ${card.state.title} Card`"
-				:open-dialog="newCard"
-				@save="createCard"
-				@close="newCard = false"
-			>
-				<v-text-field
-					v-model="card.title"
-					label="New Card Name"
-					maxlength="191"
-					required
-				/>
+      <card-dialog
+        v-if="board && card.state"
+        :title="`Create new ${card.state.title} Card`"
+        :open-dialog="newCard"
+        @save="createCard"
+        @close="newCard = false"
+      >
+        <v-text-field
+          v-model="card.title"
+          label="New Card Name"
+          maxlength="191"
+          required
+        />
 
-				<v-textarea
-					name="input-7-1"
-					filled
-					label="Card Description"
-					auto-grow
-					v-model="card.desc"
-					maxlength="191"
-				></v-textarea>
+        <v-textarea
+          v-model="card.desc"
+          name="input-7-1"
+          filled
+          label="Card Description"
+          auto-grow
+          maxlength="191"
+        />
 
-				<v-menu
-					ref="menu"
-					v-model="menu"
-					:close-on-content-click="false"
-					transition="scale-transition"
-					offset-y
-					min-width="auto"
-				>
-					<template v-slot:activator="{ on, attrs }">
-						<v-text-field
-							v-model="card.due_date"
-							label="Due Date"
-							prepend-icon="fa fa-calendar"
-							readonly
-							v-bind="attrs"
-							v-on="on"
-						></v-text-field>
-					</template>
-					<v-date-picker
-						v-model="card.due_date"
-						no-title
-						scrollable
-					/>
-				</v-menu>
-			</card-dialog>
-		</div>
+        <v-menu
+          ref="menu"
+          v-model="menu"
+          :close-on-content-click="false"
+          transition="scale-transition"
+          offset-y
+          min-width="auto"
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-text-field
+              v-model="card.due_date"
+              label="Due Date"
+              prepend-icon="fa fa-calendar"
+              readonly
+              v-bind="attrs"
+              v-on="on"
+            />
+          </template>
+          <v-date-picker
+            v-model="card.due_date"
+            no-title
+            scrollable
+          />
+        </v-menu>
+      </card-dialog>
+      <class-dialog
+        v-if="board"
+        title="Add Classroom"
+        :open-dialog="newClass"
+        @save="createCard"
+        @close="newClass = false"
+      >
+        <v-select
+          :items="classrooms.map(c => c.name)"
+          :menu-props="{ maxHeight: '400' }"
+          label="Select"
+          multiple
+          hint="Choose classes"
+          persistent-hint
+        ></v-select>
+
+				<v-select
+          :items="states.map(s => s.title)"
+          :menu-props="{ maxHeight: '400' }"
+          label="Select"
+          hint="Entry State"
+          persistent-hint
+        ></v-select>
+      </class-dialog>
+    </div>
   </div>
 </template>
 <script>
@@ -155,6 +197,7 @@
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
 			'card-dialog': Dialog,
+			'class-dialog': Dialog,
 			'state-dialog': Dialog,
 			'v-draggable': Draggable
 		},
@@ -171,9 +214,11 @@
 		data() {
 			return {
 				board: {},
+				classrooms: [],
 				editBoardDialog: false,
 				states: [],
 				newState: false,
+				newClass: false,
 				stateName: '',
 				newCard: false,
 				card: {},
@@ -183,14 +228,25 @@
 		watch: {
 			boardId: function() {
 				// If the board id changes, reload all board content
+				this.getUserClassrooms();
 				this.reloadPageContent()
 			},
 
 		},
 		mounted() {
+			this.getUserClassrooms();
 			this.reloadPageContent();
 		},
 		methods: {
+			getUserClassrooms(){
+				this.$http.get('classrooms')
+				.then(res => {
+					this.classrooms = res.data;
+				})
+				.catch(err => {
+					console.error(err);
+				})
+			},
 			saveBoard(data) {
 				this.board = data;
 			},

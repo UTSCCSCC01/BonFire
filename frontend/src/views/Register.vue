@@ -90,6 +90,8 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
+
 export default {
   data() {
     return {
@@ -120,6 +122,7 @@ export default {
       this.loading = true;
       this.$http.post('auth/register', this.user)
         .then(res => {
+          Vue.prototype.$currentUser = res.data;
           localStorage.setItem('token', res.data.token.accessToken);
           this.$router.push('Dashboard');
         })

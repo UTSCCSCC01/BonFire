@@ -30,7 +30,7 @@
               My Dashboard
             </v-list-item-title>
             <v-list-item-subtitle v-if="!collapsed">
-              {{ currentUser.first_name }} {{ currentUser.last_name }}
+              {{ $currentUser.first_name }} {{ $currentUser.last_name }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -47,6 +47,7 @@
       <v-list
         nav
         dense
+        v-if="classrooms"
       >
         <v-list-item
           v-for="classroom in classrooms"
@@ -54,12 +55,10 @@
           :to="`/classroom/${classroom.id}`"
         >
           <v-list-item-icon>
-            <v-icon>fas fa-fire-alt</v-icon>
+            <v-icon v-if="classroom.creator_id == $currentUser.id" color="blue">fas fa-fire-alt</v-icon>
+            <v-icon v-else>fas fa-fire-alt</v-icon>
           </v-list-item-icon>
           <v-list-item-title>{{ classroom.name }}</v-list-item-title>
-          <v-list-item-icon v-if="classroom.creator_id == currentUser.id">
-            <v-icon>fas fa-crown</v-icon>
-          </v-list-item-icon>
         </v-list-item>
         <v-list-item @click="createNewClassroom = true">
           <v-list-item-icon>
@@ -111,10 +110,10 @@
             icon
             color="dark-grey"
             @click="deleteBoard(board)"
-          > 
+          >
             <v-icon x-small>
               fa fa-times
-            </v-icon> 
+            </v-icon>
           </v-btn>
         </v-list-item>
 
@@ -167,7 +166,6 @@ export default {
       boards: [],
       classrooms: [],
       collapsed: true,
-      currentUser: this.$currentUser,
     };
   },
   mounted() {
@@ -215,13 +213,16 @@ export default {
       if (confirmation) {
         this.$http.delete(`boards/${board.id}`)
         .then(() => {
-          if (board.id == this.$route.params.boardId) this.$router.push({ name: 'Dashboard' });
+          this.boards = this.boards.filter(b => b.id != board.id);
+
+          if (board.id == this.$route.params.boardId) {
+            this.$router.push({ name: 'Dashboard' });
+          }
         })
         .catch(err => {
           console.error(err);
         })
       }
-      
     },
 
   },

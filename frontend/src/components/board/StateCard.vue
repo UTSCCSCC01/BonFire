@@ -16,7 +16,6 @@
       <v-btn align="right" icon color="dark-grey" @click="deleteCard(task)">
         <v-icon x-small> fa fa-times </v-icon>
       </v-btn>
-
     </v-card>
   </div>
 </template>

@@ -7,6 +7,7 @@ import Register from "@/views/Register.vue";
 
 import Dashboard from "@/views/Dashboard.vue";
 import Board from "@/views/Board.vue";
+import Classroom from "@/views/Classroom.vue";
 
 Vue.use(VueRouter)
 
@@ -57,6 +58,12 @@ const routes = [
     path: "/board/:boardId",
     name: "board",
     component: Board,
+    props: true
+  },
+  {
+    path: "/classroom/:classroomId",
+    name: "class",
+    component: Classroom,
     props: true
   },
 ];
