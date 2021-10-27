@@ -40,9 +40,17 @@
       <!-- Render this list using v-for and load in user boards and other elements -->
       <v-toolbar-title
         v-if="!collapsed"
-        class="text-h6 px-3"
+        class="text-h6 px-3 d-flex"
       >
         My Campsites
+        <span class="ml-auto">
+          <v-btn icon color="blue" @click="joinSearchedClassroom = true">
+            <v-icon small>fas fa-search</v-icon>
+          </v-btn>
+          <v-btn icon color="green" @click="createNewClassroom = true">
+            <v-icon small>fas fa-plus</v-icon>
+          </v-btn>
+        </span>
       </v-toolbar-title>
       <v-list
         nav
@@ -61,23 +69,18 @@
           <v-list-item-title>{{ classroom.name }}</v-list-item-title>
         </v-list-item>
       </v-list>
-      <center>
-        <v-icon class="w-25 p-3" color="blue" @click="joinSearchedClassroom = true">
-          fas fa-search
-        </v-icon>
-        <v-icon class="w-25 p-3" color="green" @click="createNewClassroom = true">
-          fas fa-plus
-        </v-icon>
-      </center>
-
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
       <v-toolbar-title
         v-if="!collapsed"
-        class="text-h6 px-3"
+        class="text-h6 px-3 d-flex"
       >
-        <v-icon>fas fa-campfire</v-icon>
         My Campfires
+        <span class="ml-auto">
+          <v-btn icon color="green" @click="createNewBoard = true">
+            <v-icon small>fas fa-plus</v-icon>
+          </v-btn>
+        </span>
       </v-toolbar-title>
       <v-list
         nav
@@ -108,12 +111,6 @@
             </v-icon>
           </v-btn>
         </v-list-item>
-
-        <center>
-        <v-icon class="w-25 p-3" color="green" @click="createNewBoard = true">
-          fas fa-plus
-        </v-icon>
-      </center>
       </v-list>
 
       <template v-slot:append>
@@ -209,7 +206,7 @@ export default {
         .then(() => {
           this.boards = this.boards.filter(b => b.id != board.id);
           this.$router.push({ name: 'Dashboard' });
-          
+
         })
         .catch(err => {
           console.error(err);
