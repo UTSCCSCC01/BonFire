@@ -184,19 +184,7 @@ export default {
   },
   methods: {
     addStudent() {},
-    closeClassroom() {
-      let confirmation = confirm(`Are you sure you want to delete classroom ${this.room.name}`);
-
-      if (confirmation) {
-        this.$http.delete(`classrooms/${this.room.id}`)
-        .then(() => {
-           this.$router.push({ name: 'Dashboard' });
-        })
-        .catch(err => {
-          console.error(err);
-        })
-      }
-    },
+    closeClassroom() {},
     saveRoom(data) {
       this.room = data;
     },

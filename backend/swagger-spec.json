@@ -624,33 +624,6 @@
             "bearer": []
           }
         ]
-      },
-      "delete": {
-        "operationId": "deleteClassroom",
-        "summary": "Deletes a classroom by specific ID",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Classroom deleted"
-          }
-        },
-        "tags": [
-          "classrooms"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
       }
     },
     "/user/classroom": {
