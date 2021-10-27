@@ -60,23 +60,15 @@
           </v-list-item-icon>
           <v-list-item-title>{{ classroom.name }}</v-list-item-title>
         </v-list-item>
-        <v-list-item @click="createNewClassroom = true">
-          <v-list-item-icon>
-            <v-icon color="green">
-              fas fa-plus
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Create Campsite</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="joinSearchedClassroom = true">
-          <v-list-item-icon>
-            <v-icon color="blue">
-              fas fa-search
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Join Campsite</v-list-item-title>
-        </v-list-item>
       </v-list>
+            <center>
+        <v-icon class="w-25 p-3" color="blue" @click="joinSearchedClassroom = true">
+          fas fa-search
+        </v-icon>
+        <v-icon class="w-25 p-3" color="green" @click="createNewClassroom = true">
+          fas fa-plus
+        </v-icon>
+      </center>
 
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
@@ -117,14 +109,11 @@
           </v-btn>
         </v-list-item>
 
-        <v-list-item @click="createNewBoard = true">
-          <v-list-item-icon>
-            <v-icon color="green">
-              fas fa-plus
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Create new Board</v-list-item-title>
-        </v-list-item>
+        <center>
+        <v-icon class="w-25 p-3" color="green" @click="createNewBoard = true">
+          fas fa-plus
+        </v-icon>
+      </center>
       </v-list>
 
       <template v-slot:append>
@@ -168,10 +157,15 @@ export default {
       collapsed: true,
     };
   },
+  watch: {
+    $route() {
+      this.getUserBoards();
+      this.getUserClassrooms();
+    },
+  },
   mounted() {
     this.getUserBoards();
     this.getUserClassrooms();
-
   },
   methods: {
     signOut() {
@@ -214,10 +208,8 @@ export default {
         this.$http.delete(`boards/${board.id}`)
         .then(() => {
           this.boards = this.boards.filter(b => b.id != board.id);
-
-          if (board.id == this.$route.params.boardId) {
-            this.$router.push({ name: 'Dashboard' });
-          }
+          this.$router.push({ name: 'Dashboard' });
+          
         })
         .catch(err => {
           console.error(err);

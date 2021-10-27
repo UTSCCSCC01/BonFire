@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -66,5 +67,14 @@ export class ClassroomController {
   })
   public async getClassrooms(@RequestUser() user): Promise<ClassroomDto[]> {
     return this.classroomService.findAll(user);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deletes a classroom by specific ID' })
+  @ApiOkResponse({
+    description: 'Classroom deleted',
+  })
+  public async deleteClassroom(@RequestUser() user, @Param('id') id: number) {
+    return this.classroomService.delete(user, +id);
   }
 }
