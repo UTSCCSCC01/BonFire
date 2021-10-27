@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
@@ -75,5 +76,13 @@ export class ClassroomController {
     @Param('id') classId: number,
   ): Promise<User> {
     return this.classroomService.removeUser(user, +classId);
+  }
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deletes a classroom by specific ID' })
+  @ApiOkResponse({
+    description: 'Classroom deleted',
+  })
+  public async deleteClassroom(@RequestUser() user, @Param('id') id: number) {
+    return this.classroomService.delete(user, +id);
   }
 }

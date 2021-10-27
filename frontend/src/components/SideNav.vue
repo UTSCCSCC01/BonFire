@@ -40,9 +40,17 @@
       <!-- Render this list using v-for and load in user boards and other elements -->
       <v-toolbar-title
         v-if="!collapsed"
-        class="text-h6 px-3"
+        class="text-h6 px-3 d-flex"
       >
         My Campsites
+        <span class="ml-auto">
+          <v-btn icon color="blue" @click="joinSearchedClassroom = true">
+            <v-icon small>fas fa-search</v-icon>
+          </v-btn>
+          <v-btn icon color="green" @click="createNewClassroom = true">
+            <v-icon small>fas fa-plus</v-icon>
+          </v-btn>
+        </span>
       </v-toolbar-title>
       <v-list
         nav
@@ -71,71 +79,52 @@
             </v-icon>
           </v-btn>
         </v-list-item>
-        <v-list-item @click="createNewClassroom = true">
-          <v-list-item-icon>
-            <v-icon color="green">
-              fas fa-plus
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Create Campsite</v-list-item-title>
-        </v-list-item>
-        <v-list-item @click="joinSearchedClassroom = true">
-          <v-list-item-icon>
-            <v-icon color="blue">
-              fas fa-search
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Join Campsite</v-list-item-title>
-        </v-list-item>
       </v-list>
-
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
       <v-toolbar-title
         v-if="!collapsed"
-        class="text-h6 px-3"
+        class="text-h6 px-3 d-flex"
       >
-        <v-icon>fas fa-campfire</v-icon>
         My Campfires
+        <span class="ml-auto">
+          <v-btn icon color="green" @click="createNewBoard = true">
+            <v-icon small>fas fa-plus</v-icon>
+          </v-btn>
+        </span>
       </v-toolbar-title>
       <v-list
         nav
         dense
       >
-        <v-list-item
-          v-for="board in boards"
-          :key="board.id"
-          :to="`/board/${board.id}`"
-        >
-          <v-list-item-icon>
-            <v-icon
+      <template v-for="board in boards">
+        <v-hover v-slot="{ hover }" v-bind:key="board.id">
+          <v-list-item
+            :to="`/board/${board.id}`"
+          >
+            <v-list-item-icon>
+              <v-icon
+                icon
+                color="dark-grey"
+              >
+                fas fa-fire
+              </v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>{{ board.title }}</v-list-item-title>
+            <v-btn
+              align="right"
+              v-if="hover"
               icon
               color="dark-grey"
+              @click="deleteBoard(board)"
             >
-              fas fa-fire
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>{{ board.title }}</v-list-item-title>
-          <v-btn
-            align="right"
-            icon
-            color="dark-grey"
-            @click="deleteBoard(board)"
-          >
-            <v-icon x-small>
-              fa fa-times
-            </v-icon>
-          </v-btn>
-        </v-list-item>
-
-        <v-list-item @click="createNewBoard = true">
-          <v-list-item-icon>
-            <v-icon color="green">
-              fas fa-plus
-            </v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Create new Board</v-list-item-title>
-        </v-list-item>
+              <v-icon x-small>
+                fa fa-times
+              </v-icon>
+            </v-btn>
+          </v-list-item>
+        </v-hover>
+      </template>
       </v-list>
 
       <template v-slot:append>
@@ -179,10 +168,15 @@ export default {
       collapsed: true,
     };
   },
+  watch: {
+    $route() {
+      this.getUserBoards();
+      this.getUserClassrooms();
+    },
+  },
   mounted() {
     this.getUserBoards();
     this.getUserClassrooms();
-
   },
   methods: {
     signOut() {
@@ -237,10 +231,8 @@ export default {
         this.$http.delete(`boards/${board.id}`)
         .then(() => {
           this.boards = this.boards.filter(b => b.id != board.id);
+          this.$router.push({ name: 'Dashboard' });
 
-          if (board.id == this.$route.params.boardId) {
-            this.$router.push({ name: 'Dashboard' });
-          }
         })
         .catch(err => {
           console.error(err);
