@@ -215,30 +215,34 @@ Tracking on Jira Total Mark: _22_ / 24
 ---
 
 ## Sprint Demo (Max 14 marks) 
+
   - Attendance (max 2 marks)
-    - 2 marks = full team is present
+    - **2 marks = full team is present**
     - 1 mark = one member is not present
     - 0 marks = more than one member is not present
-  
   - Working software (max 2 marks)
     - 8 marks = features presented work flawlessly
     - 1 mark removed for each bug/error identified or for missing records on Jira
-
+    - -1 Can have duplicate campsites on the navbar
+    - **7/8**
   - Presentation (max 2 marks)
-    - 2 marks = UI demonstrated is visually appealing and intuitive for users
+    - **2 marks = UI demonstrated is visually appealing and intuitive for users**
     - 1 mark = one or more errors identified by the demo TA
     - 0 marks = UI is visually unappealing
-
   - Documentation (max 2 marks)
+      - **2 marks = documentation has been created for frontend and backend systems with great detail**
+      - 1 mark = documentation has been created for frontend and backend systems with some errors
+      - 0 marks = documentation has not been created
 
-  - 2 marks = documentation has been created for frontend and backend systems with great detail
-  - 1 mark = documentation has been created for frontend and backend systems with some errors
-  - 0 marks = documentation has not been created
+Extra notes:
 
-  Your Mark: _TBD_ / 14
+- fix the duplicate campsite bug
+- UI looks great
+
+Your Mark: 13 / 14
 
 ---
 
 ## Total Mark
 
-_74_ / 93
+_87_ / 93
