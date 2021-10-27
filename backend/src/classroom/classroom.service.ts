@@ -49,8 +49,19 @@ export class ClassroomService {
    * @returns Promise
    */
   async findAll(user: User): Promise<ClassroomDto[]> {
-    return this.prisma.classroom.findMany({
-      where: { creator_id: user.id },
+    return await this.prisma.classroom.findMany({
+      where: {
+        OR: [
+          { creator_id: user.id },
+          {
+            students: {
+              every: {
+                student_id: user.id,
+              }
+            },
+          },
+        ]
+      }
     });
   }
 

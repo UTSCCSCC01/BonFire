@@ -68,6 +68,8 @@ export class BoardService {
     return this.prisma.board.findMany({
       where: {
         user_id: user.id,
+        deleted: false,
+        classroom: { none: {} }
       },
     });
   }
@@ -100,21 +102,17 @@ export class BoardService {
     include?: Prisma.StateInclude,
   ): Promise<StateDto[]> {
     // Find all states tied to a boardId with a specifc user
-
     const board = await this.prisma.board.findFirst({
       where: {
-        user_id: user.id,
         id: boardId,
       },
     });
 
     // Find all states tied to a boardId with a specific user
-    const stateWhereInput: Prisma.StateWhereInput = {
-      board_id: board.id,
-    };
-
     return this.prisma.state.findMany({
-      where: stateWhereInput,
+      where: {
+        board_id: board.id
+      },
       orderBy: [
         {
           order: 'asc',
@@ -254,9 +252,12 @@ export class BoardService {
       throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
     }
 
-    return this.prisma.board.delete({
+    return this.prisma.board.update({
       where: {
         id: boardId,
+      },
+      data: {
+        deleted: true,
       },
     });
   }

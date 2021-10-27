@@ -51,6 +51,7 @@
   </div>
 </template>
 <script>
+import Vue from 'vue';
 
 export default {
   data() {
@@ -76,6 +77,7 @@ export default {
       this.loading = true;
       this.$http.post('auth/login', this.user)
         .then(res => {
+          Vue.prototype.$currentUser = res.data;
           localStorage.setItem('token', res.data.token.accessToken);
           this.$router.push('Dashboard');
         })

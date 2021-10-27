@@ -167,7 +167,7 @@
         @close="newClass = false"
       >
         <v-select
-          :items="['cscc01', 'cscc02', 'cscc03', 'cscc04']"
+          :items="classrooms.map(c => c.name)"
           :menu-props="{ maxHeight: '400' }"
           label="Select"
           multiple
@@ -214,6 +214,7 @@
 		data() {
 			return {
 				board: {},
+				classrooms: [],
 				editBoardDialog: false,
 				states: [],
 				newState: false,
@@ -227,14 +228,25 @@
 		watch: {
 			boardId: function() {
 				// If the board id changes, reload all board content
+				this.getUserClassrooms();
 				this.reloadPageContent()
 			},
 
 		},
 		mounted() {
+			this.getUserClassrooms();
 			this.reloadPageContent();
 		},
 		methods: {
+			getUserClassrooms(){
+				this.$http.get('classrooms')
+				.then(res => {
+					this.classrooms = res.data;
+				})
+				.catch(err => {
+					console.error(err);
+				})
+			},
 			saveBoard(data) {
 				this.board = data;
 			},

@@ -55,9 +55,10 @@ model Board {
   title      String
   created_at DateTime   @default(now())
   updated_at DateTime   @updatedAt
+  deleted    Boolean    @default(false)
   user_id    Int
   user       User       @relation(fields: [user_id], references: [id])
-  clasroom   Classroom?
+  classroom   Classroom[]
   states     State[]
 
   @@index([user_id])

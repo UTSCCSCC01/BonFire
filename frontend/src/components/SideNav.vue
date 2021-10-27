@@ -47,6 +47,7 @@
       <v-list
         nav
         dense
+        v-if="classrooms"
       >
         <v-list-item
           v-for="classroom in classrooms"
@@ -212,7 +213,11 @@ export default {
       if (confirmation) {
         this.$http.delete(`boards/${board.id}`)
         .then(() => {
-          if (board.id == this.$route.params.boardId) this.$router.push({ name: 'Dashboard' });
+          this.boards = this.boards.filter(b => b.id != board.id);
+
+          if (board.id == this.$route.params.boardId) {
+            this.$router.push({ name: 'Dashboard' });
+          }
         })
         .catch(err => {
           console.error(err);
