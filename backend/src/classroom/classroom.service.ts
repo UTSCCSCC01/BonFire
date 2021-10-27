@@ -8,7 +8,11 @@ import { ClassroomDto } from '../constants/classroom';
 
 @Injectable()
 export class ClassroomService {
-  constructor(private prisma: PrismaService, private boardService: BoardService, private stateService: StateService) {}
+  constructor(
+    private prisma: PrismaService,
+    private boardService: BoardService,
+    private stateService: StateService,
+  ) {}
 
   /** Create a new board
    * @param  {User} user
@@ -31,12 +35,22 @@ export class ClassroomService {
     }
 
     const token: string = this.generateClassroomToken();
-    const board = await this.boardService.create(user, ({ title: token } as Board));
+    const board = await this.boardService.create(user, {
+      title: token,
+    } as Board);
 
-    //TODO(davidpetrov): Add in progress state that publishes cards to student boards
-    await this.stateService.create({ board_id: board.id, title: 'Tasks' }, 'TODO');
-    await this.stateService.create({ board_id: board.id, title: 'In Progress' }, 'CUSTOM');
-    await this.stateService.create({ board_id: board.id, title: 'Done' }, 'DONE');
+    await this.stateService.create(
+      { board_id: board.id, title: 'Tasks' },
+      'TODO',
+    );
+    await this.stateService.create(
+      { board_id: board.id, title: 'In Progress' },
+      'CUSTOM',
+    );
+    await this.stateService.create(
+      { board_id: board.id, title: 'Done' },
+      'DONE',
+    );
 
     classroomData.token = token;
     classroomData.creator_id = user.id;
@@ -57,11 +71,11 @@ export class ClassroomService {
             students: {
               every: {
                 student_id: user.id,
-              }
+              },
             },
           },
-        ]
-      }
+        ],
+      },
     });
   }
 
@@ -80,6 +94,40 @@ export class ClassroomService {
     return classroom;
   }
 
+  async removeUser(user: User, classroomId: number): Promise<User> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+
+    if (!classroom) {
+      throw new HttpException('Invalid classroom', HttpStatus.UNAUTHORIZED);
+    }
+
+    if (classroom.creator_id === user.id) {
+      throw new HttpException(
+        'Cannot remove creator from classroom',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    await this.prisma.user.update({
+      where: {
+        id: user.id,
+      },
+      data: {
+        classrooms: {
+          disconnect: {
+            id: classroomId,
+          },
+        },
+      },
+    });
+
+    return user;
+  }
+
   generateClassroomToken(): string {
     let code = '';
     for (let i = 0; i < 8; i++) {
@@ -87,5 +135,4 @@ export class ClassroomService {
     }
     return 'Campsite#'.concat(code);
   }
-
 }

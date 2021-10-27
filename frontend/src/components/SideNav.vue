@@ -59,6 +59,17 @@
             <v-icon v-else>fas fa-fire-alt</v-icon>
           </v-list-item-icon>
           <v-list-item-title>{{ classroom.name }}</v-list-item-title>
+          <v-btn
+            v-if="classroom.creator_id != $currentUser.id"
+            align="right"
+            icon
+            color="dark-grey" 
+            @click="leaveClass(classroom)"
+          >
+            <v-icon x-small>
+              fa fa-times
+            </v-icon>
+          </v-btn>
         </v-list-item>
         <v-list-item @click="createNewClassroom = true">
           <v-list-item-icon>
@@ -205,9 +216,21 @@ export default {
     joinClassroom(data) {
       this.classrooms.push(data);
     },
+    leaveClass(classroom) {
+      let confirmation = confirm(`Are you sure you want to leave classroom ${classroom.name}`);
 
+      if (confirmation) {
+        this.$http.put(`classrooms/${classroom.id}/leave`)
+        .then(() => {
+          this.classrooms = this.boards.filter(b => b.id != classroom.id);
+          this.$router.push({ name: 'Dashboard' });
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      }
+    },
     deleteBoard(board) {
-
       let confirmation = confirm(`Are you sure you want to delete board ${board.title}`);
 
       if (confirmation) {
@@ -224,7 +247,6 @@ export default {
         })
       }
     },
-
   },
 };
 

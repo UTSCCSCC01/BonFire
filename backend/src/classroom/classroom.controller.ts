@@ -50,13 +50,13 @@ export class ClassroomController {
     type: ClassroomDto,
   })
   public async getClassroom(
-    @Param('id') boardId: number,
+    @Param('id') classId: number,
   ): Promise<ClassroomDto> {
-    const boardResult = await this.classroomService.find(+boardId);
-    if (!boardResult) {
-      throw new HttpException('Invalid board id', HttpStatus.UNAUTHORIZED);
+    const classResult = await this.classroomService.find(+classId);
+    if (!classResult) {
+      throw new HttpException('Invalid class id', HttpStatus.UNAUTHORIZED);
     }
-    return boardResult;
+    return classResult;
   }
 
   @Get()
@@ -66,5 +66,14 @@ export class ClassroomController {
   })
   public async getClassrooms(@RequestUser() user): Promise<ClassroomDto[]> {
     return this.classroomService.findAll(user);
+  }
+
+  @Put(':id/leave')
+  @ApiOperation({ summary: 'Removes a user from classroom' })
+  public async removeStudent(
+    @RequestUser() user,
+    @Param('id') classId: number,
+  ): Promise<User> {
+    return this.classroomService.removeUser(user, +classId);
   }
 }
