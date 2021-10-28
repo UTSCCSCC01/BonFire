@@ -14,13 +14,8 @@ export class ClassroomService {
     private stateService: StateService,
   ) {}
 
-  /** Create a new board
-   * @param  {User} user
-   * @param  {Board} boardData
-   * @returns Promise
-   */
+
   async create(user: User, classroomData: Classroom): Promise<Classroom> {
-    //check if classroom already exists with the same name
     const classroomExist = await this.prisma.classroom.findFirst({
       where: {
         name: classroomData.name,
@@ -75,7 +70,6 @@ export class ClassroomService {
     });
   }
 
-  // get classroom by id and return ClassroomDto
   async find(classroomId: number): Promise<ClassroomDto> {
     const classroom = await this.prisma.classroom.findFirst({
       where: {
@@ -104,8 +98,7 @@ export class ClassroomService {
     if (classroom.creator_id === user.id) {
       throw new HttpException(
         'Cannot remove creator from classroom',
-        HttpStatus.UNAUTHORIZED,
-      );
+  
     }
 
     await this.prisma.studentClassrooms.delete({
@@ -118,14 +111,38 @@ export class ClassroomService {
     });
 
     return user;
-  }
 
-  generateClassroomToken(): string {
-    let code = '';
-    for (let i = 0; i < 8; i++) {
-      code += Math.floor(Math.random() * 10);
+
+ async regenerateToken(user: User, classroomId: number): Promise<Classroom> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+   
+    if (!classroom){
+      throw new HttpException(
+        'Classroom Does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
     }
-    return 'Campsite#'.concat(code);
+
+    if (classroom.creator_id !== user.id) {
+      throw new HttpException(
+        'Insufficient permissions',
+        HttpStatus.UNAUTHORIZED,
+      );    
+      
+    const token = this.generateClassroomToken();
+      
+    return this.prisma.classroom.update({
+      where: {
+        id: classroomId,
+      },
+      data: {
+        token,
+      },
+    });
   }
 
   async delete(user: User, classroomId: number): Promise<Classroom> {
@@ -154,5 +171,13 @@ export class ClassroomService {
         id: classroomId,
       },
     });
+  }
+  
+  generateClassroomToken(): string {
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    return 'Campsite#'.concat(code);
   }
 }

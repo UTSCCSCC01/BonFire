@@ -656,7 +656,13 @@
     "/classrooms/{id}/leave": {
       "put": {
         "operationId": "removeStudent",
-        "summary": "Removes a user from classroom",
+        "summary": "Removes a user from classroom"
+      }
+    },
+    "/classrooms/{id}/regenerate-token": {
+      "put": {
+        "operationId": "regenerateToken",
+        "summary": "Regenerate token by specific classroom ID",
         "parameters": [
           {
             "name": "id",
@@ -669,7 +675,7 @@
         ],
         "responses": {
           "200": {
-            "description": ""
+            "description": "Classroom updated with new token"
           }
         },
         "tags": [

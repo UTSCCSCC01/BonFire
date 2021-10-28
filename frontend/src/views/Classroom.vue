@@ -117,6 +117,9 @@
         >
           <strong>Invite Code: </strong>
           <span>{{ room.token }}</span>
+          <v-icon color="blue" small right @click="refreshToken">
+            fas fa-sync-alt
+          </v-icon>
         </h5>
       </v-col>
     </div>
@@ -346,6 +349,21 @@ export default {
           console.error(err);
         });
     },
+    refreshToken(){
+      let confirmation = confirm(`Are you sure you want to regenerate your class token? Your old classroom token will not be able to be used to join this classrooom`);
+
+      if (confirmation) {
+        this.$http
+          .put(`classrooms/${this.room.board_id}/regenerate-token`)
+          .then((res) => {
+            this.room.token=res.data.token;
+            this.reorganizeStates();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
+    }
   },
 };
 </script>

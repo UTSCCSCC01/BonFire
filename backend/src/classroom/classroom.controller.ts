@@ -82,7 +82,22 @@ export class ClassroomController {
   @ApiOkResponse({
     description: 'Classroom deleted',
   })
-  public async deleteClassroom(@RequestUser() user, @Param('id') id: number) {
+  public async deleteClassroom(
+    @RequestUser() user,
+    @Param('id') id: number,
+  ): Promise<ClassroomDto> {
     return this.classroomService.delete(user, +id);
+  }
+
+  @Put(':id/regenerate-token')
+  @ApiOperation({ summary: 'Regenerate token by specific classroom ID' })
+  @ApiOkResponse({
+    description: 'Classroom updated with new token',
+  })
+  public async regenerateToken(
+    @RequestUser() user,
+    @Param('id') id: number,
+  ): Promise<ClassroomDto> {
+    return this.classroomService.regenerateToken(user, +id);
   }
 }
