@@ -80,6 +80,40 @@ export class ClassroomService {
     return classroom;
   }
 
+  async regenerateToken(user: User, classroomId: number): Promise<Classroom> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+
+    if (!classroom) {
+      throw new HttpException(
+        'Classroom Does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (classroom.creator_id !== user.id) {
+      throw new HttpException(
+        'Insufficient permissions',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const token = this.generateClassroomToken();
+
+    classroom.token = token;
+    return this.prisma.classroom.update({
+      where: {
+        id: classroomId,
+      },
+      data: {
+        token,
+      },
+    });
+  }
+
   generateClassroomToken(): string {
     let code = '';
     for (let i = 0; i < 8; i++) {
