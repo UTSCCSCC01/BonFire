@@ -58,10 +58,6 @@ export class ClassroomService {
     return this.prisma.classroom.create({ data: classroomData });
   }
 
-  /** Find all boards by user id
-   * @param  {User} user
-   * @returns Promise
-   */
   async findAll(user: User): Promise<ClassroomDto[]> {
     return await this.prisma.classroom.findMany({
       where: {
@@ -112,15 +108,11 @@ export class ClassroomService {
       );
     }
 
-    await this.prisma.user.update({
+    await this.prisma.studentClassrooms.delete({
       where: {
-        id: user.id,
-      },
-      data: {
-        classrooms: {
-          disconnect: {
-            id: classroomId,
-          },
+        classroom_id_student_id: {
+          classroom_id: classroomId,
+          student_id: user.id,
         },
       },
     });

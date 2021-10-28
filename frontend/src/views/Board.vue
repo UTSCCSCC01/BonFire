@@ -39,53 +39,59 @@
         </v-btn>
       </div>
       <v-row class="board-states">
-				<v-draggable
-					:list="states"
-					:animation="200"
-					:show-dropzone-areas="true"
-					group="states"
-					style="display: flex"
-					@change="orderChange"
-				>
-				<v-col
-					v-for="state in states"
-					:key="state.id"
-					class="board-states-col"
-				>
-					<v-sheet
-						class="rounded lg border shadow-sm board-states-item"
-					>
-						<p class="board-states-item-title">
-							{{ state.title }}
-								<v-btn class="board-states-item-btn" color="#f7f7f7"
-									@click="showNewCard(state)"
-									x-small
-									elevation="0"
-								>
-									<v-icon left x-small>fa fa-plus</v-icon>
-									card
-								</v-btn>
-						</p>
-						<v-draggable
-							:list="state.cards"
-							:animation="200"
-							:show-dropzone-areas="true"
-							group="tasks"
-							class="board-states-item-draggable"
-							@change="moveCard"
-						>
-							<state-card
-								v-for="(task) in state.cards"
-								:key="task.id"
-								:task="task"
-								@deleteCard="removeStateCard"
-								class="mt-3 cursor-move"
-							/>
-
-						</v-draggable>
-					</v-sheet>
-				</v-col>
-				</v-draggable>
+        <v-draggable
+          :list="states"
+          :animation="200"
+          :show-dropzone-areas="true"
+          group="states"
+          style="display: flex"
+          @change="orderChange"
+        >
+          <v-col
+            v-for="state in states"
+            :key="state.id"
+            class="board-states-col"
+          >
+            <v-sheet
+              class="rounded lg border shadow-sm board-states-item"
+            >
+              <p class="board-states-item-title">
+                {{ state.title }}
+                <v-btn
+                  class="board-states-item-btn"
+                  color="#f7f7f7"
+                  x-small
+                  elevation="0"
+                  @click="showNewCard(state)"
+                >
+                  <v-icon
+                    left
+                    x-small
+                  >
+                    fa fa-plus
+                  </v-icon>
+                  card
+                </v-btn>
+              </p>
+              <v-draggable
+                :list="state.cards"
+                :animation="200"
+                :show-dropzone-areas="true"
+                group="tasks"
+                class="board-states-item-draggable"
+                @change="moveCard"
+              >
+                <state-card
+                  v-for="(task) in state.cards"
+                  :key="task.id"
+                  :task="task"
+                  class="mt-3 cursor-move"
+                  @deleteCard="removeStateCard"
+                />
+              </v-draggable>
+            </v-sheet>
+          </v-col>
+        </v-draggable>
       </v-row>
     </div>
 
@@ -173,15 +179,15 @@
           multiple
           hint="Choose classes"
           persistent-hint
-        ></v-select>
+        />
 
-				<v-select
+        <v-select
           :items="states.map(s => s.title)"
           :menu-props="{ maxHeight: '400' }"
           label="Select"
           hint="Entry State"
           persistent-hint
-        ></v-select>
+        />
       </class-dialog>
     </div>
   </div>

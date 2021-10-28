@@ -44,41 +44,62 @@
       >
         My Campsites
         <span class="ml-auto">
-          <v-btn icon color="blue" @click="joinSearchedClassroom = true">
+          <v-btn
+            icon
+            color="blue"
+            @click="joinSearchedClassroom = true"
+          >
             <v-icon small>fas fa-search</v-icon>
           </v-btn>
-          <v-btn icon color="green" @click="createNewClassroom = true">
+          <v-btn
+            icon
+            color="green"
+            @click="createNewClassroom = true"
+          >
             <v-icon small>fas fa-plus</v-icon>
           </v-btn>
         </span>
       </v-toolbar-title>
       <v-list
+        v-if="classrooms"
         nav
         dense
-        v-if="classrooms"
       >
-        <v-list-item
-          v-for="classroom in classrooms"
-          :key="classroom.id"
-          :to="`/classroom/${classroom.id}`"
-        >
-          <v-list-item-icon>
-            <v-icon v-if="classroom.creator_id == $currentUser.id" color="blue">fas fa-fire-alt</v-icon>
-            <v-icon v-else>fas fa-fire-alt</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>{{ classroom.name }}</v-list-item-title>
-          <v-btn
-            v-if="classroom.creator_id != $currentUser.id"
-            align="right"
-            icon
-            color="dark-grey" 
-            @click="leaveClass(classroom)"
+        <template v-for="classroom in classrooms">
+          <v-hover
+            v-slot="{ hover }"
+            :key="classroom.id"
           >
-            <v-icon x-small>
-              fa fa-times
-            </v-icon>
-          </v-btn>
-        </v-list-item>
+            <v-list-item
+              :to="`/classroom/${classroom.id}`"
+            >
+              <v-list-item-icon>
+                <v-icon
+                  v-if="classroom.creator_id == $currentUser.id"
+                  color="blue"
+                >
+                  fas fa-fire-alt
+                </v-icon>
+                <v-icon v-else>
+                  fas fa-fire-alt
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ classroom.name }}</v-list-item-title>
+              <v-btn
+                
+                v-if="hover && (classroom.creator_id != $currentUser.id)"
+                align="right"
+                icon
+                color="dark-grey" 
+                @click="leaveClass(classroom)"
+              >
+                <v-icon x-small>
+                  fa fa-times
+                </v-icon>
+              </v-btn>
+            </v-list-item>
+          </v-hover>
+        </template>
       </v-list>
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
@@ -88,7 +109,11 @@
       >
         My Campfires
         <span class="ml-auto">
-          <v-btn icon color="green" @click="createNewBoard = true">
+          <v-btn
+            icon
+            color="green"
+            @click="createNewBoard = true"
+          >
             <v-icon small>fas fa-plus</v-icon>
           </v-btn>
         </span>
@@ -97,34 +122,37 @@
         nav
         dense
       >
-      <template v-for="board in boards">
-        <v-hover v-slot="{ hover }" v-bind:key="board.id">
-          <v-list-item
-            :to="`/board/${board.id}`"
+        <template v-for="board in boards">
+          <v-hover
+            v-slot="{ hover }"
+            :key="board.id"
           >
-            <v-list-item-icon>
-              <v-icon
+            <v-list-item
+              :to="`/board/${board.id}`"
+            >
+              <v-list-item-icon>
+                <v-icon
+                  icon
+                  color="dark-grey"
+                >
+                  fas fa-fire
+                </v-icon>
+              </v-list-item-icon>
+              <v-list-item-title>{{ board.title }}</v-list-item-title>
+              <v-btn
+                v-if="hover"
+                align="right"
                 icon
                 color="dark-grey"
+                @click="deleteBoard(board)"
               >
-                fas fa-fire
-              </v-icon>
-            </v-list-item-icon>
-            <v-list-item-title>{{ board.title }}</v-list-item-title>
-            <v-btn
-              align="right"
-              v-if="hover"
-              icon
-              color="dark-grey"
-              @click="deleteBoard(board)"
-            >
-              <v-icon x-small>
-                fa fa-times
-              </v-icon>
-            </v-btn>
-          </v-list-item>
-        </v-hover>
-      </template>
+                <v-icon x-small>
+                  fa fa-times
+                </v-icon>
+              </v-btn>
+            </v-list-item>
+          </v-hover>
+        </template>
       </v-list>
 
       <template v-slot:append>
@@ -217,6 +245,10 @@ export default {
         this.$http.put(`classrooms/${classroom.id}/leave`)
         .then(() => {
           this.classrooms = this.boards.filter(b => b.id != classroom.id);
+          this.$notify({
+            type: "success",
+            title: "Left class",
+          });
           this.$router.push({ name: 'Dashboard' });
         })
         .catch(err => {
@@ -231,6 +263,10 @@ export default {
         this.$http.delete(`boards/${board.id}`)
         .then(() => {
           this.boards = this.boards.filter(b => b.id != board.id);
+          this.$notify({
+            type: "success",
+            title: "Successfully deleted board",
+          });
           this.$router.push({ name: 'Dashboard' });
 
         })
