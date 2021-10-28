@@ -8,15 +8,14 @@ import { ClassroomDto } from '../constants/classroom';
 
 @Injectable()
 export class ClassroomService {
-  constructor(private prisma: PrismaService, private boardService: BoardService, private stateService: StateService) {}
+  constructor(
+    private prisma: PrismaService,
+    private boardService: BoardService,
+    private stateService: StateService,
+  ) {}
 
-  /** Create a new board
-   * @param  {User} user
-   * @param  {Board} boardData
-   * @returns Promise
-   */
+
   async create(user: User, classroomData: Classroom): Promise<Classroom> {
-    //check if classroom already exists with the same name
     const classroomExist = await this.prisma.classroom.findFirst({
       where: {
         name: classroomData.name,
@@ -31,12 +30,22 @@ export class ClassroomService {
     }
 
     const token: string = this.generateClassroomToken();
-    const board = await this.boardService.create(user, ({ title: token } as Board));
+    const board = await this.boardService.create(user, {
+      title: token,
+    } as Board);
 
-    //TODO(davidpetrov): Add in progress state that publishes cards to student boards
-    await this.stateService.create({ board_id: board.id, title: 'Tasks' }, 'TODO');
-    await this.stateService.create({ board_id: board.id, title: 'In Progress' }, 'CUSTOM');
-    await this.stateService.create({ board_id: board.id, title: 'Done' }, 'DONE');
+    await this.stateService.create(
+      { board_id: board.id, title: 'Tasks' },
+      'TODO',
+    );
+    await this.stateService.create(
+      { board_id: board.id, title: 'In Progress' },
+      'CUSTOM',
+    );
+    await this.stateService.create(
+      { board_id: board.id, title: 'Done' },
+      'DONE',
+    );
 
     classroomData.token = token;
     classroomData.creator_id = user.id;
@@ -44,10 +53,6 @@ export class ClassroomService {
     return this.prisma.classroom.create({ data: classroomData });
   }
 
-  /** Find all boards by user id
-   * @param  {User} user
-   * @returns Promise
-   */
   async findAll(user: User): Promise<ClassroomDto[]> {
     return await this.prisma.classroom.findMany({
       where: {
@@ -65,7 +70,6 @@ export class ClassroomService {
     });
   }
 
-  // get classroom by id and return ClassroomDto
   async find(classroomId: number): Promise<ClassroomDto> {
     const classroom = await this.prisma.classroom.findFirst({
       where: {
@@ -80,7 +84,7 @@ export class ClassroomService {
     return classroom;
   }
 
-  async regenerateToken(user: User, classroomId: number): Promise<Classroom> {
+  async removeUser(user: User, classroomId: number): Promise<User> {
     const classroom = await this.prisma.classroom.findUnique({
       where: {
         id: classroomId,
@@ -88,6 +92,35 @@ export class ClassroomService {
     });
 
     if (!classroom) {
+      throw new HttpException('Invalid classroom', HttpStatus.UNAUTHORIZED);
+    }
+
+    if (classroom.creator_id === user.id) {
+      throw new HttpException(
+        'Cannot remove creator from classroom',
+  
+    }
+
+    await this.prisma.studentClassrooms.delete({
+      where: {
+        classroom_id_student_id: {
+          classroom_id: classroomId,
+          student_id: user.id,
+        },
+      },
+    });
+
+    return user;
+
+
+ async regenerateToken(user: User, classroomId: number): Promise<Classroom> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+   
+    if (!classroom){
       throw new HttpException(
         'Classroom Does not exist',
         HttpStatus.BAD_REQUEST,
@@ -98,12 +131,10 @@ export class ClassroomService {
       throw new HttpException(
         'Insufficient permissions',
         HttpStatus.UNAUTHORIZED,
-      );
-    }
-
+      );    
+      
     const token = this.generateClassroomToken();
-
-    classroom.token = token;
+      
     return this.prisma.classroom.update({
       where: {
         id: classroomId,
@@ -112,14 +143,6 @@ export class ClassroomService {
         token,
       },
     });
-  }
-
-  generateClassroomToken(): string {
-    let code = '';
-    for (let i = 0; i < 8; i++) {
-      code += Math.floor(Math.random() * 10);
-    }
-    return 'Campsite#'.concat(code);
   }
 
   async delete(user: User, classroomId: number): Promise<Classroom> {
@@ -148,5 +171,13 @@ export class ClassroomService {
         id: classroomId,
       },
     });
+  }
+  
+  generateClassroomToken(): string {
+    let code = '';
+    for (let i = 0; i < 8; i++) {
+      code += Math.floor(Math.random() * 10);
+    }
+    return 'Campsite#'.concat(code);
   }
 }

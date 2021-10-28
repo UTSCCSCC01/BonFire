@@ -653,6 +653,12 @@
         ]
       }
     },
+    "/classrooms/{id}/leave": {
+      "put": {
+        "operationId": "removeStudent",
+        "summary": "Removes a user from classroom"
+      }
+    },
     "/classrooms/{id}/regenerate-token": {
       "put": {
         "operationId": "regenerateToken",

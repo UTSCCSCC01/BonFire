@@ -2,9 +2,15 @@
   <div class="board mx-4">
     <div class="header">
       {{ room.name || "Board" }}
-			<span style="color: #f1d7bc" class="px-3"> {{currentUser.id == room.creator_id ? ' - Facilitator' : ' - Student' }}</span>
+      <span
+        style="color: #f1d7bc"
+        class="px-3"
+      > {{ currentUser.id == room.creator_id ? ' - Facilitator' : ' - Student' }}</span>
       <v-spacer />
-      <v-btn icon>
+      <v-btn
+        v-if="currentUser.id == room.creator_id"
+        icon
+      >
         <v-icon
           class="fas fa-edit"
           style="cursor: pointer"
@@ -14,7 +20,10 @@
     </div>
     <div class="board-body">
       <div class="board">
-        <div class="toolbar">
+        <div
+          v-if="currentUser.id == room.creator_id"
+          class="toolbar"
+        >
           <v-btn
             class="toolbar-btn"
             color="#f7f7f7"
@@ -22,8 +31,26 @@
             tile
             @click="showNewCard(states[0])"
           >
-            <v-icon left> fa fa-plus </v-icon>
+            <v-icon left>
+              fa fa-plus
+            </v-icon>
             New Assignment
+          </v-btn>
+        </div>
+        <div>
+          <v-btn
+            v-if="currentUser.id != room.creator_id"
+            class="toolbar-btn"
+            color="#FFCCCC"
+            depressed
+            tile
+            right
+            @click="leaveClass(room)"
+          >
+            <v-icon left>
+              fas fa-sign-out-alt
+            </v-icon>
+            Leave
           </v-btn>
         </div>
         <v-row class="board-states">
@@ -54,7 +81,10 @@
           </v-col>
         </v-row>
       </div>
-      <v-col class="students" v-if="currentUser.id == room.creator_id">
+      <v-col
+        v-if="currentUser.id == room.creator_id"
+        class="students"
+      >
         <div class="toolbar">
           <v-btn
             class="toolbar-btn"
@@ -63,7 +93,9 @@
             tile
             @click="addStudent()"
           >
-            <v-icon left> fa fa-plus </v-icon>
+            <v-icon left>
+              fa fa-plus
+            </v-icon>
             Add Students
           </v-btn>
           <v-btn
@@ -73,11 +105,16 @@
             tile
             @click="closeClassroom()"
           >
-            <v-icon left> fa fa-minus </v-icon>
+            <v-icon left>
+              fa fa-minus
+            </v-icon>
             Close Class
           </v-btn>
         </div>
-        <h5 class="px-4 py-2" style="font-family: Poppins">
+        <h5
+          class="px-4 py-2"
+          style="font-family: Poppins"
+        >
           <strong>Invite Code: </strong>
           <span>{{ room.token }}</span>
           <v-icon color="blue" small right @click="refreshToken">
@@ -134,7 +171,11 @@
               v-on="on"
             />
           </template>
-          <v-date-picker v-model="card.due_date" no-title scrollable />
+          <v-date-picker
+            v-model="card.due_date"
+            no-title
+            scrollable
+          />
         </v-menu>
       </card-dialog>
     </div>
@@ -193,6 +234,10 @@ export default {
       if (confirmation) {
         this.$http.delete(`classrooms/${this.room.id}`)
         .then(() => {
+          this.$notify({
+            type: "success",
+            title: "Successfully disbanded the class",
+          });
            this.$router.push({ name: 'Dashboard' });
         })
         .catch(err => {
@@ -271,6 +316,23 @@ export default {
         .catch((err) => {
           console.error(err);
         });
+    },
+    leaveClass(classroom) {
+      let confirmation = confirm(`Are you sure you want to leave classroom ${classroom.name}`);
+
+      if (confirmation) {
+        this.$http.put(`classrooms/${classroom.id}/leave`)
+        .then(() => {
+          this.$notify({
+            type: "success",
+            title: "Left classroom",
+          });
+          this.$router.push({ name: 'Dashboard' });
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      }
     },
     getRoomInfo() {
       this.$http
