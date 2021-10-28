@@ -653,6 +653,35 @@
         ]
       }
     },
+    "/classrooms/{id}/regenerate-token": {
+      "put": {
+        "operationId": "regenerateToken",
+        "summary": "Regenerate token by specific classroom ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Classroom updated with new token"
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/user/classroom": {
       "put": {
         "operationId": "joinClassroom",
