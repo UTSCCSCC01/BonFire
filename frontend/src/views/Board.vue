@@ -55,8 +55,11 @@
             <v-sheet
               class="rounded lg border shadow-sm board-states-item"
             >
-              <p class="board-states-item-title">
+              <div class="board-states-item-title">
                 {{ state.title }}
+                <p class="board-states-item-count" v-if="state.cards.length > 0">
+                  - {{ state.cards.length }} {{ state.cards.length === 1 ? 'item' : 'items' }}
+                </p>
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -64,27 +67,24 @@
                   elevation="0"
                   @click="showNewCard(state)"
                 >
-                  <v-icon
-                    left
-                    x-small
-                  >
+                  <v-icon left x-small>
                     fa fa-plus
                   </v-icon>
                   card
                 </v-btn>
-              </p>
+              </div>
               <v-draggable
                 :list="state.cards"
                 :animation="200"
                 :show-dropzone-areas="true"
-                group="tasks"
+                group="cards"
                 class="board-states-item-draggable"
                 @change="moveCard"
               >
                 <state-card
-                  v-for="(task) in state.cards"
-                  :key="task.id"
-                  :task="task"
+                  v-for="(card) in state.cards"
+                  :key="card.id"
+                  :card="card"
                   class="mt-3 cursor-move"
                   @deleteCard="removeStateCard"
                 />
@@ -460,6 +460,14 @@
 
 				&-btn {
 					float: right;
+				}
+
+				&-count {
+					font-size: 12px;
+					font-weight: 400;
+					line-height: 24px;
+					opacity: .57;
+					display: inline;
 				}
 
 				&-draggable {
