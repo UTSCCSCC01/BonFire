@@ -69,7 +69,7 @@ export class BoardService {
       where: {
         user_id: user.id,
         deleted: false,
-        classroom: { none: {} }
+        classroom: { none: {} },
       },
     });
   }
@@ -111,7 +111,7 @@ export class BoardService {
     // Find all states tied to a boardId with a specific user
     return this.prisma.state.findMany({
       where: {
-        board_id: board.id
+        board_id: board.id,
       },
       orderBy: [
         {
@@ -185,7 +185,11 @@ export class BoardService {
    * @param {number} new_state_id the cards new state id
    * @param {number} new_index  the cards index in the new state
    */
-  async reorganizeCards(card_id: number, new_state_id: number, new_index: number): Promise<CardDto> {
+  async reorganizeCards(
+    card_id: number,
+    new_state_id: number,
+    new_index: number,
+  ): Promise<CardDto> {
     const card = await this.prisma.card.findFirst({
       where: {
         id: card_id,
@@ -206,7 +210,7 @@ export class BoardService {
           increment: 1,
         },
       },
-    })
+    });
 
     // update the old state
     const updatedOldStateCards = await this.prisma.card.updateMany({
@@ -214,15 +218,14 @@ export class BoardService {
         state_id: old_state_id,
         order: {
           gt: card.order,
-        }
+        },
       },
       data: {
         order: {
           decrement: 1,
         },
       },
-    })
-
+    });
 
     // update the cards state and order
     return await this.prisma.card.update({
@@ -231,7 +234,7 @@ export class BoardService {
       },
       data: {
         state_id: new_state_id,
-        order: new_index
+        order: new_index,
       },
     });
   }
