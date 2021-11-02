@@ -10,11 +10,10 @@ import { PrismaService } from 'src/prisma.service';
 export class StateService {
   constructor(private prisma: PrismaService) {}
 
-
   /** Find a state by prisma values
- * @param  {{skip?:number;take?:number;cursor?:Prisma.StateWhereUniqueInput;where?:Prisma.StateWhereInput;orderBy?:Prisma.StateOrderByWithRelationInput;}} params
- * @returns Promise
- */
+   * @param  {{skip?:number;take?:number;cursor?:Prisma.StateWhereUniqueInput;where?:Prisma.StateWhereInput;orderBy?:Prisma.StateOrderByWithRelationInput;}} params
+   * @returns Promise
+   */
   async findMany(params: {
     skip?: number;
     take?: number;
@@ -35,9 +34,9 @@ export class StateService {
   }
 
   /** Update a state
- * @param  {{where:Prisma.StateWhereUniqueInput;data:Prisma.StateUpdateInput;}} params
- * @returns Promise
- */
+   * @param  {{where:Prisma.StateWhereUniqueInput;data:Prisma.StateUpdateInput;}} params
+   * @returns Promise
+   */
   async update(params: {
     where: Prisma.StateWhereUniqueInput;
     data: Prisma.StateUpdateInput;
@@ -98,7 +97,10 @@ export class StateService {
    * @param  {CreateStateDto} data
    * @returns Promise
    */
-  async create(data: CreateStateDto, type: StateType = 'CUSTOM'): Promise<StateDto> {
+  async create(
+    data: CreateStateDto,
+    type: StateType = 'CUSTOM',
+  ): Promise<StateDto> {
     const stateOrder = await this.prisma.state.count({
       where: {
         board: {
@@ -108,7 +110,7 @@ export class StateService {
     });
 
     let order = 0;
-    if (type === 'DONE') order = -1
+    if (type === 'DONE') order = -1;
     else if (stateOrder > 0) order = stateOrder + 1;
 
     const stateCreateInput: Prisma.StateCreateInput = {
@@ -119,7 +121,7 @@ export class StateService {
         },
       },
       type,
-      order
+      order,
     };
     return this.prisma.state.create({
       data: stateCreateInput,

@@ -150,7 +150,11 @@ export class BoardController {
       order: number;
     },
   ) {
-    return await this.boardService.reorganizeCards(body.card_id, body.state_id, body.order);
+    return await this.boardService.reorganizeCards(
+      body.card_id,
+      body.state_id,
+      body.order,
+    );
   }
 
   @Get(':id/states')
@@ -166,11 +170,11 @@ export class BoardController {
     const orderIndices = {
       cards: {
         orderBy: {
-          order: 'asc'
-        }
+          order: 'asc',
+        },
       },
-      board: true
-    }
+      board: true,
+    };
 
     let includes = include.split(',').reduce((acc, field) => {
       if (orderIndices.hasOwnProperty(field)) acc[field] = orderIndices[field];
