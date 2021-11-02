@@ -140,7 +140,6 @@ export class StateService {
       },
     });
 
-    //Checking if the state's board is an user's board
     const board = await this.prisma.board.findFirst({
       where: {
         user_id: user.id,
@@ -148,7 +147,8 @@ export class StateService {
       },
     });
 
-    if (!board) {
+    //Checking if the state's board is an user's board or if its not a custom board
+    if (!board || state.type != 'CUSTOM') {
       throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
     }
 

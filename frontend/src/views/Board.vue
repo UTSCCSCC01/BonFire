@@ -57,15 +57,14 @@
             >
               <p class="board-states-item-title">
                 {{ state.title }}
-                <v-btn
+                <v-btn v-if="state.type==='CUSTOM'" 
                   class="board-states-item-btn"
                   color="#f7f7f7"
                   x-small
                   elevation="0"
-                  @click="deleteState(state)"
+                  @click="deleteState(state)" 
                 >
-                  <v-icon
-                    left
+                  <v-icon 
                     x-small
                   >
                     fa fa-times
