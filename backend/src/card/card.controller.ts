@@ -52,7 +52,7 @@ export class CardController {
   })
   async create(
     @RequestUser() user: User,
-    @Body() card: CreateCardDto
+    @Body() card: CreateCardDto,
   ): Promise<CardDto> {
     return await this.cardService.create(card, user);
   }
