@@ -82,4 +82,5 @@ export class StateController {
   ): Promise<StateDto> {
     return this.stateService.delete(user, +stateId);
   }
+
 }
