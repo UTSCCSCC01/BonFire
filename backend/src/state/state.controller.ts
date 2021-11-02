@@ -7,6 +7,7 @@ import {
   Param,
   Post,
   UseGuards,
+  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -16,9 +17,11 @@ import {
   ApiOkResponse,
 } from '@nestjs/swagger';
 import { StateService } from './state.service';
+import { RequestUser } from 'src/constants/auth';
 import { StateDto } from '../constants/state';
 import { CreateStateDto } from '../constants/state';
 import { CardDto } from 'src/constants/card';
+import { User } from '@prisma/client';
 
 @Controller('states')
 @ApiTags('states')
@@ -65,5 +68,18 @@ export class StateController {
       throw new HttpException('Invalid state id', HttpStatus.NOT_FOUND);
     }
     return await this.stateService.findCards(+stateId);
+  }
+
+  @Delete(':id')
+  @ApiOperation({ summary: 'Deletes a specific state' })
+  @ApiOkResponse({
+    description: 'Deleted State',
+    status: 201,
+  })
+  public async deleteState(
+    @RequestUser() user: User,
+    @Param('id') stateId: number,
+  ): Promise<StateDto> {
+    return this.stateService.delete(user, +stateId);
   }
 }
