@@ -62,12 +62,12 @@ export default {
   data() {
     return {
       classroom: {},
-      saving: false,
+      joining: false,
     }
   },
   methods: {
     joinClassroom() {
-      this.saving = true;
+      this.joining = true;
       this.$http.put('/user/classroom', this.classroom)
         .then(res => {
           this.$notify({
@@ -87,7 +87,7 @@ export default {
             text: err?.response ?.data?.message || 'Unknown Error'
           });
         })
-        .finally(() => this.saving = false);
+        .finally(() => this.joining = false);
     },
     closeDialog() {
       this.$emit('close-dialog');

@@ -15,7 +15,7 @@
               <v-col cols="2">
                 <v-img
                   src="../src/assets/img/logo.png"
-                  contain="true"
+                  :contain="true"
                   height="65"
                   width="65"
                 />
@@ -25,7 +25,7 @@
               </v-card-title>
               <v-btn
                 v-for="link in links"
-                :key="link"
+                :key="link.name"
                 :to="link.to"
                 text
               >
@@ -42,7 +42,6 @@
         <div class="content">
           <router-view
             class="router-view"
-            :current-user="currentUser"
           />
           <notifications position="bottom" />
         </div>
@@ -52,7 +51,6 @@
 </template>
 <script>
 import SideNav from "./components/SideNav";
-import Vue from "vue";
 
 export default {
   components: {
@@ -65,28 +63,7 @@ export default {
         { name: "Register", to: "/register" },
         { name: "Sign In", to: "/signin" },
       ],
-      currentUser: {},
     };
-  },
-  mounted() {
-    this.getCurrentUser();
-  },
-  methods: {
-    getCurrentUser() {
-      this.$http.get('auth/user')
-        .then(res => {
-         this.currentUser = res.data;
-         Vue.prototype.$currentUser = this.currentUser;
-        })
-        .catch(err => {
-          this.$notify({
-            type: "error",
-            title: "Failed to authenticate",
-          });
-          this.$router.push({ name: 'Home' });
-          console.error(err);
-        })
-    }
   },
 };
 </script>
