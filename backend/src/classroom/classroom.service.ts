@@ -1,7 +1,8 @@
-import { User, Board, Classroom, Prisma } from '.prisma/client';
+import { User, Board, Classroom } from '.prisma/client';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BoardService } from 'src/board/board.service';
+import { UserDto } from 'src/constants/user';
 import { PrismaService } from 'src/prisma.service';
 import { StateService } from 'src/state/state.service';
 import { ClassroomDto } from '../constants/classroom';
@@ -13,7 +14,6 @@ export class ClassroomService {
     private boardService: BoardService,
     private stateService: StateService,
   ) {}
-
 
   async create(user: User, classroomData: Classroom): Promise<Classroom> {
     const classroomExist = await this.prisma.classroom.findFirst({
@@ -172,6 +172,46 @@ export class ClassroomService {
         id: classroomId,
       },
     });
+  }
+
+  async getStudents(user: User, classroomId: number): Promise<UserDto[]> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+
+    if (!classroom) {
+      throw new HttpException(
+        'Classroom Does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (classroom.creator_id !== user.id) {
+      throw new HttpException(
+        'Insufficient permissions',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    const students = await this.prisma.studentClassrooms.findMany({
+      where: {
+        classroom_id: classroomId,
+      },
+    });
+
+    const users = await Promise.all(
+      students.map(async (student) => {
+        return await this.prisma.user.findUnique({
+          where: {
+            id: student.student_id,
+          },
+        });
+      }),
+    );
+
+    return users;
   }
 
   generateClassroomToken(): string {

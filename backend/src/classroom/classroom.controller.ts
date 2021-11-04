@@ -23,6 +23,7 @@ import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { ClassroomService } from './classroom.service';
 import { ClassroomDto } from '../constants/classroom';
+import { UserDto } from 'src/constants/user';
 
 @Controller('classrooms')
 @ApiTags('classrooms')
@@ -99,5 +100,17 @@ export class ClassroomController {
     @Param('id') id: number,
   ): Promise<ClassroomDto> {
     return this.classroomService.regenerateToken(user, +id);
+  }
+
+  @Get(':id/students')
+  @ApiOperation({ summary: 'Returns all students in a classroom' })
+  @ApiOkResponse({
+    description: 'List of Students',
+  })
+  public async getStudents(
+    @RequestUser() user,
+    @Param('id') id: number,
+  ): Promise<UserDto[]> {
+    return this.classroomService.getStudents(user, +id);
   }
 }
