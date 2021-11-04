@@ -5,10 +5,10 @@
       <span
         style="color: #f1d7bc"
         class="px-3"
-      > {{ currentUser.id == room.creator_id ? ' - Facilitator' : ' - Student' }}</span>
+      > {{ $currentUser.id == room.creator_id ? ' - Facilitator' : ' - Student' }}</span>
       <v-spacer />
       <v-btn
-        v-if="currentUser.id == room.creator_id"
+        v-if="$currentUser.id == room.creator_id"
         icon
       >
         <v-icon
@@ -21,7 +21,7 @@
     <div class="board-body">
       <div class="board">
         <div
-          v-if="currentUser.id == room.creator_id"
+          v-if="$currentUser.id == room.creator_id"
           class="toolbar"
         >
           <v-btn
@@ -29,7 +29,7 @@
             color="#f7f7f7"
             depressed
             tile
-            @click="showNewCard(states[0])"
+            @click="showNewCard(assignmentState)"
           >
             <v-icon left>
               fa fa-plus
@@ -39,7 +39,7 @@
         </div>
         <div>
           <v-btn
-            v-if="currentUser.id != room.creator_id"
+            v-if="$currentUser.id != room.creator_id"
             class="toolbar-btn"
             color="#FFCCCC"
             depressed
@@ -54,35 +54,88 @@
           </v-btn>
         </div>
         <v-row class="board-states">
-          <v-col
-            v-for="state in states"
-            :key="state.id"
-            class="board-states-col"
+          <v-draggable
+            :list="states"
+            :animation="200"
+            :show-dropzone-areas="true"
+            group="states"
+            style="display: flex"
+            @change="orderChange"
           >
-            <v-sheet class="rounded lg border shadow-sm board-states-item">
-              <p class="board-states-item-title">
-                {{ state.title }}
-              </p>
-              <v-draggable
-                :list="state.cards"
-                :animation="200"
-                :show-dropzone-areas="true"
-                group="tasks"
-                class="board-states-item-draggable"
+            <v-col
+              v-for="state in boardStates"
+              :key="state.id"
+              class="board-states-col"
+            >
+              <v-sheet
+                class="rounded lg border shadow-sm board-states-item"
               >
-                <state-card
-                  v-for="task in state.cards"
-                  :key="task.id"
-                  :task="task"
-                  class="mt-3 cursor-move"
-                />
-              </v-draggable>
-            </v-sheet>
-          </v-col>
+                <p class="board-states-item-title">
+                  {{ state.title }}
+                  <v-btn
+                    class="board-states-item-btn"
+                    color="#f7f7f7"
+                    x-small
+                    elevation="0"
+                    @click="showNewCard(state)"
+                  >
+                    <v-icon
+                      left
+                      x-small
+                    >
+                      fa fa-plus
+                    </v-icon>
+                    card
+                  </v-btn>
+                </p>
+                <v-draggable
+                  :list="state.cards"
+                  :animation="200"
+                  :show-dropzone-areas="true"
+                  group="tasks"
+                  class="board-states-item-draggable"
+                  @change="moveCard"
+                >
+                  <state-card
+                    v-for="(task) in state.cards"
+                    :key="task.id"
+                    :task="task"
+                    class="mt-3 cursor-move"
+                    @deleteCard="removeStateCard"
+                  />
+                </v-draggable>
+              </v-sheet>
+            </v-col>
+          </v-draggable>
+        </v-row>
+        <v-row v-if="assignmentState">
+          <v-sheet
+            class="rounded lg border shadow-sm board-states-item"
+          >
+            <p class="board-states-item-title">
+              {{ assignmentState.title }}
+            </p>
+            <v-draggable
+              :list="assignmentState.cards"
+              :animation="200"
+              :show-dropzone-areas="true"
+              group="tasks"
+              class="board-states-item-draggable"
+              @change="moveCard"
+            >
+              <state-card
+                v-for="(task) in assignmentState.cards"
+                :key="task.id"
+                :task="task"
+                class="mt-3 cursor-move"
+                @deleteCard="removeStateCard"
+              />
+            </v-draggable>
+          </v-sheet>
         </v-row>
       </div>
       <v-col
-        v-if="currentUser.id == room.creator_id"
+        v-if="$currentUser.id == room.creator_id"
         class="students"
       >
         <div class="toolbar">
@@ -117,7 +170,12 @@
         >
           <strong>Invite Code: </strong>
           <span>{{ room.token }}</span>
-          <v-icon color="blue" small right @click="refreshToken">
+          <v-icon
+            color="blue"
+            small
+            right
+            @click="refreshToken"
+          >
             fas fa-sync-alt
           </v-icon>
         </h5>
@@ -186,8 +244,10 @@ import EditBoardDialog from "@/components/board/EditBoardDialog";
 import Draggable from "vuedraggable";
 import StateCard from "@/components/board/StateCard";
 import Dialog from "@/components/Dialog";
+import Board from "@/mixins/boards.js";
 
 export default {
+  mixins: [Board],
   components: {
     "board-dialog": EditBoardDialog,
     "state-card": StateCard,
@@ -199,22 +259,10 @@ export default {
       type: String,
       required: true,
     },
-    currentUser: {
-      type: Object,
-      required: true,
-    },
   },
   data() {
     return {
       room: {},
-      editBoardDialog: false,
-      newState: false,
-      stateName: "",
-      states: [],
-      newCard: false,
-      board: {},
-      card: {},
-      menu: false,
     };
   },
   watch: {
@@ -248,74 +296,8 @@ export default {
     saveRoom(data) {
       this.room = data;
     },
-    showNewCard(state) {
-      this.card = {
-        state,
-      };
-      this.newCard = true;
-    },
-    createCard() {
-      this.newCard = false;
-      this.card.state_id = this.card.state.id;
-      delete this.card.state;
-
-      if (this.card.due_date) {
-        let date = this.card.due_date.split("-");
-        this.card.due_date = new Date(
-          date[0],
-          date[1] - 1,
-          date[2]
-        ).toISOString();
-      }
-
-      this.$http
-        .post("cards", this.card)
-        .then(() => {
-          this.$notify({
-            type: "success",
-            title: "Successfully Create a new card",
-          });
-        })
-        .catch((err) => {
-          this.$notify({
-            type: "error",
-            title: "Failed to create card",
-            text: `Failed to create ${this.card.title}`,
-          });
-          console.error(err);
-        })
-        .finally(() => {
-          this.card = {};
-        });
-    },
     reloadPageContent() {
       this.getRoomInfo();
-    },
-    reorganizeStates() {
-      this.states.sort((a, b) => {
-        if (a.type === "TODO") return -1;
-        if (a.type === "DONE") return 1;
-
-        if (b.type === "TODO") return 1;
-        if (b.type === "DONE") return -1;
-
-        return a.order - b.order;
-      });
-    },
-    getStates() {
-      this.$http
-        .get(`boards/${this.room.board_id}/states?include=cards`)
-        .then((res) => {
-          this.states = res.data;
-          this.states.forEach((state) => {
-            if (!state.cards) this.$set(state, "cards", []);
-          });
-
-          this.reorganizeStates();
-        })
-        .catch((err) => {
-          console.error(err);
-        });
     },
     leaveClass(classroom) {
       let confirmation = confirm(`Are you sure you want to leave classroom ${classroom.name}`);
@@ -339,10 +321,8 @@ export default {
         .get(`classrooms/${this.classroomId}`)
         .then((res) => {
           this.room = res.data;
-          this.board = {
-            id: this.room.board_id,
-            title: this.room.name,
-          };
+          this.boardId = res.data.board_id;
+          this.board = res.data.board;
           this.getStates();
         })
         .catch((err) => {
@@ -364,6 +344,18 @@ export default {
           });
       }
     }
+  },
+  computed: {
+    boardStates() {
+      return this.states.filter((state) => {
+        return state.type !== "ASSIGNMENTS";
+      });
+    },
+    assignmentState() {
+      return this.states.find((state) => {
+        return state.type === "ASSIGNMENTS";
+      });
+    },
   },
 };
 </script>
@@ -393,11 +385,11 @@ export default {
     width: 66%;
     height: 100%;
     margin-top: 20px;
+    overflow-x: scroll;
+    overflow-y: clip;
 
     &-body {
       width: 100%;
-      overflow-x: scroll;
-      overflow-y: clip;
       margin-left: -15px;
       padding-left: 15px;
       height: 95%;
