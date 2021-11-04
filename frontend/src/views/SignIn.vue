@@ -1,9 +1,9 @@
 <template>
   <div class="register">
-    <v-main>
+    <v-content>
       <v-form
         v-model="valid_form"
-        @submit="submit"
+        @submit="login"
       >
         <v-container>
           <v-row>
@@ -47,52 +47,14 @@
           </v-btn>
         </v-container>
       </v-form>
-    </v-main>
+    </v-content>
   </div>
 </template>
 <script>
-import Vue from 'vue';
+import Auth from '@/mixins/auth';
 
 export default {
-  data() {
-    return {
-      user: {
-        password: '',
-        email: '',
-      },
-      loading: false,
-      valid_form: false,
-    }
-  },
-  computed: {
-    validations() {
-      return {
-        password: () => this.user.password.length > 0 ? true : 'Password is required',
-        email: () => this.user.email.length > 0 ? true : 'Email is required',
-      }
-    }
-  },
-  methods: {
-    submit() {
-      this.loading = true;
-      this.$http.post('auth/login', this.user)
-        .then(res => {
-          Vue.prototype.$currentUser = res.data;
-          localStorage.setItem('token', res.data.token.accessToken);
-          this.$router.push('Dashboard');
-        })
-        .catch(err => {
-          this.$notify({
-            type: 'error',
-            title: 'Error',
-            text: err?.response?.data?.message || 'Unknown Error'
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }
-  },
+  mixins: [Auth],
 }
 </script>
 <style lang="scss" scoped>

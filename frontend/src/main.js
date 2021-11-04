@@ -20,6 +20,7 @@ client.interceptors.request.use(request => {
 
 Vue.config.productionTip = false
 Vue.prototype.$http = client;
+Vue.prototype.$currentUser = {};
 Vue.use(Notifications)
 
 new Vue({
@@ -29,8 +30,24 @@ new Vue({
 }).$mount('#app')
 
 router.beforeEach((to, _, next) => {
-  if (!to.meta.noAuthRequired && !localStorage.getItem('token')) next({
-    name: 'SignIn'
-  })
-  else next()
+  console.log({ to, next, localStorage });
+  if (to.meta.noAuthRequired) {
+    next();
+  } else if (localStorage.getItem('token')) {
+    Vue.prototype.$http.get('/auth/user')
+      .then(res => {
+        Vue.prototype.$currentUser = res.data;
+        next()
+      })
+      .catch(err => {
+        this.$notify({
+          type: "error",
+          title: "Failed to authenticate",
+        });
+        this.$router.push({ name: 'SignIn' });
+        console.error(err);
+      });
+  } else {
+    next({ name: 'SignIn' });
+  }
 });
