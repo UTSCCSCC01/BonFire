@@ -23,7 +23,7 @@ import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { ClassroomService } from './classroom.service';
 import { ClassroomDto } from '../constants/classroom';
-import { UserDto } from 'src/constants/user';
+import { StudentClassroomDto, UserDto } from 'src/constants/user';
 
 @Controller('classrooms')
 @ApiTags('classrooms')
@@ -112,5 +112,15 @@ export class ClassroomController {
     @Param('id') id: number,
   ): Promise<UserDto[]> {
     return this.classroomService.getStudents(user, +id);
+  }
+
+  @Put(':id/remove-student')
+  @ApiOperation({ summary: 'Removes a student from a classroom' })
+  public async removeStudentFromClassroom(
+    @RequestUser() user: User,
+    @Param('id') id: number,
+    @Body() student: User,
+  ): Promise<ClassroomDto> {
+    return this.classroomService.kickStudent(user, +id, student);
   }
 }

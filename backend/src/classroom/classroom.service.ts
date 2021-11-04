@@ -2,7 +2,7 @@ import { User, Board, Classroom } from '.prisma/client';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BoardService } from 'src/board/board.service';
-import { UserDto } from 'src/constants/user';
+import { StudentClassroomDto, UserDto } from 'src/constants/user';
 import { PrismaService } from 'src/prisma.service';
 import { StateService } from 'src/state/state.service';
 import { ClassroomDto } from '../constants/classroom';
@@ -212,6 +212,43 @@ export class ClassroomService {
     );
 
     return users;
+  }
+
+  async kickStudent(
+    creator: User,
+    classroomId: number,
+    student: User,
+  ): Promise<ClassroomDto> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+
+    if (!classroom) {
+      throw new HttpException(
+        'Classroom Does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (classroom.creator_id !== creator.id) {
+      throw new HttpException(
+        'Insufficient permissions',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    await this.prisma.studentClassrooms.delete({
+      where: {
+        classroom_id_student_id: {
+          classroom_id: classroomId,
+          student_id: student.id,
+        },
+      },
+    });
+
+    return classroom;
   }
 
   generateClassroomToken(): string {
