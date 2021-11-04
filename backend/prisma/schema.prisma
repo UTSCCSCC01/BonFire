@@ -109,4 +109,5 @@ enum StateType {
   TODO
   DONE
   CUSTOM
+  ASSIGNMENTS
 }

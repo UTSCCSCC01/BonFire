@@ -12,8 +12,7 @@ export class ClassroomService {
     private prisma: PrismaService,
     private boardService: BoardService,
     private stateService: StateService,
-  ) {}
-
+  ) { }
 
   async create(user: User, classroomData: Classroom): Promise<Classroom> {
     const classroomExist = await this.prisma.classroom.findFirst({
@@ -46,6 +45,10 @@ export class ClassroomService {
       { board_id: board.id, title: 'Done' },
       'DONE',
     );
+    await this.stateService.create(
+      { board_id: board.id, title: 'Assignments' },
+      'ASSIGNMENTS',
+    );
 
     classroomData.token = token;
     classroomData.creator_id = user.id;
@@ -74,6 +77,9 @@ export class ClassroomService {
     const classroom = await this.prisma.classroom.findFirst({
       where: {
         id: classroomId,
+      },
+      include: {
+        board: true,
       },
     });
 
