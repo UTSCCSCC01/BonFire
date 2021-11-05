@@ -132,8 +132,7 @@ export class StateService {
    * @param  {number} stateId
    * @returns Promise
    */
-   async delete(user: User, stateId: number): Promise<StateDto> {
-
+  async delete(user: User, stateId: number): Promise<StateDto> {
     const state = await this.prisma.state.findFirst({
       where: {
         id: stateId,

@@ -36,7 +36,7 @@ export class AssignmentDto {
 
   @ApiProperty()
   deleted?: boolean;
-};
+}
 
 export class CreateAssignmentDto {
   @ApiProperty()
@@ -62,7 +62,7 @@ export class CreateAssignmentDto {
 
   @ApiProperty()
   published_date?: Date;
-};
+}
 
 export class AssignmentDetailsDto {
   @ApiProperty()
@@ -86,4 +86,4 @@ export class AssignmentDetailsDto {
 
   @ApiProperty()
   published_date?: Date;
-};
+}

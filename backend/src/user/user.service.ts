@@ -6,7 +6,7 @@ import { ClassroomDto } from 'src/constants/classroom';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /** Find a user by email or id
    * @param  {Prisma.UserWhereUniqueInput} userWhereUniqueInput

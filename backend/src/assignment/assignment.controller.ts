@@ -1,8 +1,28 @@
 import { User, Assignment } from '.prisma/client';
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpException,
+  HttpStatus,
+  Param,
+  Post,
+  Put,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { ApiTags, ApiBearerAuth, ApiOkResponse, ApiOperation } from '@nestjs/swagger';
-import { AssignmentDetailsDto, AssignmentDto, CreateAssignmentDto } from 'src/constants/assignment';
+import {
+  ApiTags,
+  ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
+} from '@nestjs/swagger';
+import {
+  AssignmentDetailsDto,
+  AssignmentDto,
+  CreateAssignmentDto,
+} from 'src/constants/assignment';
 import { RequestUser } from 'src/constants/auth';
 import { AssignmentService } from './assignment.service';
 
@@ -11,7 +31,7 @@ import { AssignmentService } from './assignment.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class AssignmentController {
-  constructor(private assignmentService: AssignmentService) { }
+  constructor(private assignmentService: AssignmentService) {}
 
   @Post()
   @ApiOperation({ summary: 'Add an assignment to classroom' })
@@ -31,9 +51,7 @@ export class AssignmentController {
     description: 'assignment details',
     type: AssignmentDto,
   })
-  public async getAssignment(
-    @Param('id') id: number,
-  ): Promise<AssignmentDto> {
+  public async getAssignment(@Param('id') id: number): Promise<AssignmentDto> {
     const assignment = await this.assignmentService.find(+id);
     if (!assignment) {
       throw new HttpException('Invalid assignment id', HttpStatus.UNAUTHORIZED);

@@ -14,7 +14,7 @@ export class ClassroomService {
     private prisma: PrismaService,
     private boardService: BoardService,
     private stateService: StateService,
-  ) { }
+  ) {}
 
   async create(user: User, classroomData: Classroom): Promise<Classroom> {
     const classroomExist = await this.prisma.classroom.findFirst({
@@ -118,7 +118,10 @@ export class ClassroomService {
     return user;
   }
 
-  async getAssignments(user: User, classroomId: number): Promise<AssignmentDto[]> {
+  async getAssignments(
+    user: User,
+    classroomId: number,
+  ): Promise<AssignmentDto[]> {
     const classroom = await this.prisma.classroom.findFirst({
       where: {
         id: classroomId,
@@ -129,7 +132,7 @@ export class ClassroomService {
     return this.prisma.assignment.findMany({
       where: {
         classroom_id: classroom.id,
-      }
+      },
     });
   }
 
@@ -153,7 +156,7 @@ export class ClassroomService {
         HttpStatus.UNAUTHORIZED,
       );
     }
-    
+
     const token = this.generateClassroomToken();
 
     return this.prisma.classroom.update({

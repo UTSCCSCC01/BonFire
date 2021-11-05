@@ -30,7 +30,7 @@ import { UserDto } from 'src/constants/user';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class ClassroomController {
-  constructor(private readonly classroomService: ClassroomService) { }
+  constructor(private readonly classroomService: ClassroomService) {}
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new classroom, given ' })

@@ -1,17 +1,32 @@
 <template>
   <div class="state-card">
-    <v-card class="mx-auto shadow-sm" outlined
+    <v-card
+      class="mx-auto shadow-sm"
+      outlined
       @click="openDialog = true"
       @mouseenter="isHovering = true"
       @mouseleave="isHovering = false"
     >
-      <v-btn class="card-remove" align="right" icon color="dark-grey" @click="deleteCard(card)">
-        <v-icon x-small v-show="isHovering" > fa fa-times </v-icon>
+      <v-btn
+        class="card-remove"
+        align="right"
+        icon
+        color="dark-grey"
+        @click="deleteCard(card)"
+      >
+        <v-icon
+          v-show="isHovering"
+          x-small
+        >
+          fa fa-times
+        </v-icon>
       </v-btn>
       <v-card-title class="text-h6 card-title">
         {{ card.title }}
       </v-card-title>
-      <v-card-subtitle class="card-subtitle"> {{ card.desc }} </v-card-subtitle>
+      <v-card-subtitle class="card-subtitle">
+        {{ card.desc }}
+      </v-card-subtitle>
     </v-card>
     <card-dialog
       :open-dialog="openDialog"

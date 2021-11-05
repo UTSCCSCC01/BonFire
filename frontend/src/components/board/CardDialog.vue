@@ -13,10 +13,14 @@
               v-model="cardData.title"
               solo
             />
-            <v-divider></v-divider>
+            <v-divider />
           </div>
           <!-- Left section -->
-          <v-col cols="12" sm="6" md="8">
+          <v-col
+            cols="12"
+            sm="6"
+            md="8"
+          >
             <v-card-text style="min-height: 400px">
               <v-textarea
                 v-model="cardData.desc"
@@ -27,9 +31,16 @@
             </v-card-text>
           </v-col>
           <!-- Right section -->
-          <v-col cols="6" md="4" style="display: flex; padding-left">
-            <v-divider vertical></v-divider>
-            <div class="right-menu" style="padding-left: 10px">
+          <v-col
+            cols="6"
+            md="4"
+            style="display: flex; padding-left"
+          >
+            <v-divider vertical />
+            <div
+              class="right-menu"
+              style="padding-left: 10px"
+            >
               <v-menu
                 ref="menu"
                 v-model="menu"
@@ -61,39 +72,39 @@
                 Created At
               </v-card-subtitle>
               <v-card-subtitle style="padding-top: 0;">
-                {{ (cardData.created_at).replace(/[a-zA-Z]|:[0-9]{2}(\.[0-9]{3})/g, ' ').trim() }}
+                {{ formatDate(cardData.created_at) }}
               </v-card-subtitle>
               <v-card-subtitle style="padding-bottom: 0; padding-left: 0; color: grey;">
                 Last updated
               </v-card-subtitle>
               <v-card-subtitle style="padding-top: 0;">
-                {{ (cardData.updated_at).replace(/[a-zA-Z]|:[0-9]{2}(\.[0-9]{3})/g, ' ').trim() }}
+                {{ formatDate(cardData.updated_at) }}
               </v-card-subtitle>
             </div>
           </v-col>
         </v-row>
         <v-card-actions>
-          <v-spacer></v-spacer>
+          <v-spacer />
           <v-btn
             color="secondary"
             text
             @click="cancelChanges"
           >
-             Cancel
+            Cancel
           </v-btn>
           <v-btn
             color="secondary"
             text
             @click="close"
           >
-             Close
+            Close
           </v-btn>
           <v-btn
             color="primary"
             text
             @click="updateChanges"
           >
-             Update
+            Update
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -138,6 +149,9 @@ export default {
     },
     cancelChanges() {
       this.cardData = JSON.parse(JSON.stringify(this.card));
+    },
+    formatDate(date) {
+      return date?.replace(/[a-zA-Z]|:[0-9]{2}(\.[0-9]{3})/g, ' ')?.trim()
     },
     close() {
       this.$emit('close');

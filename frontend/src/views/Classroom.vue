@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-content class="board mx-4" v-if="room.creator_id">
+    <v-content v-if="room.creator_id" class="board mx-4">
       <div class="header">
         {{ room.name || "Board" }}
         <span style="color: #f1d7bc" class="px-3">
@@ -82,10 +82,11 @@
                     @change="moveCard"
                   >
                     <state-card
-                      v-for="task in state.cards"
-                      :key="task.id"
-                      :task="task"
+                      v-for="(card) in state.cards"
+                      :key="card.id"
+                      :card="card"
                       class="mt-3 cursor-move"
+                      @updateCard="updateCard"
                       @deleteCard="removeStateCard"
                     />
                   </v-draggable>
@@ -99,91 +100,69 @@
               :items="assignments"
               :items-per-page="5"
               class="elevation-1"
-            ></v-data-table>
-        </v-row>
-      </div>
-      <v-col
-        v-if="currentUser.id == room.creator_id"
-        class="students"
-      >
-        <h6
-          class="px-4 py-2"
-          style="font-family: Poppins"
-        >
-          <strong>Invite Code: </strong>
-          <span>{{ room.token }}</span>
-          <v-btn
-            icon
-            color="blue"
-            @click="refreshToken">
-            <v-icon x-small>fas fa-sync-alt</v-icon>
-          </v-btn>
-          <v-btn
-            icon
-            color="green"
-            @click="copyToken">
-            <v-icon x-small>fas fa-copy</v-icon>
-          </v-btn>
-        </h6>
-        <h6 class="px-4 py-2" style="font-family: Poppins; font-weight: bold ">
-          Students
-        </h6>
-        <div v-if="room.students.length>0">
-          <v-list class="student-list" dense rounded style="">
-            <v-list-item
-              v-for="student in room.students"
-              :key="student.id"
+            />
+          </v-row>
+        </div>
+        <v-col v-if="$currentUser.id == room.creator_id" class="students">
+          <h6 class="px-4 py-2" style="font-family: Poppins">
+            <strong>Invite Code: </strong>
+            <span>{{ room.token }}</span>
+            <v-btn icon color="blue" @click="refreshToken">
+              <v-icon x-small> fas fa-sync-alt </v-icon>
+            </v-btn>
+            <v-btn icon color="green" @click="copyToken">
+              <v-icon x-small> fas fa-copy </v-icon>
+            </v-btn>
+          </h6>
+          <h6 class="px-4 py-2" style="font-family: Poppins; font-weight: bold">
+            Students
+          </h6>
+          <div v-if="room.students && room.students.length > 0">
+            <v-list class="student-list" dense rounded style="">
+              <v-list-item v-for="student in room.students" :key="student.id">
+                <v-icon left> fas fa-user </v-icon>
+                <v-list-item-content>
+                  <v-list-item-title>
+                    {{ student.first_name }} {{ student.last_name }}
+                  </v-list-item-title>
+                </v-list-item-content>
+                <v-list-item-action>
+                  <v-btn icon @click="removeStudent(student)">
+                    <v-icon x-small> fas fa-times </v-icon>
+                  </v-btn>
+                </v-list-item-action>
+              </v-list-item>
+            </v-list>
+          </div>
+          <div v-else>
+            <p class="text-center" style="font-family: Poppins; color: #808080">
+              No students yet
+            </p>
+          </div>
+          <v-container actionbar>
+            <v-btn
+              class="toolbar-btn"
+              color="#f7f7f7"
+              depressed
+              rounded
+              @click="addStudent()"
             >
-                <v-icon left>
-                  fas fa-user
-                </v-icon>
-              <v-list-item-content>
-                <v-list-item-title>
-                  {{ student.first_name }} {{ student.last_name }}
-                </v-list-item-title>
-              </v-list-item-content>
-              <v-list-item-action>
-                <v-btn
-                  icon
-                  @click="removeStudent(student)"
-                >
-                  <v-icon x-small>fas fa-times</v-icon>
-                </v-btn>
-              </v-list-item-action>
-            </v-list-item>
-          </v-list>
-        </div>
-        <div v-else>
-          <p class="text-center" style="font-family: Poppins; color: #808080">No students yet</p>
-        </div>
-        <v-container actionbar>
-          <v-btn
-            class="toolbar-btn"
-            color="#f7f7f7"
-            depressed
-            rounded
-            @click="addStudent()"
-          >
-            <v-icon left>
-              fa fa-plus
-            </v-icon>
-            Add Students
-          </v-btn>
-          <v-btn
-            class="toolbar-btn"
-            color="#f7f7f7"
-            depressed
-            rounded
-            @click="closeClassroom()"
-          >
-            <v-icon left>
-              fa fa-minus
-            </v-icon>
-            Close Class
-          </v-btn>
-        </v-container>
-      </v-col>
-    </div>
+              <v-icon left> fa fa-plus </v-icon>
+              Add Students
+            </v-btn>
+            <v-btn
+              class="toolbar-btn"
+              color="#f7f7f7"
+              depressed
+              rounded
+              @click="closeClassroom()"
+            >
+              <v-icon left> fa fa-minus </v-icon>
+              Close Class
+            </v-btn>
+          </v-container>
+        </v-col>
+      </div>
       <div class="dialogs">
         <board-dialog
           v-if="board"
@@ -264,23 +243,23 @@
             maxlength="191"
           />
           <v-text-field
+            v-model="assignment.due_date"
             label="Due Date"
             type="datetime-local"
             prepend-icon="fa fa-calendar"
-            v-model="assignment.due_date"
-          ></v-text-field>
+          />
           <v-text-field
+            v-model="assignment.available_date"
             label="Date visible for students"
             type="datetime-local"
             prepend-icon="fa fa-calendar"
-            v-model="assignment.available_date"
-          ></v-text-field>
+          />
           <v-text-field
+            v-model="assignment.published_date"
             label="Publish Date"
             type="datetime-local"
             prepend-icon="fa fa-calendar"
-            v-model="assignment.published_date"
-          ></v-text-field>
+          />
         </assignment-dialog>
       </div>
     </v-content>
@@ -291,7 +270,7 @@
       class="mt-12 mx-auto d-flex align-middle"
       color="blue"
       indeterminate
-    ></v-progress-circular>
+    />
   </div>
 </template>
 <script>
@@ -302,7 +281,6 @@ import Dialog from "@/components/Dialog";
 import Board from "@/mixins/boards.js";
 
 export default {
-  mixins: [Board],
   components: {
     "board-dialog": EditBoardDialog,
     "state-card": StateCard,
@@ -310,6 +288,7 @@ export default {
     "card-dialog": Dialog,
     "assignment-dialog": Dialog,
   },
+  mixins: [Board],
   props: {
     classroomId: {
       type: String,
@@ -321,20 +300,21 @@ export default {
       room: {},
       assignment: {},
       assignments: [],
+      boardId: null,
       newAssignment: false,
       available_date_menu: false,
       published_date_menu: false,
       due_date_menu: false,
       headers: [
-          {
-            text: 'Title',
-            align: 'start',
-            value: 'title',
-          },
-          { text: 'Due Date', value: 'due_date' },
-          { text: 'Available Date', value: 'available_date' },
-          { text: 'Publish Date Date', value: 'published_date' },
-        ],
+        {
+          text: "Title",
+          align: "start",
+          value: "title",
+        },
+        { text: "Due Date", value: "due_date" },
+        { text: "Available Date", value: "available_date" },
+        { text: "Publish Date Date", value: "published_date" },
+      ],
     };
   },
   watch: {
@@ -405,49 +385,36 @@ export default {
           console.error(err);
         });
     },
-    leaveClass(classroom) {
-      let confirmation = confirm(`Are you sure you want to leave classroom ${classroom.name}`);
+    removeStudent(student) {
+      let confirmation = confirm(
+        `Are you sure you want to remove ${student.first_name} ${student.last_name} from the classroom`
+      );
 
       if (confirmation) {
-        this.$http.put(`classrooms/${classroom.id}/leave`)
-        .then(() => {
-          this.$notify({
-            type: "success",
-            title: "Left classroom",
+        this.$http
+          .delete(`classrooms/${this.classroomId}/students/${student.id}`)
+          .then(() => {
+            this.$notify({
+              type: "success",
+              title: "Successfully removed student",
+            });
+            this.getRoomInfo();
+            this.getStudents();
+          })
+          .catch((err) => {
+            console.error(err);
           });
-          this.$router.push({ name: 'Dashboard' });
-        })
-        .catch(err => {
-          console.error(err);
-        })
       }
     },
-    removeStudent(student){
-      let confirmation = confirm(`Are you sure you want to remove ${student.first_name} ${student.last_name} from the classroom`);
-
-      if (confirmation) {
-        this.$http.delete(`classrooms/${this.classroomId}/students/${student.id}`)
-        .then(() => {
-          this.$notify({
-            type: "success",
-            title: "Successfully removed student",
-          });
-          this.getRoomInfo();
-          this.getStudents();
+    getStudents() {
+      this.$http
+        .get(`classrooms/${this.classroomId}/students`)
+        .then((res) => {
+          this.room.students = res.data;
         })
-        .catch(err => {
+        .catch((err) => {
           console.error(err);
-        })
-      }
-    },
-    getStudents(){
-      this.$http.get(`classrooms/${this.classroomId}/students`)
-      .then(res => {
-        this.room.students = res.data;
-      })
-      .catch(err => {
-        console.error(err);
-      })
+        });
     },
     getRoomInfo() {
       this.$http
@@ -480,7 +447,7 @@ export default {
           });
       }
     },
-    createAssignment(){
+    createAssignment() {
       this.loading = true;
       this.assignment.classroom_id = this.room.id;
 
@@ -497,8 +464,8 @@ export default {
           this.newAssignment = false;
           this.loading = false;
         });
-    }
-    copyToken () {
+    },
+    copyToken() {
       navigator.clipboard.writeText(this.room.token);
       this.$notify({
         type: "success",
@@ -511,8 +478,8 @@ export default {
 
 <style lang="scss" scoped>
 .actionbar {
-  position:absolute;
-  bottom:0;
+  position: absolute;
+  bottom: 0;
   align-items: center;
 }
 .header {

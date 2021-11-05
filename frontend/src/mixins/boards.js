@@ -1,10 +1,4 @@
 export default {
-  props: {
-    boardId: {
-      type: String,
-      required: true
-    },
-  },
   data() {
     return {
       board: {},

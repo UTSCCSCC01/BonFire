@@ -82,8 +82,12 @@ export class CardService {
    * @param  {number} cardId
    * @param  {CreateCardDto} data
    * @returns Promise
-  */
-  update(user: User, cardId: number, data: CreateCardDto): PromiseLike<CardDto> {
+   */
+  update(
+    user: User,
+    cardId: number,
+    data: CreateCardDto,
+  ): PromiseLike<CardDto> {
     const { title, desc, due_date } = data;
 
     return this.prisma.card.update({
@@ -91,8 +95,10 @@ export class CardService {
         id: cardId,
       },
       data: {
-        title, desc, due_date
-      }
+        title,
+        desc,
+        due_date,
+      },
     });
   }
 

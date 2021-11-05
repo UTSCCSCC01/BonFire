@@ -35,14 +35,17 @@
               <v-spacer />
             </v-container>
           </v-app-bar>
-          <v-sidenav v-if="user.id" :user="user" />
+          <v-sidenav
+            v-if="user.id"
+            :user="user"
+          />
         </div>
 
         <!-- Main -->
         <div class="content">
           <router-view
-            class="router-view"
             v-if="$route.meta.noAuthRequired || user.id"
+            class="router-view"
             :user="user"
           />
           <notifications position="bottom" />
@@ -56,9 +59,6 @@ import SideNav from "./components/SideNav";
 import Vue from 'vue'
 
 export default {
-  created: function() {
-    this.user = this.fetchUser();
-  },
   components: {
     "v-sidenav": SideNav,
   },
@@ -71,6 +71,9 @@ export default {
         { name: "Sign In", to: "/signin" },
       ],
     };
+  },
+  mounted: function() {
+    this.fetchUser();
   },
   methods: {
     fetchUser() {

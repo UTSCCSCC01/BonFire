@@ -68,11 +68,10 @@ export class CardController {
   public async updateCard(
     @RequestUser() user: User,
     @Param('id') cardId: number,
-    @Body() card: CreateCardDto
+    @Body() card: CreateCardDto,
   ): Promise<CardDto> {
     return this.cardService.update(user, +cardId, card);
   }
-
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a card' })

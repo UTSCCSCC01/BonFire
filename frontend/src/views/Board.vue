@@ -57,7 +57,10 @@
             >
               <div class="board-states-item-title">
                 {{ state.title }}
-                <p class="board-states-item-count" v-if="state.cards.length > 0">
+                <p
+                  v-if="state.cards.length > 0"
+                  class="board-states-item-count"
+                >
                   - {{ state.cards.length }} {{ state.cards.length === 1 ? 'item' : 'items' }}
                 </p>
                 <v-btn
@@ -67,7 +70,10 @@
                   elevation="0"
                   @click="showNewCard(state)"
                 >
-                  <v-icon left x-small>
+                  <v-icon
+                    left
+                    x-small
+                  >
                     fa fa-plus
                   </v-icon>
                   card
@@ -86,7 +92,7 @@
                   :key="card.id"
                   :card="card"
                   class="mt-3 cursor-move"
-									@updateCard="updateCard"
+                  @updateCard="updateCard"
                   @deleteCard="removeStateCard"
                 />
               </v-draggable>
@@ -201,7 +207,12 @@
 	import Board from "@/mixins/boards.js";
 
 	export default {
-		mixins: [Board],
+    props: {
+      boardId: {
+        type: String,
+        required: true
+      },
+    },
 		components: {
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
@@ -210,6 +221,7 @@
 			'state-dialog': Dialog,
 			'v-draggable': Draggable
 		},
+		mixins: [Board],
 		data() {
 			return {
 				classrooms: [],

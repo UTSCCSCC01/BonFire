@@ -5,18 +5,25 @@ import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class AssignmentService {
-  constructor(private prisma: PrismaService) { }
+  constructor(private prisma: PrismaService) {}
 
   /**
    * @param  {User} user
    * @param  {Assignment} assignmentData
    * @returns Promise
    */
-  async create(user: User, assignmentData: CreateAssignmentDto): Promise<Assignment> {
+  async create(
+    user: User,
+    assignmentData: CreateAssignmentDto,
+  ): Promise<Assignment> {
     const { title, desc } = assignmentData;
     const due_date = new Date(assignmentData.due_date);
-    const published_date = assignmentData.published_date ? new Date(assignmentData.published_date) : null;
-    const available_date = assignmentData.available_date ? new Date(assignmentData.available_date) : null;
+    const published_date = assignmentData.published_date
+      ? new Date(assignmentData.published_date)
+      : null;
+    const available_date = assignmentData.available_date
+      ? new Date(assignmentData.available_date)
+      : null;
 
     const createInput: Prisma.AssignmentCreateInput = {
       title,
@@ -49,7 +56,7 @@ export class AssignmentService {
   async find(assignmentId: number): Promise<Assignment> {
     const assignment = await this.prisma.assignment.findFirst({
       where: {
-        id: assignmentId
+        id: assignmentId,
       },
     });
 
