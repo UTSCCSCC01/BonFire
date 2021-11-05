@@ -5,18 +5,17 @@ Ahmed Halat, Armand Sarkezians, Christian Chen Liu, David Petrov, Mohamed Halat
 No Tasks were incomplete
 
 ## What are practices that you should continue during next sprint:
- - Having meaningful and short stand up meetings
- - Having multiple reviewers per PR
- - Proper time allocations for working on the project
+ - Group work sessions
+ - Being More active on Jira
 
 ## What are some new practices that you might want to use during next sprint:
-- Add a definition of done before starting a ticket
-- Add meaningful commit messages
+- Ensuring features work after a merge to avoid hot fixes
+- Ensuring that the code is well documented
+- Enforce Formatting
 
 ## What are (if any) harmful practices you should stop using during next sprint:
-- Finishing a feature without a creating a story
-- Mismanaging time for a sprint, having to cram to finish tasks
+- Poor time allocation for tasks and having to cram at the end
 
-## What was your best/worst experience during sprint 1:
-- Worst: Having to work on the project during reading week and while having many midterms going on
-- Best: Learning new stuff and seeing the project coming all together
+## What was your best/worst experience during sprint 2:
+- Worst: Not setting aside time to work on the assignment as a group
+- Best: Figuring out exactly how we want the classrooms to work
