@@ -17,17 +17,59 @@
           </div>
           <!-- Left section -->
           <v-col cols="12" sm="6" md="8">
-            <v-card-text>
+            <v-card-text style="min-height: 400px">
               <v-textarea
                 v-model="cardData.desc"
-                solo
+                label="Description"
+                auto-grow
+                rows="8"
               />
             </v-card-text>
           </v-col>
           <!-- Right section -->
-          <v-col cols="6" md="4">
+          <v-col cols="6" md="4" style="display: flex; padding-left">
             <v-divider vertical></v-divider>
-
+            <div class="right-menu" style="padding-left: 10px">
+              <v-menu
+                ref="menu"
+                v-model="menu"
+                :close-on-content-click="false"
+                transition="scale-transition"
+                offset-y
+                min-width="auto"
+              >
+                <template v-slot:activator="{ on, attrs }">
+                  <v-card-subtitle style="padding-bottom: 0; padding-left: 0; color: grey;">
+                    Due Date
+                  </v-card-subtitle>
+                  <v-chip
+                    class="ma-2"
+                    color="primary"
+                    v-bind="attrs"
+                    v-on="on"
+                  >
+                    {{ (cardData.due_date).split('T')[0] }}
+                  </v-chip>
+                </template>
+                <v-date-picker
+                  v-model="cardData.due_date"
+                  no-title
+                  scrollable
+                />
+              </v-menu>
+              <v-card-subtitle style="padding-bottom: 0; padding-left: 0; color: grey;">
+                Created At
+              </v-card-subtitle>
+              <v-card-subtitle style="padding-top: 0;">
+                {{ (cardData.created_at) }}
+              </v-card-subtitle>
+              <v-card-subtitle style="padding-bottom: 0; padding-left: 0; color: grey;">
+                Last updated
+              </v-card-subtitle>
+              <v-card-subtitle style="padding-top: 0;">
+                {{ (cardData.updated_at) }}
+              </v-card-subtitle>
+            </div>
           </v-col>
         </v-row>
         <v-card-actions>
@@ -38,6 +80,13 @@
             @click="cancelChanges"
           >
              Cancel
+          </v-btn>
+          <v-btn
+            color="secondary"
+            text
+            @click="close"
+          >
+             Close
           </v-btn>
           <v-btn
             color="primary"
@@ -68,6 +117,7 @@ export default {
       saving: false,
       cardData: {},
       dialog: false,
+      menu: false,
     };
   },
   watch: {
@@ -84,13 +134,12 @@ export default {
   },
   methods: {
     updateChanges() {
-      this.emit('update-info', this.cardData);
+      this.$emit('update', this.cardData);
     },
     cancelChanges() {
       this.cardData = JSON.parse(JSON.stringify(this.card));
     },
     close() {
-      console.log('tell parent to close the dialog')
       this.$emit('close');
     },
   },

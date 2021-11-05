@@ -96,9 +96,7 @@ export class ClassroomService {
     }
 
     if (classroom.creator_id === user.id) {
-      throw new HttpException(
-        'Cannot remove creator from classroom',
-  
+      throw new HttpException('Cannot remove creator from classroom', HttpStatus.UNAUTHORIZED);
     }
 
     await this.prisma.studentClassrooms.delete({
@@ -111,6 +109,7 @@ export class ClassroomService {
     });
 
     return user;
+  }
 
 
  async regenerateToken(user: User, classroomId: number): Promise<Classroom> {
@@ -119,7 +118,7 @@ export class ClassroomService {
         id: classroomId,
       },
     });
-   
+
     if (!classroom){
       throw new HttpException(
         'Classroom Does not exist',
@@ -131,10 +130,11 @@ export class ClassroomService {
       throw new HttpException(
         'Insufficient permissions',
         HttpStatus.UNAUTHORIZED,
-      );    
-      
+      );
+    }
+
     const token = this.generateClassroomToken();
-      
+
     return this.prisma.classroom.update({
       where: {
         id: classroomId,
@@ -172,7 +172,7 @@ export class ClassroomService {
       },
     });
   }
-  
+
   generateClassroomToken(): string {
     let code = '';
     for (let i = 0; i < 8; i++) {

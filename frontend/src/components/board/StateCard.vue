@@ -16,6 +16,7 @@
     <card-dialog
       :open-dialog="openDialog"
       :card="card"
+      @update="$emit('updateCard', $event)"
       @close="closeCardDialog"
     />
   </div>

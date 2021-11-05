@@ -86,6 +86,7 @@
                   :key="card.id"
                   :card="card"
                   class="mt-3 cursor-move"
+									@updateCard="updateCard"
                   @deleteCard="removeStateCard"
                 />
               </v-draggable>
@@ -244,6 +245,29 @@
 			this.reloadPageContent();
 		},
 		methods: {
+			updateCard(event) {
+				console.log({ event })
+				const body = {
+					state_id: event.state_id,
+					title: event.title,
+					desc: event.desc,
+					due_date: event.due_date,
+				}
+
+				let date = event.due_date.split('-');
+				body.due_date = new Date(date[0], date[1] - 1, date[2]).toISOString();
+
+				this.$http.put(`/cards/${event.id}`, body)
+					.then(res => {
+						console.log({res})
+						const state = this.states.find(state => state.id === res.data.state_id)
+						state.cards.forEach((c, i) => {
+							if (c.id === res.data.id) this.$set(state.cards, i, res.data)
+						});
+					}).catch(err => {
+						console.error({err});
+					});
+			},
 			getUserClassrooms(){
 				this.$http.get('classrooms')
 				.then(res => {

@@ -487,6 +487,50 @@
           }
         ]
       },
+      "put": {
+        "operationId": "updateCard",
+        "summary": "Updates a card by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCardDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Returns updated card",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CardDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "cards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
       "delete": {
         "operationId": "deleteCard",
         "summary": "Deletes a card",
@@ -656,7 +700,30 @@
     "/classrooms/{id}/leave": {
       "put": {
         "operationId": "removeStudent",
-        "summary": "Removes a user from classroom"
+        "summary": "Removes a user from classroom",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/classrooms/{id}/regenerate-token": {
