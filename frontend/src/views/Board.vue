@@ -57,6 +57,19 @@
             >
               <p class="board-states-item-title">
                 {{ state.title }}
+                <v-btn v-if="state.type==='CUSTOM'" 
+                  class="board-states-item-btn"
+                  color="#f7f7f7"
+                  x-small
+                  elevation="0"
+                  @click="deleteState(state)" 
+                >
+                  <v-icon 
+                    x-small
+                  >
+                    fa fa-times
+                  </v-icon>
+                </v-btn>	
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -71,7 +84,7 @@
                     fa fa-plus
                   </v-icon>
                   card
-                </v-btn>
+                </v-btn>	
               </p>
               <v-draggable
                 :list="state.cards"

@@ -1,6 +1,6 @@
 import { Prisma } from '.prisma/client';
-import { Injectable } from '@nestjs/common';
-import { StateType } from '@prisma/client';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { StateType, User } from '@prisma/client';
 import { BoardDto } from 'src/constants/board';
 import { CardDto } from 'src/constants/card';
 import { CreateStateDto, StateDto } from 'src/constants/state';
@@ -125,6 +125,40 @@ export class StateService {
     };
     return this.prisma.state.create({
       data: stateCreateInput,
+    });
+  }
+
+  /** Delete a state by id
+   * @param  {number} stateId
+   * @returns Promise
+   */
+   async delete(user: User, stateId: number): Promise<StateDto> {
+
+    const state = await this.prisma.state.findFirst({
+      where: {
+        id: stateId,
+      },
+    });
+
+    const board = await this.prisma.board.findFirst({
+      where: {
+        user_id: user.id,
+        id: state.board_id,
+      },
+    });
+
+    //Checking if the state's board is an user's board or if its not a custom board
+    if (!board || state.type != 'CUSTOM') {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    }
+
+    return this.prisma.state.update({
+      where: {
+        id: stateId,
+      },
+      data: {
+        deleted: true,
+      },
     });
   }
 }

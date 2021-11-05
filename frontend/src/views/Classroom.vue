@@ -101,40 +101,89 @@
               class="elevation-1"
             ></v-data-table>
         </v-row>
-        </div>
-        <v-col v-if="$currentUser.id == room.creator_id" class="students">
-          <div class="toolbar">
-            <v-btn
-              class="toolbar-btn"
-              color="#f7f7f7"
-              depressed
-              tile
-              @click="addStudent()"
-            >
-              <v-icon left> fa fa-plus </v-icon>
-              Add Students
-            </v-btn>
-            <v-btn
-              class="toolbar-btn"
-              color="#f7f7f7"
-              depressed
-              tile
-              @click="closeClassroom()"
-            >
-              <v-icon left> fa fa-minus </v-icon>
-              Close Class
-            </v-btn>
-          </div>
-          <h5 class="px-4 py-2" style="font-family: Poppins">
-            <strong>Invite Code: </strong>
-            <span>{{ room.token }}</span>
-            <v-icon color="blue" small right @click="refreshToken">
-              fas fa-sync-alt
-            </v-icon>
-          </h5>
-        </v-col>
       </div>
-
+      <v-col
+        v-if="currentUser.id == room.creator_id"
+        class="students"
+      >
+        <h6
+          class="px-4 py-2"
+          style="font-family: Poppins"
+        >
+          <strong>Invite Code: </strong>
+          <span>{{ room.token }}</span>
+          <v-btn
+            icon
+            color="blue"
+            @click="refreshToken">
+            <v-icon x-small>fas fa-sync-alt</v-icon>
+          </v-btn>
+          <v-btn
+            icon
+            color="green"
+            @click="copyToken">
+            <v-icon x-small>fas fa-copy</v-icon>
+          </v-btn>
+        </h6>
+        <h6 class="px-4 py-2" style="font-family: Poppins; font-weight: bold ">
+          Students
+        </h6>
+        <div v-if="room.students.length>0">
+          <v-list class="student-list" dense rounded style="">
+            <v-list-item
+              v-for="student in room.students"
+              :key="student.id"
+            >
+                <v-icon left>
+                  fas fa-user
+                </v-icon>
+              <v-list-item-content>
+                <v-list-item-title>
+                  {{ student.first_name }} {{ student.last_name }}
+                </v-list-item-title>
+              </v-list-item-content>
+              <v-list-item-action>
+                <v-btn
+                  icon
+                  @click="removeStudent(student)"
+                >
+                  <v-icon x-small>fas fa-times</v-icon>
+                </v-btn>
+              </v-list-item-action>
+            </v-list-item>
+          </v-list>
+        </div>
+        <div v-else>
+          <p class="text-center" style="font-family: Poppins; color: #808080">No students yet</p>
+        </div>
+        <v-container actionbar>
+          <v-btn
+            class="toolbar-btn"
+            color="#f7f7f7"
+            depressed
+            rounded
+            @click="addStudent()"
+          >
+            <v-icon left>
+              fa fa-plus
+            </v-icon>
+            Add Students
+          </v-btn>
+          <v-btn
+            class="toolbar-btn"
+            color="#f7f7f7"
+            depressed
+            rounded
+            @click="closeClassroom()"
+          >
+            <v-icon left>
+              fa fa-minus
+            </v-icon>
+            Close Class
+          </v-btn>
+        </v-container>
+      </v-col>
+    </div>
       <div class="dialogs">
         <board-dialog
           v-if="board"
@@ -324,6 +373,7 @@ export default {
     },
     reloadPageContent() {
       this.getRoomInfo();
+      this.getStudents();
     },
     leaveClass(classroom) {
       let confirmation = confirm(
@@ -355,6 +405,50 @@ export default {
           console.error(err);
         });
     },
+    leaveClass(classroom) {
+      let confirmation = confirm(`Are you sure you want to leave classroom ${classroom.name}`);
+
+      if (confirmation) {
+        this.$http.put(`classrooms/${classroom.id}/leave`)
+        .then(() => {
+          this.$notify({
+            type: "success",
+            title: "Left classroom",
+          });
+          this.$router.push({ name: 'Dashboard' });
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      }
+    },
+    removeStudent(student){
+      let confirmation = confirm(`Are you sure you want to remove ${student.first_name} ${student.last_name} from the classroom`);
+
+      if (confirmation) {
+        this.$http.delete(`classrooms/${this.classroomId}/students/${student.id}`)
+        .then(() => {
+          this.$notify({
+            type: "success",
+            title: "Successfully removed student",
+          });
+          this.getRoomInfo();
+          this.getStudents();
+        })
+        .catch(err => {
+          console.error(err);
+        })
+      }
+    },
+    getStudents(){
+      this.$http.get(`classrooms/${this.classroomId}/students`)
+      .then(res => {
+        this.room.students = res.data;
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    },
     getRoomInfo() {
       this.$http
         .get(`classrooms/${this.classroomId}`)
@@ -376,7 +470,7 @@ export default {
 
       if (confirmation) {
         this.$http
-          .put(`classrooms/${this.room.board_id}/regenerate-token`)
+          .put(`classrooms/${this.room.id}/regenerate-token`)
           .then((res) => {
             this.room.token = res.data.token;
             this.reorganizeStates();
@@ -404,11 +498,23 @@ export default {
           this.loading = false;
         });
     }
+    copyToken () {
+      navigator.clipboard.writeText(this.room.token);
+      this.$notify({
+        type: "success",
+        title: `Token ${this.room.token} copied to clipboard`,
+      });
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.actionbar {
+  position:absolute;
+  bottom:0;
+  align-items: center;
+}
 .header {
   font-family: Poppins;
   font-size: 45px;
@@ -445,7 +551,6 @@ export default {
 
       .toolbar {
         padding: 12px;
-
         &-btn {
         }
       }
