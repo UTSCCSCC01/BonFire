@@ -34,19 +34,7 @@ router.beforeEach((to, _, next) => {
   if (to.meta.noAuthRequired) {
     next();
   } else if (localStorage.getItem('token')) {
-    Vue.prototype.$http.get('/auth/user')
-      .then(res => {
-        Vue.prototype.$currentUser = res.data;
-        next()
-      })
-      .catch(err => {
-        this.$notify({
-          type: "error",
-          title: "Failed to authenticate",
-        });
-        this.$router.push({ name: 'SignIn' });
-        console.error(err);
-      });
+    next();
   } else {
     next({ name: 'SignIn' });
   }
