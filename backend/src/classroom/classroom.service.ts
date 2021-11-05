@@ -2,7 +2,7 @@ import { User, Board, Classroom } from '.prisma/client';
 
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BoardService } from 'src/board/board.service';
-import { StudentClassroomDto, UserDto } from 'src/constants/user';
+import { UserDto } from 'src/constants/user';
 import { PrismaService } from 'src/prisma.service';
 import { StateService } from 'src/state/state.service';
 import { ClassroomDto } from '../constants/classroom';
@@ -217,7 +217,7 @@ export class ClassroomService {
   async kickStudent(
     creator: User,
     classroomId: number,
-    student: User,
+    studentId: number,
   ): Promise<ClassroomDto> {
     const classroom = await this.prisma.classroom.findUnique({
       where: {
@@ -243,7 +243,7 @@ export class ClassroomService {
       where: {
         classroom_id_student_id: {
           classroom_id: classroomId,
-          student_id: student.id,
+          student_id: studentId,
         },
       },
     });
