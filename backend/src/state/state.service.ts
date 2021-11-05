@@ -1,6 +1,6 @@
 import { Prisma } from '.prisma/client';
-import { Injectable } from '@nestjs/common';
-import { StateType } from '@prisma/client';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { StateType, User } from '@prisma/client';
 import { BoardDto } from 'src/constants/board';
 import { CardDto } from 'src/constants/card';
 import { CreateStateDto, StateDto } from 'src/constants/state';
@@ -10,11 +10,10 @@ import { PrismaService } from 'src/prisma.service';
 export class StateService {
   constructor(private prisma: PrismaService) {}
 
-
   /** Find a state by prisma values
- * @param  {{skip?:number;take?:number;cursor?:Prisma.StateWhereUniqueInput;where?:Prisma.StateWhereInput;orderBy?:Prisma.StateOrderByWithRelationInput;}} params
- * @returns Promise
- */
+   * @param  {{skip?:number;take?:number;cursor?:Prisma.StateWhereUniqueInput;where?:Prisma.StateWhereInput;orderBy?:Prisma.StateOrderByWithRelationInput;}} params
+   * @returns Promise
+   */
   async findMany(params: {
     skip?: number;
     take?: number;
@@ -35,9 +34,9 @@ export class StateService {
   }
 
   /** Update a state
- * @param  {{where:Prisma.StateWhereUniqueInput;data:Prisma.StateUpdateInput;}} params
- * @returns Promise
- */
+   * @param  {{where:Prisma.StateWhereUniqueInput;data:Prisma.StateUpdateInput;}} params
+   * @returns Promise
+   */
   async update(params: {
     where: Prisma.StateWhereUniqueInput;
     data: Prisma.StateUpdateInput;
@@ -98,7 +97,10 @@ export class StateService {
    * @param  {CreateStateDto} data
    * @returns Promise
    */
-  async create(data: CreateStateDto, type: StateType = 'CUSTOM'): Promise<StateDto> {
+  async create(
+    data: CreateStateDto,
+    type: StateType = 'CUSTOM',
+  ): Promise<StateDto> {
     const stateOrder = await this.prisma.state.count({
       where: {
         board: {
@@ -108,7 +110,7 @@ export class StateService {
     });
 
     let order = 0;
-    if (type === 'DONE') order = -1
+    if (type === 'DONE') order = -1;
     else if (stateOrder > 0) order = stateOrder + 1;
 
     const stateCreateInput: Prisma.StateCreateInput = {
@@ -119,10 +121,44 @@ export class StateService {
         },
       },
       type,
-      order
+      order,
     };
     return this.prisma.state.create({
       data: stateCreateInput,
+    });
+  }
+
+  /** Delete a state by id
+   * @param  {number} stateId
+   * @returns Promise
+   */
+   async delete(user: User, stateId: number): Promise<StateDto> {
+
+    const state = await this.prisma.state.findFirst({
+      where: {
+        id: stateId,
+      },
+    });
+
+    const board = await this.prisma.board.findFirst({
+      where: {
+        user_id: user.id,
+        id: state.board_id,
+      },
+    });
+
+    //Checking if the state's board is an user's board or if its not a custom board
+    if (!board || state.type != 'CUSTOM') {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    }
+
+    return this.prisma.state.update({
+      where: {
+        id: stateId,
+      },
+      data: {
+        deleted: true,
+      },
     });
   }
 }

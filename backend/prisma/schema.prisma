@@ -70,6 +70,7 @@ model State {
   title      String
   created_at DateTime  @default(now())
   updated_at DateTime  @updatedAt
+  deleted    Boolean   @default(false)
   order      Int
   type       StateType
   board      Board     @relation(fields: [board_id], references: [id])
