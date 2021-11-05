@@ -30,6 +30,16 @@
 | :---: | :--- |
 | AuthModule | RESTFUL: Get card, delete card |
 
+### AssignmentController
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| AuthModule | RESTFUL: Get, delete and update |
+
+### TagsController
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| AuthModule | RESTFUL: Get, delete and update |
+
 ### AuthService
 | Collaborators | Responsibilities |
 | :---: | :--- |
@@ -51,6 +61,16 @@
 | :---: | :--- |
 | PrismaService | Get, create state, update, delete, get cards <br> Find state's board <br> Get state's cards |
 
+
+### AssignmentService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| PrismaService | Find delete, update, and create |
+
+### TagsService
+| Collaborators | Responsibilities |
+| :---: | :--- |
+| PrismaService | Find delete, update, and create |
 
 ### CardService
 | Collaborators | Responsibilities |
