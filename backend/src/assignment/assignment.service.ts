@@ -13,7 +13,10 @@ export class AssignmentService {
    * @returns Promise
    */
   async create(user: User, assignmentData: CreateAssignmentDto): Promise<Assignment> {
-    const { title, desc, due_date, published_date, available_date } = assignmentData;
+    const { title, desc } = assignmentData;
+    const due_date = new Date(assignmentData.due_date);
+    const published_date = assignmentData.published_date ? new Date(assignmentData.published_date) : null;
+    const available_date = assignmentData.available_date ? new Date(assignmentData.available_date) : null;
 
     const createInput: Prisma.AssignmentCreateInput = {
       title,
