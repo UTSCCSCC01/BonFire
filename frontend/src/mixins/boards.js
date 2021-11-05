@@ -163,7 +163,22 @@ export default {
           console.error(err);
         })
     },
+    deleteState(state) {
+      let confirmation = confirm(`Are you sure you want to delete state ${state.title}`);
 
+      if (confirmation) {
+        this.$http.delete(`states/${state.id}`)
+          .then(() => {
+            this.states = this.states.filter(s => s.id != state.id);
+            this.$notify({
+              type: "success",
+              title: "Successfully deleted state",
+            });
+          })
+          .catch(err => {
+            console.error(err);
+          })
+      }
+    },
   },
-
 }
