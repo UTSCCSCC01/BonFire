@@ -133,7 +133,7 @@
           </v-list>
         </div>
         <div v-else>
-          <p class="text-center" color="#808080">No students added yet</p>
+          <p class="text-center" style="font-family: Poppins; color: #808080">No students yet</p>
         </div>
         <v-container actionbar>
           <v-btn
