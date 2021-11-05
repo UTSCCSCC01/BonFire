@@ -108,10 +108,11 @@ export class BoardService {
       },
     });
 
-    // Find all states tied to a boardId with a specific user
+    // Find all states tied to a boardId with a specific user that are non-deleted
     return this.prisma.state.findMany({
       where: {
         board_id: board.id,
+        deleted: false,
       },
       orderBy: [
         {

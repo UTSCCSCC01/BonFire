@@ -377,6 +377,33 @@
             "bearer": []
           }
         ]
+      },
+      "delete": {
+        "operationId": "deleteState",
+        "summary": "Deletes a specific state",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Deleted State"
+          }
+        },
+        "tags": [
+          "states"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/states": {
@@ -656,7 +683,30 @@
     "/classrooms/{id}/leave": {
       "put": {
         "operationId": "removeStudent",
-        "summary": "Removes a user from classroom"
+        "summary": "Removes a user from classroom",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/classrooms/{id}/regenerate-token": {

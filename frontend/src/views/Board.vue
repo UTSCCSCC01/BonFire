@@ -57,6 +57,19 @@
             >
               <p class="board-states-item-title">
                 {{ state.title }}
+                <v-btn v-if="state.type==='CUSTOM'" 
+                  class="board-states-item-btn"
+                  color="#f7f7f7"
+                  x-small
+                  elevation="0"
+                  @click="deleteState(state)" 
+                >
+                  <v-icon 
+                    x-small
+                  >
+                    fa fa-times
+                  </v-icon>
+                </v-btn>	
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -71,7 +84,7 @@
                     fa fa-plus
                   </v-icon>
                   card
-                </v-btn>
+                </v-btn>	
               </p>
               <v-draggable
                 :list="state.cards"
@@ -401,6 +414,24 @@
 						console.error(err);
 					})
 			},
+			deleteState(state) {
+				let confirmation = confirm(`Are you sure you want to delete state ${state.title}`);
+
+				if (confirmation) {
+					this.$http.delete(`states/${state.id}`)
+					.then(() => {
+					this.states = this.states.filter(s => s.id != state.id);
+					this.$notify({
+						type: "success",
+						title: "Successfully deleted state",
+					});
+					})
+					.catch(err => {
+					console.error(err);
+					})
+				}
+			},
+
 
 		},
 
