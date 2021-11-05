@@ -8,6 +8,7 @@ import {
   Post,
   UseGuards,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -56,6 +57,22 @@ export class CardController {
   ): Promise<CardDto> {
     return await this.cardService.create(card, user);
   }
+
+  // Update card
+  @Put(':id')
+  @ApiOperation({ summary: 'Updates a card by specific ID' })
+  @ApiOkResponse({
+    description: 'Returns updated card',
+    type: CardDto,
+  })
+  public async updateCard(
+    @RequestUser() user: User,
+    @Param('id') cardId: number,
+    @Body() card: CreateCardDto
+  ): Promise<CardDto> {
+    return this.cardService.update(user, +cardId, card);
+  }
+
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a card' })

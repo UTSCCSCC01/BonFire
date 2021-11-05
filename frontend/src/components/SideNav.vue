@@ -86,11 +86,11 @@
               </v-list-item-icon>
               <v-list-item-title>{{ classroom.name }}</v-list-item-title>
               <v-btn
-                
+
                 v-if="hover && (classroom.creator_id != $currentUser.id)"
                 align="right"
                 icon
-                color="dark-grey" 
+                color="dark-grey"
                 @click="leaveClass(classroom)"
               >
                 <v-icon x-small>

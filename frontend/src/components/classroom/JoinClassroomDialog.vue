@@ -63,6 +63,7 @@ export default {
     return {
       classroom: {},
       saving: false,
+      joining: false
     }
   },
   methods: {

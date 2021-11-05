@@ -110,7 +110,7 @@ export default {
           this.saving = false;
         });
     },
-    
+
     closeDialog() {
       this.$emit('save', this.board);
       this.$emit("close");
@@ -129,7 +129,7 @@ export default {
           console.error(err);
         })
       }
-      
+
     },
 
   },

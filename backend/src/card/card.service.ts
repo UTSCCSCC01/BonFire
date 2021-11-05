@@ -78,6 +78,24 @@ export class CardService {
     });
   }
 
+  /** Updates Card
+   * @param  {number} cardId
+   * @param  {CreateCardDto} data
+   * @returns Promise
+  */
+  update(user: User, cardId: number, data: CreateCardDto): PromiseLike<CardDto> {
+    const { title, desc, due_date } = data;
+
+    return this.prisma.card.update({
+      where: {
+        id: cardId,
+      },
+      data: {
+        title, desc, due_date
+      }
+    });
+  }
+
   /** Delete a card by id
    * @param  {number} cardId
    * @returns Promise
