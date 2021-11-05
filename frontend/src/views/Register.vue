@@ -1,9 +1,9 @@
 <template>
   <div class="register">
-    <v-main>
+    <v-content>
       <v-form
         v-model="valid_form"
-        @submit="submit"
+        @submit="register"
       >
         <v-container>
           <v-row>
@@ -82,29 +82,22 @@
             :disabled="!valid_form || loading"
             :loading="loading"
           >
-            submit
+            Submit
           </v-btn>
         </v-container>
       </v-form>
-    </v-main>
+    </v-content>
   </div>
 </template>
 <script>
-import Vue from 'vue';
+import Auth from '@/mixins/auth';
 
 export default {
+  mixins: [Auth],
   data() {
     return {
-      user: {
-        first_name: '',
-        last_name: '',
-        password: '',
-        email: '',
-      },
       verifyPass: '',
-      loading: false,
-      valid_form: false,
-    }
+    };
   },
   computed: {
     validations() {
@@ -117,27 +110,6 @@ export default {
       }
     }
   },
-  methods: {
-    submit() {
-      this.loading = true;
-      this.$http.post('auth/register', this.user)
-        .then(res => {
-          Vue.prototype.$currentUser = res.data;
-          localStorage.setItem('token', res.data.token.accessToken);
-          this.$router.push('Dashboard');
-        })
-        .catch(err => {
-          this.$notify({
-            type: 'error',
-            title: 'Error',
-            text: err?.response?.data?.message || 'Unknown Error'
-          });
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    }
-  }
 }
 </script>
 <style lang="scss" scoped>

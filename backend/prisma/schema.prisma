@@ -22,6 +22,7 @@ model User {
   cards              Card[]
   classrooms         Classroom[]
   student_classrooms StudentClassrooms[]
+  assignments        Assignment[]
 }
 
 model StudentClassrooms {
@@ -36,29 +37,30 @@ model StudentClassrooms {
 }
 
 model Classroom {
-  id         Int                 @id @default(autoincrement())
-  token      String              @unique
-  name       String
-  created_at DateTime            @default(now())
-  updated_at DateTime            @updatedAt
-  creator_id Int
-  board_id   Int                 @unique
-  board      Board               @relation(fields: [board_id], references: [id])
-  creator    User                @relation(fields: [creator_id], references: [id])
-  students   StudentClassrooms[]
+  id          Int                 @id @default(autoincrement())
+  token       String              @unique
+  name        String
+  created_at  DateTime            @default(now())
+  updated_at  DateTime            @updatedAt
+  creator_id  Int
+  board_id    Int                 @unique
+  board       Board               @relation(fields: [board_id], references: [id])
+  creator     User                @relation(fields: [creator_id], references: [id])
+  students    StudentClassrooms[]
+  assignments Assignment[]
 
   @@index([creator_id])
 }
 
 model Board {
-  id         Int        @id @default(autoincrement())
+  id         Int         @id @default(autoincrement())
   title      String
-  created_at DateTime   @default(now())
-  updated_at DateTime   @updatedAt
-  deleted    Boolean    @default(false)
+  created_at DateTime    @default(now())
+  updated_at DateTime    @updatedAt
+  deleted    Boolean     @default(false)
   user_id    Int
-  user       User       @relation(fields: [user_id], references: [id])
-  classroom   Classroom[]
+  user       User        @relation(fields: [user_id], references: [id])
+  classroom  Classroom[]
   states     State[]
 
   @@index([user_id])
@@ -80,25 +82,43 @@ model State {
 }
 
 model Card {
-  id         Int       @id @default(autoincrement())
-  title      String
-  desc       String?
-  submit_url String?
-  creator_id Int
-  state_id   Int?
-  parent_id  Int?
-  order      Int
-  due_date   DateTime?
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  creator    User      @relation(fields: [creator_id], references: [id])
-  parent     Card?     @relation("parent", fields: [parent_id], references: [id])
-  state      State?    @relation(fields: [state_id], references: [id])
-  children   Card[]    @relation("parent")
+  id             Int          @id @default(autoincrement())
+  title          String
+  desc           String?
+  submit_url     String?
+  creator_id     Int
+  state_id       Int?
+  assignment_id Int?
+  order          Int
+  due_date       DateTime?
+  created_at     DateTime     @default(now())
+  updated_at     DateTime     @updatedAt
+  creator        User         @relation(fields: [creator_id], references: [id])
+  Assignment    Assignment? @relation(fields: [assignment_id], references: [id])
+  state          State?       @relation(fields: [state_id], references: [id])
 
   @@index([creator_id, state_id])
-  @@index([parent_id])
+  @@index([assignment_id])
   @@index([state_id])
+}
+
+model Assignment {
+  id             Int       @id @default(autoincrement())
+  title          String
+  desc           String?
+  submit_url     String?
+  creator_id     Int
+  classroom_id   Int
+  due_date       DateTime
+  available_date DateTime?
+  published_date DateTime?
+  deleted        Boolean   @default(false)
+  created_at     DateTime  @default(now())
+  updated_at     DateTime  @updatedAt
+  creator        User      @relation(fields: [creator_id], references: [id])
+  classroom      Classroom @relation(fields: [classroom_id], references: [id])
+
+  cards Card[]
 }
 
 enum Role {

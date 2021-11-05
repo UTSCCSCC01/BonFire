@@ -15,7 +15,7 @@
               <v-col cols="2">
                 <v-img
                   src="../src/assets/img/logo.png"
-                  contain="true"
+                  :contain="true"
                   height="65"
                   width="65"
                 />
@@ -25,7 +25,7 @@
               </v-card-title>
               <v-btn
                 v-for="link in links"
-                :key="link"
+                :key="link.name"
                 :to="link.to"
                 text
               >
@@ -35,14 +35,15 @@
               <v-spacer />
             </v-container>
           </v-app-bar>
-          <v-sidenav v-else />
+          <v-sidenav v-if="user.id" :user="user" />
         </div>
 
         <!-- Main -->
         <div class="content">
           <router-view
             class="router-view"
-            :current-user="currentUser"
+            v-if="$route.meta.noAuthRequired || user.id"
+            :user="user"
           />
           <notifications position="bottom" />
         </div>
@@ -52,41 +53,41 @@
 </template>
 <script>
 import SideNav from "./components/SideNav";
-import Vue from "vue";
+import Vue from 'vue'
 
 export default {
+  created: function() {
+    this.user = this.fetchUser();
+  },
   components: {
     "v-sidenav": SideNav,
   },
   data() {
     return {
+      user: {},
       links: [
         { name: "Welcome", to: "/" },
         { name: "Register", to: "/register" },
         { name: "Sign In", to: "/signin" },
       ],
-      currentUser: {},
     };
   },
-  mounted() {
-    this.getCurrentUser();
-  },
   methods: {
-    getCurrentUser() {
-      this.$http.get('auth/user')
-        .then(res => {
-         this.currentUser = res.data;
-         Vue.prototype.$currentUser = this.currentUser;
-        })
-        .catch(err => {
-          this.$notify({
-            type: "error",
-            title: "Failed to authenticate",
-          });
-          this.$router.push({ name: 'Home' });
-          console.error(err);
-        })
-    }
+    fetchUser() {
+      this.$http.get('/auth/user')
+      .then(res => {
+        this.user = res.data;
+        Vue.prototype.$currentUser = this.user;
+      })
+      .catch(err => {
+        this.$notify({
+          type: "error",
+          title: "Failed to authenticate",
+        });
+        this.$router.push({ name: 'SignIn' });
+        console.error(err);
+      });
+    },
   },
 };
 </script>
