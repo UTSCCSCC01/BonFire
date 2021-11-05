@@ -61,13 +61,13 @@
                 Created At
               </v-card-subtitle>
               <v-card-subtitle style="padding-top: 0;">
-                {{ (cardData.created_at) }}
+                {{ (cardData.created_at).replace(/[a-zA-Z]|:[0-9]{2}(\.[0-9]{3})/g, ' ').trim() }}
               </v-card-subtitle>
               <v-card-subtitle style="padding-bottom: 0; padding-left: 0; color: grey;">
                 Last updated
               </v-card-subtitle>
               <v-card-subtitle style="padding-top: 0;">
-                {{ (cardData.updated_at) }}
+                {{ (cardData.updated_at).replace(/[a-zA-Z]|:[0-9]{2}(\.[0-9]{3})/g, ' ').trim() }}
               </v-card-subtitle>
             </div>
           </v-col>
