@@ -738,6 +738,72 @@
         ]
       }
     },
+    "/classrooms/{id}/students": {
+      "get": {
+        "operationId": "getStudents",
+        "summary": "Returns all students in a classroom",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of Students"
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/classrooms/{id}/students/{sid}": {
+      "delete": {
+        "operationId": "removeStudentFromClassroom",
+        "summary": "Removes a student from a classroom",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/user/classroom": {
       "put": {
         "operationId": "joinClassroom",
