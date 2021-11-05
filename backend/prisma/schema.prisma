@@ -96,6 +96,7 @@ model Card {
   creator        User         @relation(fields: [creator_id], references: [id])
   Assignment    Assignment? @relation(fields: [assignment_id], references: [id])
   state          State?       @relation(fields: [state_id], references: [id])
+  tags       Tag[]
 
   @@index([creator_id, state_id])
   @@index([assignment_id])
@@ -119,6 +120,19 @@ model Assignment {
   classroom      Classroom @relation(fields: [classroom_id], references: [id])
 
   cards Card[]
+}
+
+model Tag {
+  id         Int      @id @default(autoincrement())
+  label      String
+  creator_id Int
+  card_id    Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+  card       Card     @relation(fields: [card_id], references: [id])
+
+  @@index([card_id])
+  @@index([creator_id])
 }
 
 enum Role {

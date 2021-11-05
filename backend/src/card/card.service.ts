@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { Card, Prisma, User } from '@prisma/client';
-import { CardDto, CreateCardDto } from 'src/constants/card';
+import { CardDto, CardTags, CreateCardDto } from 'src/constants/card';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
@@ -110,5 +110,25 @@ export class CardService {
     return this.prisma.card.delete({
       where: { id: cardId },
     });
+  };
+
+  /**
+   *
+   * @param {number} cardId
+   */
+  async getTags(cardId: number): Promise<CardTags> {
+    const card = await this.prisma.card.findUnique({
+      where: {
+        id: cardId,
+      },
+      include: {
+        tags: true,
+      },
+    });
+
+    return {
+      id: card.id,
+      tags: card.tags
+    };
   }
 }

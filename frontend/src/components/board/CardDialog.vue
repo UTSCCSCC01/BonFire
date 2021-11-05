@@ -31,16 +31,9 @@
             </v-card-text>
           </v-col>
           <!-- Right section -->
-          <v-col
-            cols="6"
-            md="4"
-            style="display: flex; padding-left"
-          >
-            <v-divider vertical />
-            <div
-              class="right-menu"
-              style="padding-left: 10px"
-            >
+          <v-col cols="6" md="4" style="display: flex; padding-left">
+            <v-divider vertical></v-divider>
+            <div class="right-menu" style="padding-left: 10px; width: 100%">
               <v-menu
                 ref="menu"
                 v-model="menu"
@@ -80,6 +73,39 @@
               <v-card-subtitle style="padding-top: 0;">
                 {{ formatDate(cardData.updated_at) }}
               </v-card-subtitle>
+              <v-spacer></v-spacer>
+              <v-row>
+                <v-col cols="5">
+                  <v-text-field
+                    small
+                    label="Tag Label"
+                    v-model="tagLabel"
+                    style="margin-top: 25px;"
+                  ></v-text-field>
+                </v-col>
+                <v-col cols="5">
+                  <v-btn
+                    class="board-states-item-btn"
+                    color="#f7f7f7"
+                    x-small
+                    elevation="0"
+                    @click="createTag"
+                    style="margin-top: 40px;"
+                  >
+                    <v-icon left x-small>
+                      fa fa-plus
+                    </v-icon>
+                    Tag
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-list>
+                <v-list-item v-for="tag in card.tags" :key="tag.id" style="padding: 0 5px; display: inline">
+                  <v-chip color="pink" small label text-color="white">
+                    {{ tag.label }}
+                  </v-chip>
+                </v-list-item>
+              </v-list>
             </div>
           </v-col>
         </v-row>
@@ -129,6 +155,7 @@ export default {
       cardData: {},
       dialog: false,
       menu: false,
+      tagLabel: '',
     };
   },
   watch: {
@@ -144,6 +171,19 @@ export default {
     this.cardData = JSON.parse(JSON.stringify(this.card));
   },
   methods: {
+    createTag() {
+      this.$http.post(`/cards/${this.cardData.id}/tags`, { label: this.tagLabel })
+        .then(res => {
+          this.$emit('add-tag', { card: this.cardData, tag: res.data });
+        })
+        .catch(error => {
+          console.log(error);
+        })
+        .finally(() => {
+          this.tagLabel = '';
+        });
+
+    },
     updateChanges() {
       this.$emit('update', this.cardData);
     },

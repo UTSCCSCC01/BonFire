@@ -9,6 +9,7 @@ import { ClassroomModule } from './classroom/classroom.module';
 import { UserController } from './user/user.controller';
 import { UserModule } from './user/user.module';
 import { AssignmentModule } from './assignment/assignment.module';
+import { TagModule } from './tag/tag.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { AssignmentModule } from './assignment/assignment.module';
     ClassroomModule,
     UserModule,
     AssignmentModule,
+    TagModule,
   ],
   controllers: [],
   providers: [],
