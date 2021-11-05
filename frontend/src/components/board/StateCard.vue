@@ -24,13 +24,19 @@
       <v-card-title class="text-h6 card-title">
         {{ card.title }}
       </v-card-title>
-      <v-card-subtitle class="card-subtitle">
-        {{ card.desc }}
-      </v-card-subtitle>
+      <v-card-subtitle class="card-subtitle"> {{ card.desc }} </v-card-subtitle>
+      <v-list style="padding: 10px;">
+        <v-list-item v-for="tag in card.tags" :key="tag.id" style="padding: 0 5px; display: inline">
+          <v-chip color="pink" small label text-color="white">
+            {{ tag.label }}
+          </v-chip>
+        </v-list-item>
+      </v-list>
     </v-card>
     <card-dialog
       :open-dialog="openDialog"
       :card="card"
+      @add-tag="$emit('add-tag', $event)"
       @update="$emit('updateCard', $event)"
       @close="closeCardDialog"
     />

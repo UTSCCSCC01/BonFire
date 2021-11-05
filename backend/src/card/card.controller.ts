@@ -19,7 +19,8 @@ import {
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
-import { CardDto, CreateCardDto } from 'src/constants/card';
+import { CardDto, CardTags, CreateCardDto, Tag } from 'src/constants/card';
+import { TagService } from 'src/tag/tag.service';
 import { CardService } from './card.service';
 
 @Controller('cards')
@@ -27,7 +28,7 @@ import { CardService } from './card.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class CardController {
-  constructor(private readonly cardService: CardService) {}
+  constructor(private readonly cardService: CardService, private readonly tagService: TagService) {}
 
   @Get(':id')
   @ApiOperation({ summary: 'Returns a card by specific ID' })
@@ -58,7 +59,6 @@ export class CardController {
     return await this.cardService.create(card, user);
   }
 
-  // Update card
   @Put(':id')
   @ApiOperation({ summary: 'Updates a card by specific ID' })
   @ApiOkResponse({
@@ -72,6 +72,35 @@ export class CardController {
   ): Promise<CardDto> {
     return this.cardService.update(user, +cardId, card);
   }
+
+  // get card tags
+  @Get(':id/tags')
+  @ApiOperation({ summary: 'Returns a card tags by specific ID' })
+  @ApiOkResponse({
+    description: 'Card tags',
+    type: [String],
+  })
+  async getTags(@Param('id') cardId: number): Promise<CardTags> {
+    return this.cardService.getTags(+cardId);
+  }
+
+  // Create card tag
+  @Post(':id/tags')
+  @ApiOperation({ summary: 'Creates a new card tag' })
+  @ApiOkResponse({
+    description: 'Returns newly created card tag',
+    type: String,
+  })
+  async createTag(
+    @RequestUser() user: User,
+    @Param('id') cardId: number,
+    @Body() body: {
+      label: string,
+    }
+  ): Promise<Tag> {
+    return this.tagService.create(user, +cardId, body.label);
+  }
+
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a card' })

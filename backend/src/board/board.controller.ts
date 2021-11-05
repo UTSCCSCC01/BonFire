@@ -169,6 +169,7 @@ export class BoardController {
   ): Promise<StateDto[]> {
     const orderIndices = {
       cards: {
+        include: { tags: true },
         orderBy: {
           order: 'asc',
         },
