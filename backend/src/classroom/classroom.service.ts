@@ -4,6 +4,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { BoardService } from 'src/board/board.service';
 import { PrismaService } from 'src/prisma.service';
 import { StateService } from 'src/state/state.service';
+import { AssignmentDto } from '../constants/assignment';
 import { ClassroomDto } from '../constants/classroom';
 
 @Injectable()
@@ -44,10 +45,6 @@ export class ClassroomService {
     await this.stateService.create(
       { board_id: board.id, title: 'Done' },
       'DONE',
-    );
-    await this.stateService.create(
-      { board_id: board.id, title: 'Assignments' },
-      'ASSIGNMENTS',
     );
 
     classroomData.token = token;
@@ -118,6 +115,21 @@ export class ClassroomService {
     });
 
     return user;
+  }
+
+  async getAssignments(user: User, classroomId: number): Promise<AssignmentDto[]> {
+    const classroom = await this.prisma.classroom.findFirst({
+      where: {
+        id: classroomId,
+      },
+    });
+
+    // Find all states tied to a boardId with a specific user
+    return this.prisma.assignment.findMany({
+      where: {
+        classroom_id: classroom.id,
+      }
+    });
   }
 
   async regenerateToken(user: User, classroomId: number): Promise<Classroom> {

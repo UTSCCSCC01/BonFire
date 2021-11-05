@@ -15,7 +15,6 @@ import {
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
-  ApiParam,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
@@ -23,13 +22,14 @@ import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { ClassroomService } from './classroom.service';
 import { ClassroomDto } from '../constants/classroom';
+import { AssignmentDto } from 'src/constants/assignment';
 
 @Controller('classrooms')
 @ApiTags('classrooms')
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class ClassroomController {
-  constructor(private readonly classroomService: ClassroomService) {}
+  constructor(private readonly classroomService: ClassroomService) { }
 
   @Post()
   @ApiOperation({ summary: 'Creates and returns a new classroom, given ' })
@@ -77,6 +77,7 @@ export class ClassroomController {
   ): Promise<User> {
     return this.classroomService.removeUser(user, +classId);
   }
+
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a classroom by specific ID' })
   @ApiOkResponse({
@@ -87,6 +88,18 @@ export class ClassroomController {
     @Param('id') id: number,
   ): Promise<ClassroomDto> {
     return this.classroomService.delete(user, +id);
+  }
+
+  @Get(':id/assignments')
+  @ApiOperation({ summary: 'Get all assignments to classroom' })
+  @ApiOkResponse({
+    description: 'Assignments returned',
+  })
+  public async getAssignments(
+    @RequestUser() user,
+    @Param('id') id: number,
+  ): Promise<AssignmentDto[]> {
+    return this.classroomService.getAssignments(user, +id);
   }
 
   @Put(':id/regenerate-token')

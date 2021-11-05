@@ -682,6 +682,35 @@
         ]
       }
     },
+    "/classrooms/{id}/assignments": {
+      "get": {
+        "operationId": "getAssignments",
+        "summary": "Get all assignments to classroom",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assignments returned"
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/classrooms/{id}/regenerate-token": {
       "put": {
         "operationId": "regenerateToken",
@@ -723,6 +752,133 @@
         },
         "tags": [
           "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/assignments": {
+      "post": {
+        "operationId": "addAssignment",
+        "summary": "Add an assignment to classroom",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAssignmentDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Assignment was added"
+          }
+        },
+        "tags": [
+          "assignments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/assignments/{id}": {
+      "get": {
+        "operationId": "getAssignment",
+        "summary": "Returns a assignment by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "assignment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignmentDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "assignments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "delete": {
+        "operationId": "deleteAssignment",
+        "summary": "Deletes a assignment by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "assignment deleted"
+          }
+        },
+        "tags": [
+          "assignments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      },
+      "put": {
+        "operationId": "update",
+        "summary": "Update a assignment by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Assignment details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssignmentDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "assignments"
         ],
         "security": [
           {
@@ -1034,6 +1190,142 @@
           "created_at",
           "updated_at",
           "creator_id"
+        ]
+      },
+      "CreateAssignmentDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "submit_url": {
+            "type": "string"
+          },
+          "creator_id": {
+            "type": "number"
+          },
+          "classroom_id": {
+            "type": "number"
+          },
+          "due_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "available_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "published_date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "desc",
+          "submit_url",
+          "creator_id",
+          "classroom_id",
+          "due_date",
+          "available_date",
+          "published_date"
+        ]
+      },
+      "AssignmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "title": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "submit_url": {
+            "type": "string"
+          },
+          "creator_id": {
+            "type": "number"
+          },
+          "classroom_id": {
+            "type": "number"
+          },
+          "due_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "available_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "published_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updated_at": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "deleted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "desc",
+          "submit_url",
+          "creator_id",
+          "classroom_id",
+          "due_date",
+          "available_date",
+          "published_date",
+          "created_at",
+          "updated_at",
+          "deleted"
+        ]
+      },
+      "AssignmentDetailsDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "desc": {
+            "type": "string"
+          },
+          "submit_url": {
+            "type": "string"
+          },
+          "due_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "available_date": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "published_date": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "desc",
+          "submit_url",
+          "due_date",
+          "available_date",
+          "published_date"
         ]
       }
     }
