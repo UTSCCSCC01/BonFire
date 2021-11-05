@@ -1,60 +1,80 @@
 <template>
   <div class="state-card">
-    <v-card
-      class="mx-auto shadow-sm"
-      outlined
+    <v-card class="mx-auto shadow-sm" outlined
+      @click="openDialog = true"
+      @mouseenter="isHovering = true"
+      @mouseleave="isHovering = false"
     >
-      <v-card-text>
-        <p class="text-h8 text--primary">
-          {{ task.title }}
-        </p>
-        <div class="text--primary">
-          {{ task.summary }}
-        </div>
-      </v-card-text>
-
-      <v-btn
-        align="right"
-        icon
-        color="dark-grey"
-        @click="deleteCard(task)"
-      >
-        <v-icon x-small>
-          fa fa-times
-        </v-icon>
+      <v-btn class="card-remove" align="right" icon color="dark-grey" @click="deleteCard(card)">
+        <v-icon x-small v-show="isHovering" > fa fa-times </v-icon>
       </v-btn>
+      <v-card-title class="text-h6 card-title">
+        {{ card.title }}
+      </v-card-title>
+      <v-card-subtitle class="card-subtitle"> {{ card.desc }} </v-card-subtitle>
     </v-card>
+    <card-dialog
+      :open-dialog="openDialog"
+      :card="card"
+      @update="$emit('updateCard', $event)"
+      @close="closeCardDialog"
+    />
   </div>
 </template>
 <script>
+import CardDialog from './CardDialog';
+
 export default {
+  components: {
+    'card-dialog': CardDialog
+  },
   props: {
-    task: {
+    card: {
       type: Object,
       default: () => ({})
     }
   },
-
-
-  methods: {
-    deleteCard(card) {
-				let confirmation = confirm(`Are you sure you want to delete card ${card.title}`);
-
-				if (confirmation) {
-					this.$http.delete(`cards/${card.id}`)
-					.then(() => {
-            this.$emit('deleteCard', card);
-					})
-					.catch(err => {
-					console.error(err);
-					})
-				}
-
-			},
+  data() {
+    return {
+      isHovering: false,
+      openDialog: false
+    }
   },
+  methods: {
+    closeCardDialog() {
+      console.log('Close')
+      this.openDialog = false;
+    },
+    deleteCard(card) {
+      if (!confirm(`Are you sure you want to delete card ${card.title}`)) return;
 
+      this.$http.delete(`cards/${card.id}`)
+        .then(() => {
+          this.$emit('deleteCard', card);
+        })
+        .catch(err => {
+          console.error(err);
+        });
+    },
+  },
 };
 </script>
 <style scoped lang="scss">
+ .card {
+    &-remove {
+      float: right;
+    }
 
+    &-title {
+      text-overflow: ellipsis;
+      contain: content;
+    }
+
+    &-subtitle {
+      text-overflow: ellipsis;
+      max-height: 20px;
+      contain: content;
+      font-size: 9px;
+    }
+ }
 </style>

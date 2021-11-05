@@ -153,6 +153,7 @@ export class ClassroomService {
         HttpStatus.UNAUTHORIZED,
       );
     }
+    
     const token = this.generateClassroomToken();
 
     return this.prisma.classroom.update({
