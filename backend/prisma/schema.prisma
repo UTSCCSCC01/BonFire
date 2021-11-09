@@ -91,6 +91,7 @@ model Card {
   assignment_id Int?
   order          Int
   due_date       DateTime?
+  deleted    Boolean   @default(false)
   created_at     DateTime     @default(now())
   updated_at     DateTime     @updatedAt
   creator        User         @relation(fields: [creator_id], references: [id])
