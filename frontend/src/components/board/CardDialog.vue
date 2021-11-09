@@ -185,7 +185,7 @@ export default {
         .finally(() => {
           this.tagLabel = '';
         });
-      this.updateChanges();
+      this.card.tags.push({ label: this.tagLabel });
     },
     updateChanges() {
       this.$emit('update', this.cardData);
