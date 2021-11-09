@@ -245,7 +245,7 @@ export default {
     getUserClassrooms(){
       this.$http.get('classrooms')
       .then(res => {
-        this.classrooms = res.data;
+        this.classrooms = res.data.filter(c => c.deleted == 0);
       })
       .catch(err => {
         console.error(err);

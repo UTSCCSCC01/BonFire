@@ -31,6 +31,7 @@ model StudentClassrooms {
   created_at   DateTime  @default(now())
   classroom    Classroom @relation(fields: [classroom_id], references: [id])
   student      User      @relation(fields: [student_id], references: [id])
+  deleted    Boolean     @default(false)
 
   @@id([classroom_id, student_id])
   @@index([student_id])
@@ -40,6 +41,7 @@ model Classroom {
   id          Int                 @id @default(autoincrement())
   token       String              @unique
   name        String
+  deleted    Boolean              @default(false)
   created_at  DateTime            @default(now())
   updated_at  DateTime            @updatedAt
   creator_id  Int
