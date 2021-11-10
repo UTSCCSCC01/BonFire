@@ -89,6 +89,7 @@
                     color="#f7f7f7"
                     x-small
                     elevation="0"
+                    :disabled="!tagLabel"
                     @click="createTag"
                     style="margin-top: 40px;"
                   >
