@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-content v-if="room.creator_id" class="board">
+    <div v-if="room.creator_id" class="board mx-4">
       <div class="header">
         {{ room.name || "Board" }}
         <span style="color: #f1d7bc" class="px-3">
@@ -262,7 +262,7 @@
           />
         </assignment-dialog>
       </div>
-    </v-content>
+    </div>
     <v-progress-circular
       v-else
       :size="70"
