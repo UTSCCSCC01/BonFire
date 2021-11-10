@@ -1,6 +1,6 @@
 <template>
   <div>
-    <v-content v-if="room.creator_id" class="board mx-4">
+    <v-content v-if="room.creator_id" class="board">
       <div class="header">
         {{ room.name || "Board" }}
         <span style="color: #f1d7bc" class="px-3">
