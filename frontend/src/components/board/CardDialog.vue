@@ -172,6 +172,9 @@ export default {
   },
   methods: {
     createTag() {
+      if (!this.tagLabel){
+        return;
+      }
       this.$http.post(`/cards/${this.cardData.id}/tags`, { label: this.tagLabel })
         .then(res => {
           this.$emit('add-tag', { card: this.cardData, tag: res.data });
@@ -182,7 +185,7 @@ export default {
         .finally(() => {
           this.tagLabel = '';
         });
-
+      this.card.tags.push({ label: this.tagLabel });
     },
     updateChanges() {
       this.$emit('update', this.cardData);

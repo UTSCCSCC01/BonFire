@@ -190,11 +190,22 @@ export class ClassroomService {
       );
     }
 
-    return this.prisma.classroom.delete({
+    const classroomUpdated = this.prisma.classroom.update({
       where: {
         id: classroomId,
       },
+      data: {
+        deleted: true,
+      },
     });
+
+    //delete all ClassroomStudents when classroom is deleted
+    this.prisma.studentClassrooms.deleteMany({
+      where: {
+        classroom_id: classroomId,
+      },
+    });
+    return classroomUpdated;
   }
 
   async getStudents(user: User, classroomId: number): Promise<UserDto[]> {

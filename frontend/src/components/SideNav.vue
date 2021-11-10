@@ -65,41 +65,52 @@
         nav
         dense
       >
-        <template v-for="classroom in classrooms">
-          <v-hover
-            v-slot="{ hover }"
-            :key="classroom.id"
-          >
-            <v-list-item
-              :to="`/classroom/${classroom.id}`"
+        <div v-if="classrooms.length>0">
+          <template v-for="classroom in classrooms">
+            <v-hover
+              v-slot="{ hover }"
+              :key="classroom.id"
             >
-              <v-list-item-icon>
-                <v-icon
-                  v-if="classroom.creator_id == $currentUser.id"
-                  color="blue"
-                >
-                  fas fa-fire-alt
-                </v-icon>
-                <v-icon v-else>
-                  fas fa-fire-alt
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ classroom.name }}</v-list-item-title>
-              <v-btn
-
-                v-if="hover && (classroom.creator_id != $currentUser.id)"
-                align="right"
-                icon
-                color="dark-grey"
-                @click="leaveClass(classroom)"
+              <v-list-item
+                :to="`/classroom/${classroom.id}`"
               >
-                <v-icon x-small>
-                  fa fa-times
-                </v-icon>
-              </v-btn>
-            </v-list-item>
-          </v-hover>
-        </template>
+                <v-list-item-icon>
+                  <v-icon
+                    v-if="classroom.creator_id == $currentUser.id"
+                    color="blue"
+                  >
+                    fas fa-fire-alt
+                  </v-icon>
+                  <v-icon v-else>
+                    fas fa-fire-alt
+                  </v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>{{ classroom.name }}</v-list-item-title>
+                <v-btn
+
+                  v-if="hover && (classroom.creator_id != $currentUser.id)"
+                  align="right"
+                  icon
+                  color="dark-grey"
+                  @click="leaveClass(classroom)"
+                >
+                  <v-icon x-small>
+                    fa fa-times
+                  </v-icon>
+                </v-btn>
+              </v-list-item>
+            </v-hover>
+          </template>
+        </div>
+        <div v-else>
+          <v-list-item>
+            <v-list-item-content>
+              <p class="text-center" style="font-family: Poppins; color: #808080">
+              -
+              </p>
+            </v-list-item-content>
+          </v-list-item>
+        </div>
       </v-list>
       <v-divider />
       <!-- Render this list using v-for and load in user boards and other elements -->
@@ -122,37 +133,48 @@
         nav
         dense
       >
-        <template v-for="board in boards">
-          <v-hover
-            v-slot="{ hover }"
-            :key="board.id"
-          >
-            <v-list-item
-              :to="`/board/${board.id}`"
+        <div v-if="boards.length>0">
+          <template v-for="board in boards">
+            <v-hover
+              v-slot="{ hover }"
+              :key="board.id"
             >
-              <v-list-item-icon>
-                <v-icon
+              <v-list-item
+                :to="`/board/${board.id}`"
+              >
+                <v-list-item-icon>
+                  <v-icon
+                    icon
+                    color="dark-grey"
+                  >
+                    fas fa-fire
+                  </v-icon>
+                </v-list-item-icon>
+                <v-list-item-title>{{ board.title }}</v-list-item-title>
+                <v-btn
+                  v-if="hover"
+                  align="right"
                   icon
                   color="dark-grey"
+                  @click="deleteBoard(board)"
                 >
-                  fas fa-fire
-                </v-icon>
-              </v-list-item-icon>
-              <v-list-item-title>{{ board.title }}</v-list-item-title>
-              <v-btn
-                v-if="hover"
-                align="right"
-                icon
-                color="dark-grey"
-                @click="deleteBoard(board)"
-              >
-                <v-icon x-small>
-                  fa fa-times
-                </v-icon>
-              </v-btn>
-            </v-list-item>
-          </v-hover>
-        </template>
+                  <v-icon x-small>
+                    fa fa-times
+                  </v-icon>
+                </v-btn>
+              </v-list-item>
+            </v-hover>
+          </template>
+        </div>
+        <div v-else>
+          <v-list-item>
+            <v-list-item-content>
+              <p class="text-center" style="font-family: Poppins; color: #808080">
+              -
+              </p>
+            </v-list-item-content>
+          </v-list-item>
+        </div>
       </v-list>
 
       <template v-slot:append>
@@ -223,7 +245,7 @@ export default {
     getUserClassrooms(){
       this.$http.get('classrooms')
       .then(res => {
-        this.classrooms = res.data;
+        this.classrooms = res.data.filter(c => c.deleted == 0);
       })
       .catch(err => {
         console.error(err);

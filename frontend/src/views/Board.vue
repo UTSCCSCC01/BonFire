@@ -267,7 +267,8 @@
 			getUserClassrooms(){
 				this.$http.get('classrooms')
 				.then(res => {
-					this.classrooms = res.data;
+					// if classroom is deleted, remove it from the list
+					this.classrooms = res.data.filter(c => c.deleted == 0);
 				})
 				.catch(err => {
 					console.error(err);

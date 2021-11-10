@@ -223,7 +223,7 @@
           <v-text-field
             v-model="assignment.title"
             label="Assignment Name"
-            maxlength="191"
+            maxlength="50"
             required
           />
           <v-textarea
@@ -313,7 +313,7 @@ export default {
         },
         { text: "Due Date", value: "due_date" },
         { text: "Available Date", value: "available_date" },
-        { text: "Publish Date Date", value: "published_date" },
+        { text: "Publish Date", value: "published_date" },
       ],
     };
   },

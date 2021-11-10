@@ -107,10 +107,15 @@ export class CardService {
    * @returns Promise
    */
   async delete(user: User, cardId: number): Promise<Card> {
-    return this.prisma.card.delete({
-      where: { id: cardId },
+    return this.prisma.card.update({
+      where: {
+        id: cardId,
+      },
+      data: {
+        deleted: true,
+      },
     });
-  };
+  }
 
   /**
    *
@@ -128,7 +133,7 @@ export class CardService {
 
     return {
       id: card.id,
-      tags: card.tags
+      tags: card.tags,
     };
   }
 }
