@@ -21,21 +21,17 @@ export default {
   },
   methods: {
     saveUser(res) {
-      console.log('login2');
       localStorage.setItem('token', res.data.token.accessToken);
       localStorage.setItem('user', res.data);
     },
     login() {
-      console.log('login');
       this.loading = true;
       this.$http.post('auth/login', this.user)
       .then(this.saveUser)
       .then(() => {
-          console.log('login3');
-          this.$router.push('Dashboard').catch(() => { });
+          this.$router.push('Dashboard');
         })
         .catch(err => {
-          console.log('login4');
           this.$notify({
             type: 'error',
             title: 'Error',
@@ -44,7 +40,6 @@ export default {
           console.error(err);
         })
         .finally(() => {
-          console.log('login5');
           this.loading = false;
         });
     },
@@ -53,7 +48,7 @@ export default {
       this.$http.post('auth/register', this.user)
         .then(this.saveUser)
         .then(() => {
-          this.$router.push('Dashboard').catch(() => { });
+          this.$router.push('Dashboard');
         })
         .catch(err => {
           this.$notify({
