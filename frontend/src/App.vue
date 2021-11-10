@@ -38,6 +38,7 @@
           <v-sidenav
             v-if="user.id"
             :user="user"
+            @sign-out="signOut"
           />
         </div>
 
@@ -73,9 +74,17 @@ export default {
     };
   },
   mounted: function() {
-    this.fetchUser();
+    if (localStorage.getItem("token")) {
+      this.fetchUser();
+    }
   },
   methods: {
+    signOut: function() {
+      localStorage.removeItem('token');
+      Vue.prototype.$currentUser = null;
+      this.user = {};
+      this.$router.push("/");
+    },
     fetchUser() {
       this.$http.get('/auth/user')
       .then(res => {

@@ -30,8 +30,7 @@ new Vue({
 }).$mount('#app')
 
 router.beforeEach((to, _, next) => {
-  console.log({ to, next, localStorage });
-  if (to.meta.noAuthRequired) {
+  if (to.meta?.noAuthRequired) {
     next();
   } else if (localStorage.getItem('token')) {
     next();

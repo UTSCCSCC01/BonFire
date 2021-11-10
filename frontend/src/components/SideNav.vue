@@ -184,7 +184,7 @@
           </v-list-item-icon>
           <v-list-item-title />
         </v-list-item>
-        <v-list-item @click="signOut">
+        <v-list-item @click="$emit('sign-out')">
           <v-list-item-icon>
             <v-icon>fas fa-sign-out-alt</v-icon>
           </v-list-item-icon>
@@ -199,7 +199,6 @@
 import CreateBoardDialog from './board/CreateBoardDialog';
 import CreateClassroomDialog from './classroom/CreateClassroomDialog';
 import JoinClassroomDialog from './classroom/JoinClassroomDialog';
-
 
 export default {
   components: {
@@ -229,10 +228,6 @@ export default {
     this.getUserClassrooms();
   },
   methods: {
-    signOut() {
-      localStorage.removeItem('token');
-      this.$router.push('/');
-    },
     getUserBoards() {
       this.$http.get('boards')
       .then(res => {
