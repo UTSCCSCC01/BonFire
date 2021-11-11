@@ -89,12 +89,13 @@
               >
                 <state-card
                   v-for="(card) in state.cards"
+                  v-show="!card.deleted"
                   :key="card.id"
                   :card="card"
                   class="mt-3 cursor-move"
                   @updateCard="updateCard"
                   @deleteCard="removeStateCard"
-									@add-tag="addCardTag"
+                  @add-tag="addCardTag"
                 />
               </v-draggable>
             </v-sheet>
@@ -208,12 +209,6 @@
 	import Board from "@/mixins/boards.js";
 
 	export default {
-    props: {
-      boardId: {
-        type: String,
-        required: true
-      },
-    },
 		components: {
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
@@ -223,6 +218,12 @@
 			'v-draggable': Draggable
 		},
 		mixins: [Board],
+		props: {
+			boardId: {
+				type: String,
+				required: true
+			},
+		},
 		data() {
 			return {
 				classrooms: [],
