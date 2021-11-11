@@ -55,7 +55,9 @@
             <v-sheet
               class="rounded lg border shadow-sm board-states-item"
             >
-              <div class="board-states-item-title">
+              <div
+                class="board-states-item-title"
+              >
                 {{ state.title }}
                 <p
                   v-if="state.cards.length > 0"
@@ -63,6 +65,22 @@
                 >
                   - {{ state.cards.length }} {{ state.cards.length === 1 ? 'item' : 'items' }}
                 </p>
+                <v-btn
+                  v-show="state.type === 'CUSTOM'"
+                  align="left"
+                  icon
+                  x-small
+                  color="dark-grey"
+                  class="board-states-item-btn"
+                  elevation="0"
+                  @click="deleteState(state)"
+                >
+                  <v-icon
+                    x-small
+                  >
+                    fa fa-times
+                  </v-icon>
+                </v-btn>
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -226,6 +244,7 @@
 		},
 		data() {
 			return {
+				isHovering: false,
 				classrooms: [],
 			};
 		},
@@ -433,6 +452,7 @@
 				let confirmation = confirm(`Are you sure you want to delete state ${state.title}`);
 
 				if (confirmation) {
+
 					this.$http.delete(`states/${state.id}`)
 					.then(() => {
 					this.states = this.states.filter(s => s.id != state.id);
