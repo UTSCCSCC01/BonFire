@@ -32,6 +32,8 @@ model StudentClassrooms {
   classroom    Classroom @relation(fields: [classroom_id], references: [id])
   student      User      @relation(fields: [student_id], references: [id])
   deleted    Boolean     @default(false)
+  state_id Int?
+  state State? @relation(fields: [state_id], references: [id])
 
   @@id([classroom_id, student_id])
   @@index([student_id])
@@ -78,6 +80,7 @@ model State {
   order      Int
   type       StateType
   board      Board     @relation(fields: [board_id], references: [id])
+  classrooms StudentClassrooms[]
   cards      Card[]
 
   @@index([board_id])

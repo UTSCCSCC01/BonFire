@@ -55,6 +55,9 @@ export class CreateCardDto {
   readonly state_id: number;
 
   @ApiProperty()
+  readonly assignment_id: number;
+
+  @ApiProperty()
   readonly title: string;
 
   @ApiProperty()

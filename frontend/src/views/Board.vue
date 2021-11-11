@@ -177,25 +177,48 @@
         v-if="board"
         title="Add Classroom"
         :open-dialog="newClass"
-        @save="createCard"
+        @save="addClassroomState"
         @close="newClass = false"
       >
         <v-select
-          :items="classrooms.map(c => c.name)"
+          :items="classrooms.filter(classroom => classroom.creator_id != $currentUser.id)"
           :menu-props="{ maxHeight: '400' }"
           label="Select"
-          multiple
           hint="Choose classes"
+					v-model="selectedClass"
           persistent-hint
-        />
+        >
+					<template v-slot:selection="{ item }">
+						<span>
+							{{ item.name }}
+						</span>
+					</template>
+					<template v-slot:item="{ item }">
+						<span>
+							{{ item.name }}
+						</span>
+					</template>
+			</v-select>
 
         <v-select
-          :items="states.map(s => s.title)"
+          :items="states"
           :menu-props="{ maxHeight: '400' }"
           label="Select"
+					v-model="selectedState"
           hint="Entry State"
           persistent-hint
-        />
+        >
+					<template v-slot:selection="{ item }">
+						<span>
+							{{ item.title }}
+						</span>
+					</template>
+					<template v-slot:item="{ item }">
+						<span>
+							{{ item.title }}
+						</span>
+					</template>
+				</v-select>
       </class-dialog>
     </div>
   </div>
@@ -226,6 +249,8 @@
 		data() {
 			return {
 				classrooms: [],
+				selectedState: {},
+				selectedClass: {},
 			};
 		},
 		watch: {
@@ -307,6 +332,28 @@
 				const state = this.states.find(state => state.id === card.state_id);
 				const cardIndex = state.cards.findIndex(c => c.id === card.id);
 				state.cards[cardIndex].tags.push(tag);
+			},
+			addClassroomState(){
+				if (!this.selectedClass.id || !this.selectedState.id) {
+					this.$notify({
+						type: 'error',
+						title: 'Error',
+						text: 'Please select a classroom and state.'
+					});
+					return;
+				}
+
+				this.$http.post('/user/classroom/state', {state_id: this.selectedState.id, classroom_id: this.selectedClass.id})
+					.then(res => {
+						res.data?.forEach(card =>
+							this.states.find(state => state.id === card?.state_id)?.cards?.push(card)
+						);
+					}).catch(err => {
+						console.error({err});
+					});
+				this.selectedState = {};
+				this.selectedClass = {};
+				this.newClass = false;
 			},
 			createCard() {
 				this.newCard = false;

@@ -970,6 +970,26 @@
         ]
       }
     },
+    "/user/classroom/state": {
+      "post": {
+        "operationId": "setClassroomState",
+        "summary": "Adds a student to a specific classroom",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Added a student to classroom"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/assignments": {
       "post": {
         "operationId": "addAssignment",
@@ -1351,6 +1371,9 @@
           "state_id": {
             "type": "number"
           },
+          "assignment_id": {
+            "type": "number"
+          },
           "title": {
             "type": "string"
           },
@@ -1364,6 +1387,7 @@
         },
         "required": [
           "state_id",
+          "assignment_id",
           "title",
           "desc",
           "due_date"

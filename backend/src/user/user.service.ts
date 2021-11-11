@@ -3,10 +3,12 @@ import { PrismaService } from '../prisma.service';
 import { User, Prisma } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { ClassroomDto } from 'src/constants/classroom';
+import { CardService } from 'src/card/card.service';
+import { CardDto } from 'src/constants/card';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private cardService: CardService) {}
 
   /** Find a user by email or id
    * @param  {Prisma.UserWhereUniqueInput} userWhereUniqueInput
@@ -120,5 +122,51 @@ export class UserService {
       },
     });
     return classroom;
+  }
+
+  async setClassroomState(user: User, id: number, stateId: number): Promise<CardDto[]> {
+    // check if the token is valid
+    const classroom = await this.prisma.classroom.findFirst({
+      where: { id },
+    });
+    const state = await this.prisma.state.findFirst({
+      where: { id: stateId },
+    });
+
+    if (!classroom || !state) {
+      throw new HttpException('Invalid board token', HttpStatus.NOT_FOUND);
+    }
+
+    // add user to classroom with id classroomId
+    await this.prisma.studentClassrooms.update({
+      data: {
+        state_id: state.id,
+      },
+      where: {
+        classroom_id_student_id: {
+          classroom_id: classroom.id,
+          student_id: user.id,
+        }
+      },
+    });
+
+    const assignments = await this.prisma.assignment.findMany({
+      where: {
+        classroom_id: classroom.id,
+        // published_date: {
+        //   lt: new Date(),
+        // },
+        due_date: {
+          gt: new Date(),
+        },
+      }
+    });
+
+    let cards = [];
+    for (const assignment of assignments) {
+      cards.push(await this.cardService.create({...assignment, state_id: state.id, assignment_id: assignment.id}, user));
+    }
+
+    return cards;
   }
 }
