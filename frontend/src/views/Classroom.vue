@@ -18,7 +18,7 @@
         </v-btn>
       </div>
       <div class="board-body">
-        <div class="board">
+        <div class="board" :class="$currentUser.id == room.creator_id ? 'board-small' : ''">
           <div v-if="$currentUser.id == room.creator_id" class="toolbar">
             <v-btn
               class="toolbar-btn"
@@ -97,7 +97,7 @@
           <v-row v-if="$currentUser.id == room.creator_id">
             <v-data-table
               :headers="headers"
-              :items="assignments"
+              :items="formatedAssignments"
               :items-per-page="5"
               class="elevation-1"
             />
@@ -140,16 +140,6 @@
             </p>
           </div>
           <v-container actionbar>
-            <v-btn
-              class="toolbar-btn"
-              color="#f7f7f7"
-              depressed
-              rounded
-              @click="addStudent()"
-            >
-              <v-icon left> fa fa-plus </v-icon>
-              Add Students
-            </v-btn>
             <v-btn
               class="toolbar-btn"
               color="#f7f7f7"
@@ -323,11 +313,33 @@ export default {
       this.reloadPageContent();
     },
   },
+  computed: {
+    formatedAssignments: function () {
+      return this.assignments.map((assignment) => {
+        assignment.due_date = this.formatDate(new Date(assignment.due_date));
+        assignment.available_date = this.formatDate(
+          new Date(assignment.available_date)
+        );
+        assignment.published_date = this.formatDate(
+          new Date(assignment.published_date)
+        );
+        return assignment;
+      });
+    },
+  },
   mounted() {
     this.reloadPageContent();
   },
   methods: {
-    addStudent() {},
+    formatDate(date) {
+      return date.toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+        hour: "numeric",
+        minute: "numeric",
+      });
+    },
     closeClassroom() {
       let confirmation = confirm(
         `Are you sure you want to delete classroom ${this.room.name}`
@@ -503,7 +515,9 @@ export default {
     background-color: #f5f5f5;
   }
   .board {
-    width: 66%;
+    &-small {
+      width: 66%;
+    }
     height: 100%;
     margin-top: 20px;
     overflow-x: scroll;
@@ -518,8 +532,6 @@ export default {
 
       .toolbar {
         padding: 12px;
-        &-btn {
-        }
       }
     }
 
