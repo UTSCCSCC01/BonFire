@@ -55,7 +55,9 @@
             <v-sheet
               class="rounded lg border shadow-sm board-states-item"
             >
-              <div class="board-states-item-title">
+              <div
+                class="board-states-item-title"
+              >
                 {{ state.title }}
                 <p
                   v-if="state.cards.length > 0"
@@ -63,6 +65,22 @@
                 >
                   - {{ state.cards.length }} {{ state.cards.length === 1 ? 'item' : 'items' }}
                 </p>
+                <v-btn
+                  v-show="state.type === 'CUSTOM'"
+                  align="left"
+                  icon
+                  x-small
+                  color="dark-grey"
+                  class="board-states-item-btn"
+                  elevation="0"
+                  @click="deleteState(state)"
+                >
+                  <v-icon
+                    x-small
+                  >
+                    fa fa-times
+                  </v-icon>
+                </v-btn>
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -89,12 +107,13 @@
               >
                 <state-card
                   v-for="(card) in state.cards"
+                  v-show="!card.deleted"
                   :key="card.id"
                   :card="card"
                   class="mt-3 cursor-move"
                   @updateCard="updateCard"
                   @deleteCard="removeStateCard"
-									@add-tag="addCardTag"
+                  @add-tag="addCardTag"
                 />
               </v-draggable>
             </v-sheet>
@@ -231,12 +250,6 @@
 	import Board from "@/mixins/boards.js";
 
 	export default {
-    props: {
-      boardId: {
-        type: String,
-        required: true
-      },
-    },
 		components: {
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
@@ -246,8 +259,15 @@
 			'v-draggable': Draggable
 		},
 		mixins: [Board],
+		props: {
+			boardId: {
+				type: String,
+				required: true
+			},
+		},
 		data() {
 			return {
+				isHovering: false,
 				classrooms: [],
 				selectedState: {},
 				selectedClass: {},
@@ -458,6 +478,7 @@
 						this.states = res.data;
 						this.states.forEach(state => {
 							if (!state.cards) this.$set(state, 'cards', [])
+							state.cards = state.cards.filter(card => !card.deleted);
 						});
 
 						this.reorganizeStates();
@@ -479,6 +500,7 @@
 				let confirmation = confirm(`Are you sure you want to delete state ${state.title}`);
 
 				if (confirmation) {
+
 					this.$http.delete(`states/${state.id}`)
 					.then(() => {
 					this.states = this.states.filter(s => s.id != state.id);
