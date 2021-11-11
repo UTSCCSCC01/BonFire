@@ -1,6 +1,5 @@
 <template>
   <div
-    v-if="!card.deleted"
     class="state-card"
   >
     <v-card

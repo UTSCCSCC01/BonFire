@@ -89,6 +89,7 @@
               >
                 <state-card
                   v-for="(card) in state.cards"
+                  v-show="!card.deleted"
                   :key="card.id"
                   :card="card"
                   class="mt-3 cursor-move"
@@ -223,6 +224,12 @@
 			'v-draggable': Draggable
 		},
 		mixins: [Board],
+		props: {
+			boardId: {
+				type: String,
+				required: true
+			},
+		},
 		data() {
 			return {
 				classrooms: [],
