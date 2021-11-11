@@ -125,7 +125,6 @@ export class UserService {
   }
 
   async getAnalytics(user: User): Promise<UserAnalyticsDto> {
-
     const cards = await this.prisma.card.findMany({
       where: {
         creator_id: user.id,
@@ -145,8 +144,6 @@ export class UserService {
     }
 
     //make sure the states are not in a classroom
-    
-    
 
     const todos = states.filter(
       (state) => state.type === 'TODO' && !state.deleted,
@@ -157,8 +154,6 @@ export class UserService {
     const done = states.filter(
       (state) => state.type === 'DONE' && !state.deleted,
     );
-
-==
 
     // count how many cards are in each state
 

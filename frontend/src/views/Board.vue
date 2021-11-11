@@ -268,7 +268,7 @@
 				this.$http.get('classrooms')
 				.then(res => {
 					// if classroom is deleted, remove it from the list
-					this.classrooms = res.data.filter(c => c.deleted == 0);
+					this.classrooms = res.data.filter(c => c.deleted == false);
 				})
 				.catch(err => {
 					console.error(err);
@@ -462,7 +462,7 @@
 		border-bottom: 1px solid #e6e6e6;
 		display: flex;
 		align-items: center;
-		padding: 0 30px;
+		padding: 20px 30px;
 	}
 
 	.board {
