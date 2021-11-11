@@ -209,12 +209,6 @@
 	import Board from "@/mixins/boards.js";
 
 	export default {
-    props: {
-      boardId: {
-        type: String,
-        required: true
-      },
-    },
 		components: {
 			'board-dialog': EditBoardDialog,
 			'state-card': StateCard,
