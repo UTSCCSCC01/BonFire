@@ -143,29 +143,25 @@ export class UserService {
       );
     }
 
-    //make sure the states are not in a classroom
-
     const todos = states.filter(
       (state) => state.type === 'TODO' && !state.deleted,
-    );
+    ).length;
     const custom = states.filter(
       (state) => state.type === 'CUSTOM' && !state.deleted,
-    );
+    ).length;
     const done = states.filter(
       (state) => state.type === 'DONE' && !state.deleted,
-    );
-
-    // count how many cards are in each state
+    ).length;
 
     const userAnalytics: UserAnalyticsDto = {
       user_id: user.id,
-      todoCount: todos.length,
-      todoPercentage: Math.round((todos.length / states.length) * 100),
-      inProgressCount: custom.length,
+      todoCount: todos,
+      todoPercentage: Math.round((todos / states.length) * 100),
+      inProgressCount: custom,
       totalCount: states.length,
-      inProgressPercentage: Math.round((custom.length / states.length) * 100),
-      doneCount: done.length,
-      donePercentage: Math.round((done.length / states.length) * 100),
+      inProgressPercentage: Math.round((custom / states.length) * 100),
+      doneCount: done,
+      donePercentage: Math.round((done / states.length) * 100),
     };
 
     return userAnalytics;
