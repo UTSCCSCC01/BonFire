@@ -970,6 +970,26 @@
         ]
       }
     },
+    "/user/analytics": {
+      "get": {
+        "operationId": "getAnalytics",
+        "summary": "Returns user analytics",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns user analytics"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/assignments": {
       "post": {
         "operationId": "addAssignment",

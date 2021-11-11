@@ -1,4 +1,4 @@
-import { Body, Controller, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
@@ -10,6 +10,7 @@ import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { UserService } from './user.service';
 import { ClassroomDto } from 'src/constants/classroom';
+import { UserAnalyticsDto } from 'src/constants/user';
 
 @Controller('user')
 @ApiTags('user')
@@ -28,5 +29,16 @@ export class UserController {
     @Body() classroom: Classroom,
   ): Promise<ClassroomDto> {
     return await this.userService.joinClassroom(user, classroom.token);
+  }
+
+  @Get('/analytics')
+  @ApiOperation({ summary: 'Returns user analytics' })
+  @ApiOkResponse({
+    description: 'Returns user analytics',
+  })
+  public async getAnalytics(
+    @RequestUser() user: User,
+  ): Promise<UserAnalyticsDto> {
+    return await this.userService.getAnalytics(user);
   }
 }

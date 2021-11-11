@@ -1,8 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { PrismaService } from '../prisma.service';
-import { User, Prisma } from '@prisma/client';
+import { User, Prisma, State } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { ClassroomDto } from 'src/constants/classroom';
+import { UserAnalyticsDto } from 'src/constants/user';
+import { use } from 'passport';
 
 @Injectable()
 export class UserService {
@@ -120,5 +122,57 @@ export class UserService {
       },
     });
     return classroom;
+  }
+
+  async getAnalytics(user: User): Promise<UserAnalyticsDto> {
+
+    const cards = await this.prisma.card.findMany({
+      where: {
+        creator_id: user.id,
+        deleted: false,
+      },
+    });
+
+    const states: State[] = [];
+    for (const card of cards) {
+      states.push(
+        await this.prisma.state.findFirst({
+          where: {
+            id: card.state_id,
+          },
+        }),
+      );
+    }
+
+    //make sure the states are not in a classroom
+    
+    
+
+    const todos = states.filter(
+      (state) => state.type === 'TODO' && !state.deleted,
+    );
+    const custom = states.filter(
+      (state) => state.type === 'CUSTOM' && !state.deleted,
+    );
+    const done = states.filter(
+      (state) => state.type === 'DONE' && !state.deleted,
+    );
+
+==
+
+    // count how many cards are in each state
+
+    const userAnalytics: UserAnalyticsDto = {
+      user_id: user.id,
+      todoCount: todos.length,
+      todoPercentage: Math.round((todos.length / states.length) * 100),
+      inProgressCount: custom.length,
+      totalCount: states.length,
+      inProgressPercentage: Math.round((custom.length / states.length) * 100),
+      doneCount: done.length,
+      donePercentage: Math.round((done.length / states.length) * 100),
+    };
+
+    return userAnalytics;
   }
 }

@@ -50,3 +50,30 @@ export class CreateUserDto {
   @ApiProperty()
   readonly password: string;
 }
+
+export class UserAnalyticsDto {
+  @ApiProperty()
+  readonly user_id: number;
+
+  @ApiProperty()
+  readonly inProgressCount: number;
+  
+  @ApiProperty()
+  readonly inProgressPercentage: number;
+  
+  @ApiProperty()
+  readonly doneCount: number;
+  
+  @ApiProperty()
+  readonly donePercentage: number;
+  
+  @ApiProperty()
+  readonly todoCount: number;
+  
+  @ApiProperty()
+  readonly todoPercentage: number;
+
+  @ApiProperty()
+  readonly totalCount: number;
+
+}
