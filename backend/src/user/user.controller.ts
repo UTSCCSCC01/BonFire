@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Put, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
@@ -40,5 +40,17 @@ export class UserController {
     @RequestUser() user: User,
   ): Promise<UserAnalyticsDto> {
     return await this.userService.getAnalytics(user);
+  }
+
+  @Get('/analytics/board/:id')
+  @ApiOperation({ summary: 'Returns user analytics for specific board' })
+  @ApiOkResponse({
+    description: 'Returns user analytics for a board',
+  })
+  public async getBoardAnalytics(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<UserAnalyticsDto> {
+    return await this.userService.getBoardAnalytics(user, +boardId);
   }
 }

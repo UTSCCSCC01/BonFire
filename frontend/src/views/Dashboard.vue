@@ -5,25 +5,55 @@
     </h1>
     <v-spacer />
 
-    <div class="dashboard-statistics">
+    <template class="dashboard-statistics; overflow-x: scroll;">
       <h1 class="analytics-title">
-        Statistics
+        Analytics
       </h1>
-      <div class="chart-wrap">
-        <div id="chart">
-          <apexchart
-            type="donut"
-            width="380"
-            :options="chartOptions"
-            :series="stats"
-          />
+      <div class="d-flex">
+        <div
+          v-for="(stat, index) in boardStats"
+          :key="stat.id"
+        >
+          <div v-if="boardsDisplay[index][2]">
+            <v-btn
+              class="board-title"
+              :to="`/board/${boardsDisplay[index][0]}`"
+            >
+              {{ boardsDisplay[index][1] }}
+            </v-btn>
+            <div class="chart-wrap ">
+              <div id="chart">
+                <apexchart
+                  type="donut"
+                  width="380"
+                  :options="chartOptions"
+                  :series="stat"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-    </div>
+    </template>
+
+    
     <v-divider
       inset
       class="dashboard-divider"
     />
+    <h1 class="analytics-title">
+      Aggregated Analytics
+    </h1>
+    <div class="chart-wrap">
+      <div id="chart">
+        <apexchart
+          type="donut"
+          width="600"
+          :options="chartOptions"
+          :series="aggregateStats"
+        />
+      </div>
+    </div>
   </div>
 </template>
 
@@ -37,7 +67,10 @@ export default {
   },
   data() {
     return {
-      stats: [1, 1, 1],
+      boards: [],
+      boardsDisplay: [],
+      boardStats: [],
+      aggregateStats: [1, 1, 1],
       chartOptions: {
         labels: ["To Start", "In Progress", "Done"],
 
@@ -70,21 +103,40 @@ export default {
     };
   },
   mounted() {
-			this.getUserAnalytics();
+    this.getUserBoards();
+    this.getUserAnalytics();
 	},
   methods: {
+    getUserBoards() {
+      this.$http.get('boards')
+      .then(res => {
+        this.boards = res.data;
+        this.boards.forEach(board => {
+          this.$http.get(`user/analytics/board/${board.id}`)
+          .then(response => {
+            this.boardStats.push([response.data.todoCount, response.data.inProgressCount, response.data.doneCount]);
+            this.boardsDisplay.push([board.id, board.title, response.data.totalCount]);
+          })
+          .catch(err => {
+            console.log(err);
+          });
+        });
+      })
+      .catch(err => {
+        console.error(err);
+      })
+    },
     getUserAnalytics(){
       this.$http
         .get(`user/analytics`)
         .then(response => {
-          this.stats = response.data.data;
-          this.stats = [response.data.todoCount, response.data.inProgressCount, response.data.doneCount];
+          this.aggregateStats = [response.data.todoCount, response.data.inProgressCount, response.data.doneCount];
         })
     },
     appendData: function () {
-      var arr = this.stats.slice()
+      var arr = this.aggregateStats.slice()
       arr.push(Math.floor(Math.random() * (100 - 1 + 1)) + 1)
-      this.stats = arr
+      this.aggregateStats = arr
     },
   },
 }
@@ -120,6 +172,16 @@ export default {
   display: flex;
   align-items: center;
   padding: 0px 50px;
+}
 
+.board-title {
+  font-family: Poppins;
+  font-size: 20px;
+  color: #3f3f3f;
+  margin-bottom: 20px;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 0px 50px;
 }
 </style>

@@ -990,6 +990,35 @@
         ]
       }
     },
+    "/user/analytics/board/{id}": {
+      "get": {
+        "operationId": "getBoardAnalytics",
+        "summary": "Returns user analytics for specific board",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user analytics for a board"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/assignments": {
       "post": {
         "operationId": "addAssignment",

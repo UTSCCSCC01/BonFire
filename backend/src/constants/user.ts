@@ -57,23 +57,22 @@ export class UserAnalyticsDto {
 
   @ApiProperty()
   readonly inProgressCount: number;
-  
+
   @ApiProperty()
   readonly inProgressPercentage: number;
-  
+
   @ApiProperty()
   readonly doneCount: number;
-  
+
   @ApiProperty()
   readonly donePercentage: number;
-  
+
   @ApiProperty()
   readonly todoCount: number;
-  
+
   @ApiProperty()
   readonly todoPercentage: number;
 
   @ApiProperty()
   readonly totalCount: number;
-
 }
