@@ -431,6 +431,7 @@
 						this.states = res.data;
 						this.states.forEach(state => {
 							if (!state.cards) this.$set(state, 'cards', [])
+							state.cards = state.cards.filter(card => !card.deleted);
 						});
 
 						this.reorganizeStates();
