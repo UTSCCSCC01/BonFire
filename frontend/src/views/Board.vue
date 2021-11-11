@@ -94,7 +94,7 @@
                   class="mt-3 cursor-move"
                   @updateCard="updateCard"
                   @deleteCard="removeStateCard"
-									@add-tag="addCardTag"
+                  @add-tag="addCardTag"
                 />
               </v-draggable>
             </v-sheet>
