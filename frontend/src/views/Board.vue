@@ -17,7 +17,7 @@
           class="toolbar-btn"
           color="#f7f7f7"
           depressed
-          tile
+          rounded
           @click="newState = true"
         >
           <v-icon left>
@@ -29,7 +29,7 @@
           class="toolbar-btn"
           color="#f7f7f7"
           depressed
-          tile
+          rounded
           @click="newClass = true"
         >
           <v-icon left>

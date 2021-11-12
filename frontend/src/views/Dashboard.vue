@@ -1,9 +1,19 @@
 <template>
   <div scroll>
-    <h1 class="dashboard">
+    <h1 class="header">
       My Dashboard
     </h1>
     <v-spacer />
+    <h1 class="title">
+      Upcoming Tasks
+    </h1>
+    <v-data-table
+      :headers="headers"
+      :items="formatedDueDates"
+      :items-per-page="5"
+      class="elevation-1"
+    />
+    
     <div class="main-container">
       <div class="aggregated-analytics">
         <h1 class="title">
@@ -81,23 +91,6 @@
         </v-container>
       </div>
     </div>
-
-    <template class="dashboard-statistics" />
-
-    
-    <v-divider
-      inset
-      class="dashboard-divider"
-    />
-    <h1 class="title">
-      Upcoming Tasks
-    </h1>
-    <v-data-table
-      :headers="headers"
-      :items="formatedDueDates"
-      :items-per-page="5"
-      class="elevation-1"
-    />
   </div>
 </template>
 
@@ -232,26 +225,25 @@ export default {
   top:10px;
 
 }
-.dashboard {
-  font-family: Poppins;
-  font-size: 45px;
-  font-weight: bold;
-  color: #3f3f3f;
-  margin-bottom: 20px;
-  text-align: left;
-  border-bottom: 1px solid #e6e6e6;
-  display: flex;
-  align-items: center;
-	padding: 20px 30px;
-}
+.header {
+		font-family: Poppins;
+		font-size: 45px;
+		font-weight: bold;
+		color: #3f3f3f;
+		margin-bottom: 20px;
+		text-align: left;
+		border-bottom: 1px solid #e6e6e6;
+		display: flex;
+		align-items: center;
+		padding: 20px 30px;
+	}
 
 .title {
   font-family: Poppins;
   font-size: 30px;
   color: #3f3f3f;
-  margin-bottom: 20px;
+  margin: 20px;
   display: flex;
-  align-items: center;
   padding: 0px 50px;
 }
 

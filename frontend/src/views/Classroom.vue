@@ -19,31 +19,33 @@
       </div>
       <div class="board-body">
         <div class="board" :class="$currentUser.id == room.creator_id ? 'board-small' : ''">
-          <div v-if="$currentUser.id == room.creator_id" class="toolbar">
-            <v-btn
-              class="toolbar-btn"
-              color="#f7f7f7"
-              depressed
-              tile
-              @click="newAssignment = true"
-            >
-              <v-icon left> fa fa-plus </v-icon>
-              New Assignment
-            </v-btn>
-          </div>
-          <div>
-            <v-btn
-              v-if="$currentUser.id != room.creator_id"
-              class="toolbar-btn"
-              color="#FFCCCC"
-              depressed
-              tile
-              right
-              @click="leaveClass(room)"
-            >
-              <v-icon left> fas fa-sign-out-alt </v-icon>
-              Leave
-            </v-btn>
+          <div class="toolbar">
+            <div v-if="$currentUser.id == room.creator_id">
+              <v-btn
+                class="toolbar-btn"
+                color="#f7f7f7"
+                depressed
+                rounded
+                @click="newAssignment = true"
+              >
+                <v-icon left> fa fa-plus </v-icon>
+                New Assignment
+              </v-btn>
+            </div>
+            <div>
+              <v-btn
+                v-if="$currentUser.id != room.creator_id"
+                class="toolbar-btn"
+                color="#FFCCCC"
+                depressed
+                tile
+                right
+                @click="leaveClass(room)"
+              >
+                <v-icon left> fas fa-sign-out-alt </v-icon>
+                Leave
+              </v-btn>
+            </div>
           </div>
           <v-row class="board-states">
             <v-draggable
