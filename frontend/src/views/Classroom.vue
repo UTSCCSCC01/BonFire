@@ -308,13 +308,13 @@ export default {
     };
   },
   watch: {
-    classroomId: function () {
+    classroomId() {
       // If the board id changes, reload all board content
       this.reloadPageContent();
     },
   },
   computed: {
-    formatedAssignments: function () {
+    formatedAssignments() {
       return this.assignments.map((assignment) => {
         assignment.due_date = this.formatDate(new Date(assignment.due_date));
         assignment.available_date = this.formatDate(

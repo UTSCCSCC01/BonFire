@@ -204,7 +204,9 @@ export class UserService {
       },
     });
 
-    cards = cards.filter((card) => card.due_date < new Date());
+    cards = cards.filter((card) => card.due_date);
+
+    console.log(cards);
 
     for (const card of cards) {
       const state = await this.prisma.state.findFirst({
@@ -220,21 +222,37 @@ export class UserService {
       });
 
       if (state.type !== 'DONE') {
-        const cardDto: UpcomingDueDatesDto = {
-          user_id: user.id,
-          board_id: state.board_id,
-          board_title: board.title,
-          card_title: card.title,
-          due_date: card.due_date,
-          days_left: Math.round(
-            (card.due_date.getTime() - new Date().getTime()) /
-              (1000 * 60 * 60 * 24),
-          ),
-        };
-        upcomingDueDatesDto.push(cardDto);
+        const daysleft = await this.dateDiffInDays(new Date(), card.due_date);
+
+        if (daysleft >= 0) {
+          const upcomingDueDate: UpcomingDueDatesDto = {
+            user_id: user.id,
+            board_id: state.board_id,
+            board_title: board.title,
+            card_title: card.title,
+            due_date: card.due_date,
+            days_left: daysleft,
+          };
+
+          upcomingDueDatesDto.push(upcomingDueDate);
+        }
       }
     }
 
+    // sort by days left
+    upcomingDueDatesDto.sort((a, b) => {
+      return a.days_left - b.days_left;
+    });
+
     return upcomingDueDatesDto;
+  }
+
+  async dateDiffInDays(a, b) {
+    console.log(a, b);
+    // Discard the time and time-zone information.
+    const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
+    const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
+    const _MS_PER_DAY = 1000 * 60 * 60 * 24;
+    return Math.floor((utc2 - utc1) / _MS_PER_DAY);
   }
 }
