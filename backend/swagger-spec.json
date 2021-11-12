@@ -1019,6 +1019,26 @@
         ]
       }
     },
+    "/user/upcoming-due-dates": {
+      "get": {
+        "operationId": "getUpcomingDueDates",
+        "summary": "Returns upcoming due dates",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns upcoming due dates"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/assignments": {
       "post": {
         "operationId": "addAssignment",

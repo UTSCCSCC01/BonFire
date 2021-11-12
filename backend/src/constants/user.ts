@@ -76,3 +76,23 @@ export class UserAnalyticsDto {
   @ApiProperty()
   readonly totalCount: number;
 }
+
+export class UpcomingDueDatesDto {
+  @ApiProperty()
+  readonly user_id: number;
+
+  @ApiProperty()
+  readonly board_id: number;
+
+  @ApiProperty()
+  readonly board_title: string;
+
+  @ApiProperty()
+  readonly card_title: string;
+
+  @ApiProperty()
+  readonly due_date: Date;
+
+  @ApiProperty()
+  readonly days_left: number;
+}

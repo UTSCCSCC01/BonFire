@@ -10,7 +10,7 @@ import { Classroom, User } from '@prisma/client';
 import { RequestUser } from 'src/constants/auth';
 import { UserService } from './user.service';
 import { ClassroomDto } from 'src/constants/classroom';
-import { UserAnalyticsDto } from 'src/constants/user';
+import { UpcomingDueDatesDto, UserAnalyticsDto } from 'src/constants/user';
 
 @Controller('user')
 @ApiTags('user')
@@ -51,6 +51,17 @@ export class UserController {
     @RequestUser() user: User,
     @Param('id') boardId: number,
   ): Promise<UserAnalyticsDto> {
-    return await this.userService.getBoardAnalytics(user, +boardId);
+    return await this.userService.getAnalytics(user, +boardId);
+  }
+
+  @Get('upcoming-due-dates')
+  @ApiOperation({ summary: 'Returns upcoming due dates' })
+  @ApiOkResponse({
+    description: 'Returns upcoming due dates',
+  })
+  public async getUpcomingDueDates(
+    @RequestUser() user: User,
+  ): Promise<UpcomingDueDatesDto[]> {
+    return await this.userService.getUpcomingDueDates(user);
   }
 }

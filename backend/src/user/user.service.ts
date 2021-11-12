@@ -3,7 +3,8 @@ import { PrismaService } from '../prisma.service';
 import { User, Prisma, State } from '@prisma/client';
 import * as bcrypt from 'bcrypt';
 import { ClassroomDto } from 'src/constants/classroom';
-import { UserAnalyticsDto } from 'src/constants/user';
+import { UpcomingDueDatesDto, UserAnalyticsDto } from 'src/constants/user';
+import { filter } from 'rxjs';
 
 @Injectable()
 export class UserService {
@@ -97,7 +98,7 @@ export class UserService {
     return classroom;
   }
 
-  async getAnalytics(user: User): Promise<UserAnalyticsDto> {
+  async getAnalytics(user: User, boardId?: number): Promise<UserAnalyticsDto> {
     const cards = await this.prisma.card.findMany({
       where: {
         creator_id: user.id,
@@ -105,7 +106,7 @@ export class UserService {
       },
     });
 
-    const states: State[] = [];
+    let states: State[] = [];
     for (const card of cards) {
       states.push(
         await this.prisma.state.findFirst({
@@ -114,6 +115,10 @@ export class UserService {
           },
         }),
       );
+    }
+
+    if (boardId) {
+      states = states.filter((state) => state.board_id === boardId);
     }
 
     const todos = states.filter(
@@ -187,5 +192,49 @@ export class UserService {
     };
 
     return userAnalytics;
+  }
+
+  async getUpcomingDueDates(user: User): Promise<UpcomingDueDatesDto[]> {
+    const upcomingDueDatesDto: UpcomingDueDatesDto[] = [];
+
+    let cards = await this.prisma.card.findMany({
+      where: {
+        creator_id: user.id,
+        deleted: false,
+      },
+    });
+
+    cards = cards.filter((card) => card.due_date < new Date());
+
+    for (const card of cards) {
+      const state = await this.prisma.state.findFirst({
+        where: {
+          id: card.state_id,
+        },
+      });
+
+      const board = await this.prisma.board.findFirst({
+        where: {
+          id: state.board_id,
+        },
+      });
+
+      if (state.type !== 'DONE') {
+        const cardDto: UpcomingDueDatesDto = {
+          user_id: user.id,
+          board_id: state.board_id,
+          board_title: board.title,
+          card_title: card.title,
+          due_date: card.due_date,
+          days_left: Math.round(
+            (card.due_date.getTime() - new Date().getTime()) /
+              (1000 * 60 * 60 * 24),
+          ),
+        };
+        upcomingDueDatesDto.push(cardDto);
+      }
+    }
+
+    return upcomingDueDatesDto;
   }
 }
