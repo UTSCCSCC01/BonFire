@@ -100,7 +100,7 @@ model Card {
   created_at     DateTime     @default(now())
   updated_at     DateTime     @updatedAt
   creator        User         @relation(fields: [creator_id], references: [id])
-  Assignment    Assignment? @relation(fields: [assignment_id], references: [id])
+  assignment    Assignment? @relation(fields: [assignment_id], references: [id])
   state          State?       @relation(fields: [state_id], references: [id])
   tags       Tag[]
 

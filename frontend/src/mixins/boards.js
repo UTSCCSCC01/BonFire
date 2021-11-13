@@ -139,7 +139,11 @@ export default {
         .then(res => {
           this.states = res.data;
           this.states.forEach(state => {
-            if (!state.cards) this.$set(state, 'cards', [])
+            if (!state.cards) this.$set(state, 'cards', []);
+            state.cards = state.cards.filter(card => {
+              if (!card?.assignment?.id) return true;
+              return card?.assignment?.published_date ? new Date(card.assignment.published_date).getTime() < new Date().getTime() : true
+            });
           });
 
           this.reorganizeStates();

@@ -86,7 +86,6 @@
                       :key="card.id"
                       :card="card"
                       class="mt-3 cursor-move"
-                      @updateCard="updateCard"
                       @deleteCard="removeStateCard"
                     />
                   </v-draggable>
@@ -98,6 +97,9 @@
             <v-data-table
               :headers="headers"
               :items="formatedAssignments"
+              selectable-key="title"
+              item-key="id"
+              @click:row="clickAssignment"
               :items-per-page="5"
               class="elevation-1"
             />
@@ -205,10 +207,10 @@
         </card-dialog>
         <assignment-dialog
           v-if="$currentUser.id == room.creator_id"
-          title="Create new Assignment"
+          :title="(assignment.id ? 'Edit' : 'Create new') + ' Assignment'"
           :open-dialog="newAssignment"
-          @save="createAssignment"
-          @close="newAssignment = false"
+          @save="() => assignment.id ? saveAssignment() : createAssignment()"
+          @close="assignment = {}; newAssignment = false"
         >
           <v-text-field
             v-model="assignment.title"
@@ -301,9 +303,9 @@ export default {
           align: "start",
           value: "title",
         },
-        { text: "Due Date", value: "due_date" },
-        { text: "Available Date", value: "available_date" },
-        { text: "Publish Date", value: "published_date" },
+        { text: "Due Date", value: "formatted_due_date" },
+        { text: "Available Date", value: "formatted_available_date" },
+        { text: "Publish Date", value: "formatted_published_date" },
       ],
     };
   },
@@ -316,13 +318,13 @@ export default {
   computed: {
     formatedAssignments: function () {
       return this.assignments.map((assignment) => {
-        assignment.due_date = this.formatDate(new Date(assignment.due_date));
-        assignment.available_date = this.formatDate(
+        assignment.formatted_due_date = this.formatDate(new Date(assignment.due_date));
+        assignment.formatted_available_date = assignment.available_date ? this.formatDate(
           new Date(assignment.available_date)
-        );
-        assignment.published_date = this.formatDate(
+        ) : '';
+        assignment.formatted_published_date = assignment.published_date ? this.formatDate(
           new Date(assignment.published_date)
-        );
+        ) : '';
         return assignment;
       });
     },
@@ -331,6 +333,13 @@ export default {
     this.reloadPageContent();
   },
   methods: {
+    clickAssignment(assignment) {
+      this.assignment = assignment;
+      this.assignment.due_date = assignment.due_date?.replace('Z', '');
+      this.assignment.published_date = assignment.published_date?.replace('Z', '');
+      this.assignment.available_date = assignment.available_date?.replace('Z', '');
+      this.newAssignment = true;
+    },
     formatDate(date) {
       return date.toLocaleString("en-US", {
         month: "short",
@@ -458,6 +467,28 @@ export default {
             console.error(err);
           });
       }
+    },
+    saveAssignment() {
+      this.loading = true;
+      this.assignment.classroom_id = this.room.id;
+
+      this.$http
+        .put(`/assignments/${this.assignment.id}`, this.assignment)
+        .then((res) => {
+          this.assignment = {};
+          this.assignments.push(res.data);
+          this.$notify({
+            type: "success",
+            title: "Assignment saved",
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        })
+        .finally(() => {
+          this.newAssignment = false;
+          this.loading = false;
+        });
     },
     createAssignment() {
       this.loading = true;

@@ -287,16 +287,12 @@
 		},
 		methods: {
 			updateCard(event) {
-				console.log({ event })
 				const body = {
 					state_id: event.state_id,
 					title: event.title,
 					desc: event.desc,
 					due_date: event.due_date,
 				}
-
-				// let date = event.due_date.split('-');
-				// body.due_date = new Date(date[0], date[1] - 1, date[2]).toISOString();
 
 				this.$http.put(`/cards/${event.id}`, body)
 					.then(res => {
@@ -476,22 +472,6 @@
 				this.getBoardInfo();
 				this.getStates();
 			},
-			getStates() {
-				this.$http.get(`boards/${this.boardId}/states?include=cards`)
-					.then(res => {
-						console.log({res: res.data})
-						this.states = res.data;
-						this.states.forEach(state => {
-							if (!state.cards) this.$set(state, 'cards', [])
-							state.cards = state.cards.filter(card => !card.deleted);
-						});
-
-						this.reorganizeStates();
-					})
-					.catch(err => {
-						console.error(err);
-					})
-			},
 			getBoardInfo() {
 				this.$http.get(`boards/${this.boardId}`)
 					.then(res => {
@@ -519,8 +499,6 @@
 					})
 				}
 			},
-
-
 		},
 	}
 </script>

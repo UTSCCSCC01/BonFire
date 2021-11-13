@@ -153,9 +153,6 @@ export class UserService {
     const assignments = await this.prisma.assignment.findMany({
       where: {
         classroom_id: classroom.id,
-        // published_date: {
-        //   lt: new Date(),
-        // },
         due_date: {
           gt: new Date(),
         },
