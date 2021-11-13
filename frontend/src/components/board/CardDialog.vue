@@ -117,7 +117,7 @@
             text
             @click="cancelChanges"
           >
-            Cancel
+            Undo
           </v-btn>
           <v-btn
             color="secondary"
@@ -131,7 +131,7 @@
             text
             @click="updateChanges"
           >
-            Update
+            Save
           </v-btn>
         </v-card-actions>
       </v-card>
