@@ -177,7 +177,7 @@ export default {
       .then(res => {
         this.boards = res.data;
         this.boards.forEach(board => {
-          this.$http.get(`user/analytics/board/${board.id}`)
+          this.$http.get(`/boards/${board.id}/analytics`)
           .then(response => {
             this.boardStats.push([response.data.todoCount, response.data.inProgressCount, response.data.doneCount]);
             this.boardsDisplay.push([board.id, board.title, response.data.totalCount]);

@@ -32,7 +32,7 @@ export class UserController {
   }
 
   @Get('/analytics')
-  @ApiOperation({ summary: 'Returns user analytics' })
+  @ApiOperation({ summary: 'Returns user aggregated analytics' })
   @ApiOkResponse({
     description: 'Returns user analytics',
   })
@@ -40,18 +40,6 @@ export class UserController {
     @RequestUser() user: User,
   ): Promise<UserAnalyticsDto> {
     return await this.userService.getAnalytics(user);
-  }
-
-  @Get('/analytics/board/:id')
-  @ApiOperation({ summary: 'Returns user analytics for specific board' })
-  @ApiOkResponse({
-    description: 'Returns user analytics for a board',
-  })
-  public async getBoardAnalytics(
-    @RequestUser() user: User,
-    @Param('id') boardId: number,
-  ): Promise<UserAnalyticsDto> {
-    return await this.userService.getAnalytics(user, +boardId);
   }
 
   @Get('upcoming-due-dates')

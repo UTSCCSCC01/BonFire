@@ -343,6 +343,35 @@
         ]
       }
     },
+    "/boards/{id}/analytics": {
+      "get": {
+        "operationId": "getBoardAnalytics",
+        "summary": "Returns user analytics for specific board",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user analytics for a board"
+          }
+        },
+        "tags": [
+          "boards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/states/{id}": {
       "get": {
         "operationId": "getCard",
@@ -973,40 +1002,11 @@
     "/user/analytics": {
       "get": {
         "operationId": "getAnalytics",
-        "summary": "Returns user analytics",
+        "summary": "Returns user aggregated analytics",
         "parameters": [],
         "responses": {
           "200": {
             "description": "Returns user analytics"
-          }
-        },
-        "tags": [
-          "user"
-        ],
-        "security": [
-          {
-            "bearer": []
-          }
-        ]
-      }
-    },
-    "/user/analytics/board/{id}": {
-      "get": {
-        "operationId": "getBoardAnalytics",
-        "summary": "Returns user analytics for specific board",
-        "parameters": [
-          {
-            "name": "id",
-            "required": true,
-            "in": "path",
-            "schema": {
-              "type": "number"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Returns user analytics for a board"
           }
         },
         "tags": [
