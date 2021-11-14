@@ -11,6 +11,7 @@
           <div class="card-title">
             <v-text-field
               v-model="cardData.title"
+              :readonly="readonly"
               solo
             />
             <v-divider />
@@ -26,7 +27,16 @@
                 v-model="cardData.desc"
                 label="Description"
                 auto-grow
+                :readonly="readonly"
                 rows="8"
+              />
+              <v-textarea
+                v-model="cardData.submit_url"
+                label="Submit URL"
+                auto-grow
+                :readonly="readonly"
+                rows="1"
+                v-if="cardData.submit_url"
               />
             </v-card-text>
           </v-col>
@@ -58,6 +68,7 @@
                 <v-date-picker
                   v-model="cardData.due_date"
                   no-title
+                  :readonly="readonly"
                   scrollable
                 />
               </v-menu>
@@ -116,6 +127,7 @@
             color="secondary"
             text
             @click="cancelChanges"
+            v-if="!readonly"
           >
             Undo
           </v-btn>
@@ -130,6 +142,7 @@
             color="primary"
             text
             @click="updateChanges"
+            v-if="!readonly"
           >
             Save
           </v-btn>
@@ -142,6 +155,10 @@
 export default {
   props: {
     openDialog: {
+      type: Boolean,
+      required: true,
+    },
+    readonly: {
       type: Boolean,
       required: true,
     },
