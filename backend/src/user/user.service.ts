@@ -206,8 +206,6 @@ export class UserService {
 
     cards = cards.filter((card) => card.due_date);
 
-    console.log(cards);
-
     for (const card of cards) {
       const state = await this.prisma.state.findFirst({
         where: {
@@ -248,7 +246,6 @@ export class UserService {
   }
 
   async dateDiffInDays(a, b) {
-    console.log(a, b);
     // Discard the time and time-zone information.
     const utc1 = Date.UTC(a.getFullYear(), a.getMonth(), a.getDate());
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
