@@ -56,7 +56,8 @@
     </v-card>
     <card-dialog
       :open-dialog="openDialog"
-      :readonly="!!card.assignment"
+      :readonly="readonly || !!card.assignment"
+      :hide-tags="hideTags"
       :card="card.assignment ? {...card, ...card.assignment, id: card.id} : card"
       @add-tag="$emit('add-tag', $event)"
       @update="$emit('updateCard', $event)"
@@ -75,7 +76,15 @@ export default {
     card: {
       type: Object,
       default: () => ({})
-    }
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    hideTags: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {

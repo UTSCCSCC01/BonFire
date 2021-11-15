@@ -85,7 +85,7 @@
                 {{ formatDate(cardData.updated_at) }}
               </v-card-subtitle>
               <v-spacer></v-spacer>
-              <v-row>
+              <v-row v-if="!hideTags">
                 <v-col cols="5">
                   <v-text-field
                     small
@@ -161,6 +161,11 @@ export default {
     readonly: {
       type: Boolean,
       required: true,
+    },
+    hideTags: {
+      type: Boolean,
+      required: false,
+      default: false,
     },
     card: {
       type: Object,

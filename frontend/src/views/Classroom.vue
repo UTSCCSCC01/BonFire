@@ -18,7 +18,9 @@
         </v-btn>
       </div>
       <div class="board-body">
-        <div class="board" :class="$currentUser.id == room.creator_id ? 'board-small' : ''">
+        <div
+          class="board"
+        >
           <div v-if="$currentUser.id == room.creator_id" class="toolbar">
             <v-btn
               class="toolbar-btn"
@@ -29,6 +31,16 @@
             >
               <v-icon left> fa fa-plus </v-icon>
               New Assignment
+            </v-btn>
+            <v-btn
+              class="toolbar-btn mx-2"
+              color="#f7f7f7"
+              depressed
+              tile
+              @click="studentDrawer = !studentDrawer"
+            >
+              <v-icon left> fa fa-user </v-icon>
+              Toggle Drawer
             </v-btn>
           </div>
           <div>
@@ -45,17 +57,20 @@
               Leave
             </v-btn>
           </div>
-          <v-row class="board-states">
+          <v-row class="board-states" :class="$currentUser.id == room.creator_id ? '' : 'vh-100'">
             <v-draggable
-              :list="states"
+              :list="
+                $currentUser.id == room.creator_id ? states : assignmentStates
+              "
               :animation="200"
               :show-dropzone-areas="true"
               group="states"
               style="display: flex"
+              :class="$currentUser.id == room.creator_id ? '' : 'h-75'"
               @change="orderChange"
             >
               <v-col
-                v-for="state in states"
+                v-for="state in ($currentUser.id == room.creator_id ? states : assignmentStates)"
                 :key="state.id"
                 class="board-states-col"
               >
@@ -67,6 +82,7 @@
                       color="#f7f7f7"
                       x-small
                       elevation="0"
+                      v-if="$currentUser.id == room.creator_id"
                       @click="showNewCard(state)"
                     >
                       <v-icon left x-small> fa fa-plus </v-icon>
@@ -82,11 +98,15 @@
                     @change="moveCard"
                   >
                     <state-card
-                      v-for="(card) in state.cards"
+                      v-for="card in state.cards"
                       :key="card.id"
+                      :readonly="$currentUser.id != room.creator_id"
+                      :hide-tags="$currentUser.id != room.creator_id"
                       :card="card"
                       class="mt-3 cursor-move"
                       @deleteCard="removeStateCard"
+                      @updateCard="updateCard"
+                      @add-tag="addCardTag"
                     />
                   </v-draggable>
                 </v-sheet>
@@ -105,7 +125,12 @@
             />
           </v-row>
         </div>
-        <v-col v-if="$currentUser.id == room.creator_id" class="students">
+        <v-navigation-drawer
+          v-model="studentDrawer"
+          absolute
+          right
+          v-if="$currentUser.id == room.creator_id" class="students"
+        >
           <h6 class="px-4 py-2" style="font-family: Poppins">
             <strong>Invite Code: </strong>
             <span>{{ room.token }}</span>
@@ -153,7 +178,7 @@
               Close Class
             </v-btn>
           </v-container>
-        </v-col>
+        </v-navigation-drawer>
       </div>
       <div class="dialogs">
         <board-dialog
@@ -209,8 +234,11 @@
           v-if="$currentUser.id == room.creator_id"
           :title="(assignment.id ? 'Edit' : 'Create new') + ' Assignment'"
           :open-dialog="newAssignment"
-          @save="() => assignment.id ? saveAssignment() : createAssignment()"
-          @close="assignment = {}; newAssignment = false"
+          @save="() => (assignment.id ? saveAssignment() : createAssignment())"
+          @close="
+            assignment = {};
+            newAssignment = false;
+          "
         >
           <v-text-field
             v-model="assignment.title"
@@ -292,6 +320,7 @@ export default {
       room: {},
       assignment: {},
       assignments: [],
+      studentDrawer: true,
       boardId: null,
       newAssignment: false,
       available_date_menu: false,
@@ -312,19 +341,57 @@ export default {
   watch: {
     classroomId: function () {
       // If the board id changes, reload all board content
+      this.room = {};
+      this.assignment = {};
+      this.assignments = [];
+      this.boardId = null;
+      this.board = {};
       this.reloadPageContent();
     },
   },
   computed: {
+    assignmentStates() {
+      let todo = { title: "To Do", cards: [], type: "TODO" },
+        inProgress = { title: "In Progress", cards: [], type: "CUSTOM" },
+        done = { title: "Done", cards: [], type: "DONE" };
+
+      this.assignments.forEach((assignment) => {
+        if (
+          !(
+            assignment.available_date &&
+            new Date(assignment.available_date).getTime() < new Date().getTime()
+          )
+        )
+          return;
+
+        if (
+          assignment?.due_date &&
+          new Date(assignment.due_date).getTime() < new Date().getTime()
+        ) {
+          done.cards.push(assignment);
+        } else if (
+          assignment?.published_date &&
+          new Date(assignment.published_date).getTime() < new Date().getTime()
+        ) {
+          inProgress.cards.push(assignment);
+        } else {
+          todo.cards.push(assignment);
+        }
+      });
+
+      return[todo, inProgress, done];
+    },
     formatedAssignments: function () {
       return this.assignments.map((assignment) => {
-        assignment.formatted_due_date = this.formatDate(new Date(assignment.due_date));
-        assignment.formatted_available_date = assignment.available_date ? this.formatDate(
-          new Date(assignment.available_date)
-        ) : '';
-        assignment.formatted_published_date = assignment.published_date ? this.formatDate(
-          new Date(assignment.published_date)
-        ) : '';
+        assignment.formatted_due_date = this.formatDate(
+          new Date(assignment.due_date)
+        );
+        assignment.formatted_available_date = assignment.available_date
+          ? this.formatDate(new Date(assignment.available_date))
+          : "";
+        assignment.formatted_published_date = assignment.published_date
+          ? this.formatDate(new Date(assignment.published_date))
+          : "";
         return assignment;
       });
     },
@@ -335,9 +402,15 @@ export default {
   methods: {
     clickAssignment(assignment) {
       this.assignment = assignment;
-      this.assignment.due_date = assignment.due_date?.replace('Z', '');
-      this.assignment.published_date = assignment.published_date?.replace('Z', '');
-      this.assignment.available_date = assignment.available_date?.replace('Z', '');
+      this.assignment.due_date = assignment.due_date?.replace("Z", "");
+      this.assignment.published_date = assignment.published_date?.replace(
+        "Z",
+        ""
+      );
+      this.assignment.available_date = assignment.available_date?.replace(
+        "Z",
+        ""
+      );
       this.newAssignment = true;
     },
     formatDate(date) {
@@ -541,8 +614,7 @@ export default {
 
   .students {
     margin-right: -20px;
-    padding-top: 20px;
-    height: 93vh;
+    padding: 20px 0px;
     background-color: #f5f5f5;
   }
   .board {
