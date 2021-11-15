@@ -34,6 +34,7 @@
             small
             v-if="card.assignment && card.assignment.classroom"
             text-color="blue"
+            color="white"
           >
             <v-icon x-small> fas fa-fire-alt </v-icon>&nbsp;
             {{ card.assignment.classroom.name }}
