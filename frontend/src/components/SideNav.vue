@@ -25,15 +25,16 @@
       <v-list>
         <v-list-item to="/dashboard">
           <v-list-item-content>
+            <v-img
+              src="../../src/assets/img/logo.png"
+              :contain="true"
+              height="70"
+              width="70"
+            />
             <v-list-item-title
               class="text-h6"
+              v-if="!collapsed"
             >
-              <v-img
-                src="../../src/assets/img/logo.png"
-                :contain="true"
-                height="70"
-                width="70"
-              />
               Dashboard
             </v-list-item-title>
             <v-list-item-subtitle v-if="!collapsed">
