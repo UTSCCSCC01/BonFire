@@ -4,10 +4,11 @@ import { BoardController } from './board.controller';
 import { PrismaService } from 'src/prisma.service';
 import { AuthModule } from 'src/auth/auth.module';
 import { StateService } from 'src/state/state.service';
+import { UserService } from 'src/user/user.service';
 
 @Module({
   controllers: [BoardController],
-  providers: [BoardService, PrismaService, StateService],
+  providers: [BoardService, PrismaService, StateService, UserService],
   imports: [AuthModule],
 })
 export class BoardModule {}

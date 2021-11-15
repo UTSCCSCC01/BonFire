@@ -25,9 +25,17 @@
       <v-list>
         <v-list-item to="/dashboard">
           <v-list-item-content>
-            <v-list-item-title class="text-h6">
-              <v-icon>fas fa-home</v-icon>
-              My Dashboard
+            <v-img
+              src="../../src/assets/img/logo.png"
+              :contain="true"
+              height="70"
+              width="70"
+            />
+            <v-list-item-title
+              class="text-h6"
+              v-if="!collapsed"
+            >
+              Dashboard
             </v-list-item-title>
             <v-list-item-subtitle v-if="!collapsed">
               {{ $currentUser.first_name }} {{ $currentUser.last_name }}
@@ -37,7 +45,6 @@
       </v-list>
 
       <v-divider />
-      <!-- Render this list using v-for and load in user boards and other elements -->
       <v-toolbar-title
         v-if="!collapsed"
         class="text-h6 px-3 d-flex"
@@ -105,8 +112,11 @@
         <div v-else>
           <v-list-item>
             <v-list-item-content>
-              <p class="text-center" style="font-family: Poppins; color: #808080">
-              -
+              <p
+                class="text-center"
+                style="font-family: Poppins; color: #808080"
+              >
+                -
               </p>
             </v-list-item-content>
           </v-list-item>
@@ -169,8 +179,11 @@
         <div v-else>
           <v-list-item>
             <v-list-item-content>
-              <p class="text-center" style="font-family: Poppins; color: #808080">
-              -
+              <p
+                class="text-center"
+                style="font-family: Poppins; color: #808080"
+              >
+                -
               </p>
             </v-list-item-content>
           </v-list-item>

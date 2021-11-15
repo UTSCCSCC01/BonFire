@@ -343,6 +343,35 @@
         ]
       }
     },
+    "/boards/{id}/analytics": {
+      "get": {
+        "operationId": "getBoardAnalytics",
+        "summary": "Returns user analytics for specific board",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Returns user analytics for a board"
+          }
+        },
+        "tags": [
+          "boards"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/states/{id}": {
       "get": {
         "operationId": "getCard",
@@ -958,6 +987,46 @@
         "responses": {
           "200": {
             "description": "Added a student to classroom"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user/analytics": {
+      "get": {
+        "operationId": "getAnalytics",
+        "summary": "Returns user aggregated analytics",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns user analytics"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user/upcoming-due-dates": {
+      "get": {
+        "operationId": "getUpcomingDueDates",
+        "summary": "Returns upcoming due dates",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Returns upcoming due dates"
           }
         },
         "tags": [
