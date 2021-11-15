@@ -351,9 +351,9 @@ export default {
   },
   computed: {
     assignmentStates() {
-      let todo = { title: "To Do", cards: [], type: "TODO" },
-        inProgress = { title: "In Progress", cards: [], type: "CUSTOM" },
-        done = { title: "Done", cards: [], type: "DONE" };
+      let todo = { title: "Available", cards: [], type: "TODO" },
+        inProgress = { title: "Published", cards: [], type: "CUSTOM" },
+        done = { title: "Due", cards: [], type: "DONE" };
 
       this.assignments.forEach((assignment) => {
         if (
