@@ -1420,6 +1420,9 @@
           "state_id": {
             "type": "number"
           },
+          "assignment_id": {
+            "type": "number"
+          },
           "title": {
             "type": "string"
           },
@@ -1433,6 +1436,7 @@
         },
         "required": [
           "state_id",
+          "assignment_id",
           "title",
           "desc",
           "due_date"

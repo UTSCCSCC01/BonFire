@@ -13,6 +13,30 @@ export default {
     };
   },
   methods: {
+    updateCard(event) {
+      const body = {
+        state_id: event.state_id,
+        title: event.title,
+        desc: event.desc,
+        due_date: event.due_date,
+      }
+
+      this.$http.put(`/cards/${event.id}`, body)
+        .then(res => {
+          console.log({ res })
+          const state = this.states.find(state => state.id === res.data.state_id)
+          state.cards.forEach((c, i) => {
+            if (c.id === res.data.id) this.$set(state.cards, i, { ...c, ...res.data })
+          });
+          this.$notify({
+            type: 'success',
+            text: 'Card updated successfully'
+          });
+
+        }).catch(err => {
+          console.error({ err });
+        });
+    },
     saveBoard(data) {
       this.board = data;
     },
@@ -34,6 +58,11 @@ export default {
         this.updateCardState(event.element.id, newState.id, event.newIndex);
       }
     },
+    addCardTag({ card, tag }) {
+      const state = this.states.find(state => state.id === card.state_id);
+      const cardIndex = state.cards.findIndex(c => c.id === card.id);
+      state.cards[cardIndex].tags.push(tag);
+    },
     updateCardState(card_id, state_id, order) {
       this.$http.put(`/boards/${this.boardId}/reorder-cards`, { card_id, state_id, order })
         .then(res => {
@@ -46,11 +75,6 @@ export default {
       this.newCard = false;
       this.card.state_id = this.card.state.id;
       delete this.card.state;
-
-      if (this.card.due_date) {
-        let date = this.card.due_date.split('-');
-        this.card.due_date = new Date(date[0], date[1] - 1, date[2]).toISOString()
-      }
 
       this.$http.post('cards', this.card)
         .then(res => {
@@ -139,7 +163,11 @@ export default {
         .then(res => {
           this.states = res.data;
           this.states.forEach(state => {
-            if (!state.cards) this.$set(state, 'cards', [])
+            if (!state.cards) this.$set(state, 'cards', []);
+            state.cards = state.cards.filter(card => {
+              if (!card?.assignment?.id) return true;
+              return card?.assignment?.published_date ? new Date(card.assignment.published_date).getTime() < new Date().getTime() : true
+            });
           });
 
           this.reorganizeStates();

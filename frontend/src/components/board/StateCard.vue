@@ -24,12 +24,21 @@
         </v-icon>
       </v-btn>
       <v-card-title class="text-h6 card-title">
-        {{ card.title }}
+        {{ card.assignment ? card.assignment.title : card.title }}
       </v-card-title>
       <v-card-subtitle class="card-subtitle">
-        {{ card.desc }}
+        {{ card.assignment ? card.assignment.desc : card.desc }}
       </v-card-subtitle>
       <v-list style="padding: 10px;">
+          <v-chip
+            small
+            v-if="card.assignment && card.assignment.classroom"
+            text-color="blue"
+            color="white"
+          >
+            <v-icon x-small> fas fa-fire-alt </v-icon>&nbsp;
+            {{ card.assignment.classroom.name }}
+          </v-chip>
         <v-list-item
           v-for="tag in card.tags"
           :key="tag.id"
@@ -48,7 +57,9 @@
     </v-card>
     <card-dialog
       :open-dialog="openDialog"
-      :card="card"
+      :readonly="readonly || !!card.assignment"
+      :hide-tags="hideTags"
+      :card="card.assignment ? {...card, ...card.assignment, id: card.id} : card"
       @add-tag="$emit('add-tag', $event)"
       @update="$emit('updateCard', $event)"
       @close="closeCardDialog"
@@ -66,7 +77,15 @@ export default {
     card: {
       type: Object,
       default: () => ({})
-    }
+    },
+    readonly: {
+      type: Boolean,
+      default: false
+    },
+    hideTags: {
+      type: Boolean,
+      default: false
+    },
   },
   data() {
     return {
