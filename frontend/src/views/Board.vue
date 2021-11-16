@@ -75,23 +75,22 @@
                   elevation="0"
                   @click="deleteState(state)"
                 >
-                  <v-icon
-                    x-small
-                  >
+                  <v-icon x-small>
                     fa fa-times
                   </v-icon>
-                </v-btn> <v-btn
+                </v-btn>
+								<v-btn
                   align="left"
                   icon
                   x-small
                   color="dark-grey"
                   elevation="0"
-                  @click="editStateDialog = true"
+                  @click="editState(state)"
                 >
                   <v-icon x-small>
                     fas fa-edit
                   </v-icon>
-				</v-btn>
+								</v-btn>
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -491,19 +490,21 @@
 
 					this.$http.delete(`states/${state.id}`)
 					.then(() => {
-					this.states = this.states.filter(s => s.id != state.id);
-					this.$notify({
-						type: "success",
-						title: "Successfully deleted state",
-					});
+						this.states = this.states.filter(s => s.id != state.id);
+						this.$notify({
+							type: "success",
+							title: "Successfully deleted state",
+						});
 					})
 					.catch(err => {
 					console.error(err);
 					})
 				}
 			},
-
-
+			editState(state) {
+				this.state = state;
+				this.editStateDialog = true;	
+			},
 		},
 	}
 </script>
