@@ -85,8 +85,7 @@
                   icon
                   x-small
                   color="dark-grey"
-                  class="fas fa-edit"
-                  style="cursor:pointer;"
+                  elevation="0"
                   @click="editStateDialog = true"
                 >
                   <v-icon x-small>
