@@ -339,7 +339,7 @@ export default {
     };
   },
   watch: {
-    classroomId: function () {
+    classroomId() {
       // If the board id changes, reload all board content
       this.room = {};
       this.assignment = {};
@@ -607,7 +607,7 @@ export default {
   border-bottom: 1px solid #e6e6e6;
   display: flex;
   align-items: center;
-  padding: 0 30px;
+	padding: 20px 30px;
 }
 .board-body {
   display: flex;

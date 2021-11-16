@@ -26,7 +26,9 @@ import { RequestUser } from 'src/constants/auth';
 import { BoardDetailsDto, BoardDto } from 'src/constants/board';
 import { CardDto } from 'src/constants/card';
 import { StateDto } from 'src/constants/state';
+import { UserAnalyticsDto } from 'src/constants/user';
 import { StateService } from 'src/state/state.service';
+import { UserService } from 'src/user/user.service';
 import { BoardService } from './board.service';
 
 @Controller('boards')
@@ -37,6 +39,7 @@ export class BoardController {
   constructor(
     private readonly boardService: BoardService,
     private readonly stateService: StateService,
+    private readonly userService: UserService,
   ) {}
 
   @Post()
@@ -216,5 +219,17 @@ export class BoardController {
     @Param('id') boardId: number,
   ): Promise<BoardDto> {
     return this.boardService.delete(user, +boardId);
+  }
+
+  @Get('/:id/analytics')
+  @ApiOperation({ summary: 'Returns user analytics for specific board' })
+  @ApiOkResponse({
+    description: 'Returns user analytics for a board',
+  })
+  public async getBoardAnalytics(
+    @RequestUser() user: User,
+    @Param('id') boardId: number,
+  ): Promise<UserAnalyticsDto> {
+    return await this.userService.getAnalytics(user, +boardId);
   }
 }

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Card, Prisma, User } from '@prisma/client';
 import { CardDto, CardTags, CreateCardDto } from 'src/constants/card';
 import { PrismaService } from 'src/prisma.service';

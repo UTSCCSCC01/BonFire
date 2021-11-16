@@ -28,7 +28,10 @@ import { CardService } from './card.service';
 @UseGuards(AuthGuard())
 @ApiBearerAuth()
 export class CardController {
-  constructor(private readonly cardService: CardService, private readonly tagService: TagService) {}
+  constructor(
+    private readonly cardService: CardService,
+    private readonly tagService: TagService,
+  ) {}
 
   @Get(':id')
   @ApiOperation({ summary: 'Returns a card by specific ID' })
@@ -94,13 +97,13 @@ export class CardController {
   async createTag(
     @RequestUser() user: User,
     @Param('id') cardId: number,
-    @Body() body: {
-      label: string,
-    }
+    @Body()
+    body: {
+      label: string;
+    },
   ): Promise<Tag> {
     return this.tagService.create(user, +cardId, body.label);
   }
-
 
   @Delete(':id')
   @ApiOperation({ summary: 'Deletes a card' })
