@@ -85,7 +85,7 @@ export default {
     this.stateData = JSON.parse(JSON.stringify(this.state));
   },
   methods: {
-    stateState() {
+    saveState() {
       this.saving = true;
       this.$http
         .put(`states/${this.state.id}`, this.stateData)
