@@ -30,13 +30,6 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="deleteState(state); closeDialog();"
-          >
-            Delete
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
             @click="closeDialog"
           >
             Close
@@ -111,28 +104,10 @@ export default {
           this.saving = false;
         });
     },
-
     closeDialog() {
       this.$emit('save', this.state);
       this.$emit("close");
     },
-
-   deleteState(state) {
-        let confirmation = confirm(`Are you sure you want to delete state ${state.title}`);
-        if (confirmation) {
-            this.$http.delete(`states/${state.id}`)
-            .then(() => {
-            this.$notify({
-                type: "success",
-                title: "Successfully deleted state",
-            });
-            })
-            .catch(err => {
-            console.error(err);
-            })
-        }
-    },
-
   },
 };
 </script>

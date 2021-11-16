@@ -95,7 +95,6 @@ export default {
             title: "Saved",
             text: "Changes Saved",
           });
-
           this.$emit('save', response.data);
         })
         .catch(() => {
@@ -110,16 +109,12 @@ export default {
           this.saving = false;
         });
     },
-
     closeDialog() {
       this.$emit('save', this.board);
       this.$emit("close");
     },
-
     deleteBoard(board) {
-
       let confirmation = confirm(`Are you sure you want to delete board ${board.title}`);
-
       if (confirmation) {
         this.$http.delete(`boards/${board.id}`)
         .then(() => {
