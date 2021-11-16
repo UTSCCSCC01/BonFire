@@ -81,6 +81,11 @@ export default {
   methods: {
     saveState() {
       this.saving = true;
+      delete this.stateData.cards;
+      delete this.stateData.type;
+      delete this.stateData.order;
+      delete this.stateData.deleted;
+      delete this.stateData.board_id;
       this.$http
         .put(`states/${this.state.id}`, this.stateData)
         .then((response) => {

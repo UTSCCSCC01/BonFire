@@ -281,9 +281,6 @@
 				this.getUserClassrooms();
 				this.reloadPageContent();
 			},
-			states: function() {
-				this.reloadPageContent();
-			},
 		},
 		mounted() {
 			this.getUserClassrooms();
@@ -330,10 +327,6 @@
 			},
 			saveBoard(data) {
 				this.board = data;
-			},
-			saveState(data) {
-				this.state = data;
-				this.editBoardDialog = false;
 			},
 			showNewCard(state) {
 				this.card = {
@@ -508,6 +501,12 @@
 			editState(state) {
 				this.state = state;
 				this.editStateDialog = true;	
+				this.reloadPageContent();
+			},
+			saveState(data) {
+				this.state = data;
+				this.editBoardDialog = false;
+				this.reloadPageContent();
 			},
 		},
 	}
