@@ -265,6 +265,12 @@
 			return {
 				isHovering: false,
 				classrooms: [],
+				card: { state: {} },
+				board: {},
+				editBoardDialog: false,
+				newClass: false,
+				newState: false,
+				states: [],
 			};
 		},
 		watch: {
