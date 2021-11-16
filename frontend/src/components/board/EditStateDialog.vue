@@ -46,7 +46,7 @@
             text
             :disabled="!stateData.title"
             :loading="saving"
-            @click="saveBoard"
+            @click="saveState"
           >
             Save
           </v-btn>
@@ -85,7 +85,7 @@ export default {
     this.stateData = JSON.parse(JSON.stringify(this.state));
   },
   methods: {
-    stateBoard() {
+    stateState() {
       this.saving = true;
       this.$http
         .put(`states/${this.state.id}`, this.stateData)

@@ -270,7 +270,9 @@
 				editBoardDialog: false,
 				newClass: false,
 				newState: false,
+				state: {},
 				states: [],
+				editStateDialog: false,
 			};
 		},
 		watch: {
@@ -326,6 +328,9 @@
 			},
 			saveBoard(data) {
 				this.board = data;
+			},
+			saveState(data) {
+				this.state = data;
 			},
 			showNewCard(state) {
 				this.card = {
