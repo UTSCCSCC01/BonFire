@@ -80,7 +80,19 @@
                   >
                     fa fa-times
                   </v-icon>
-                </v-btn>
+                </v-btn> <v-btn
+                  align="left"
+                  icon
+                  x-small
+                  color="dark-grey"
+                  class="fas fa-edit"
+                  style="cursor:pointer;"
+                  @click="editStateDialog = true"
+                >
+                  <v-icon x-small>
+                    fas fa-edit
+                  </v-icon>
+				</v-btn>
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -129,6 +141,12 @@
         :board="board"
         @save="saveBoard"
         @close="editBoardDialog = false"
+      /> <state-edit-dialog
+        v-if="board"
+        :open-dialog="editStateDialog"
+		:state="state"
+        @save="saveState"
+        @close="editStateDialog = false"
       />
       <state-dialog
         v-if="board"
@@ -223,12 +241,14 @@
 	import Draggable from "vuedraggable";
 	import StateCard from "@/components/board/StateCard";
 	import EditBoardDialog from "@/components/board/EditBoardDialog";
+	import EditStateDialog from "@/components/board/EditStateDialog";
 	import Dialog from "@/components/Dialog";
 	import Board from "@/mixins/boards.js";
 
 	export default {
 		components: {
 			'board-dialog': EditBoardDialog,
+			'state-edit-dialog': EditStateDialog,
 			'state-card': StateCard,
 			'card-dialog': Dialog,
 			'class-dialog': Dialog,
