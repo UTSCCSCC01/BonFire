@@ -145,6 +145,7 @@
 		:state="state"
         @save="saveState"
         @close="editStateDialog = false"
+		@delete="editStateDialog = false"
       />
       <state-dialog
         v-if="board"
@@ -278,9 +279,11 @@
 			boardId: function() {
 				// If the board id changes, reload all board content
 				this.getUserClassrooms();
-				this.reloadPageContent()
+				this.reloadPageContent();
 			},
-
+			states: function() {
+				this.reloadPageContent();
+			},
 		},
 		mounted() {
 			this.getUserClassrooms();
@@ -330,6 +333,7 @@
 			},
 			saveState(data) {
 				this.state = data;
+				this.editBoardDialog = false;
 			},
 			showNewCard(state) {
 				this.card = {

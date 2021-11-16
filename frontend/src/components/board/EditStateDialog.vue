@@ -83,6 +83,7 @@ export default {
   },
   mounted() {
     this.stateData = JSON.parse(JSON.stringify(this.state));
+    console.log(this.state);
   },
   methods: {
     saveState() {
@@ -121,7 +122,6 @@ export default {
         if (confirmation) {
             this.$http.delete(`states/${state.id}`)
             .then(() => {
-            this.states = this.states.filter(s => s.id != state.id);
             this.$notify({
                 type: "success",
                 title: "Successfully deleted state",
