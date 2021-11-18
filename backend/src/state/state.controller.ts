@@ -95,13 +95,10 @@ export class StateController {
     @Param('id') id: number,
     @Body() state: State,
   ): Promise<StateDto> {
-    const canAccess = await this.stateService.find(+id);
-    if (!canAccess) {
-      throw new HttpException('Invalid state id', HttpStatus.UNAUTHORIZED);
-    }
     const stateResult = await this.stateService.update({
       where: { id: +id },
       data: state,
+      user: user,
     });
     return stateResult;
   }

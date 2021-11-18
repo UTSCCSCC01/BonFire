@@ -33,7 +33,8 @@ export class StateDetailsDto {
 
   @ApiProperty()
   readonly title: string;
-
+  
+  @ApiProperty()
   readonly created_at: Date;
 
   readonly updated_at: Date;

@@ -1453,10 +1453,15 @@
         "properties": {
           "title": {
             "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
           }
         },
         "required": [
-          "title"
+          "title",
+          "created_at"
         ]
       },
       "CreateCardDto": {
