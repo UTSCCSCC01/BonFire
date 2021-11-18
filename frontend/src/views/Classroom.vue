@@ -131,14 +131,19 @@
           right
           v-if="$currentUser.id == room.creator_id" class="students"
         >
-          <h6 class="px-4 py-2" style="font-family: Poppins">
+          <h6 class="px-2 py-2" style="font-family: Poppins">
             <strong>Invite Code: </strong>
-            <span>{{ room.token }}</span>
-            <v-btn icon color="blue" @click="refreshToken">
+            <span v-if="room.token != 'None'">{{ room.token }}</span>
+            <span v-else style="font-family: Poppins; color: #808080">{{ room.token }}</span>
+            <br>
+            <v-btn small icon color="blue" @click="refreshToken">
               <v-icon x-small> fas fa-sync-alt </v-icon>
             </v-btn>
-            <v-btn icon color="green" @click="copyToken">
+            <v-btn small icon color="green" @click="copyToken">
               <v-icon x-small> fas fa-copy </v-icon>
+            </v-btn>
+            <v-btn small icon color="red" @click="deleteToken">
+              <v-icon x-small> fas fa-times </v-icon>
             </v-btn>
           </h6>
           <h6 class="px-4 py-2" style="font-family: Poppins; font-weight: bold">
@@ -346,6 +351,7 @@ export default {
       this.assignments = [];
       this.boardId = null;
       this.board = {};
+      this.no_token = false;
       this.reloadPageContent();
     },
   },
@@ -515,6 +521,7 @@ export default {
         .get(`classrooms/${this.classroomId}`)
         .then((res) => {
           this.room = res.data;
+          if (!this.room.token) this.room.token = "None";
           this.boardId = res.data.board_id;
           this.board = res.data.board;
           this.getStates();
@@ -582,11 +589,34 @@ export default {
         });
     },
     copyToken() {
+      if (this.room.token == 'None') {
+        this.$notify({
+          type: "error",
+          title: `There is no token, please create a token if you wish to copy it`,
+        });
+        return;
+      }
       navigator.clipboard.writeText(this.room.token);
       this.$notify({
         type: "success",
         title: `Token ${this.room.token} copied to clipboard`,
       });
+    },
+    deleteToken() {
+      let confirmation = confirm(
+        `Are you sure you want to delete your class token? It will make it impossible to join the classroom`
+      );
+      if (confirmation) {
+        this.$http
+          .delete(`classrooms/${this.room.id}/token`)
+          .then((res) => {
+            if (!res.data.token) this.room.token = 'None';
+            this.reorganizeStates();
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      }
     },
   },
 };
