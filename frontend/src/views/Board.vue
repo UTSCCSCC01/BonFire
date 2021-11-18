@@ -139,13 +139,12 @@
         :board="board"
         @save="saveBoard"
         @close="editBoardDialog = false"
-      /> <state-edit-dialog
-        v-if="board"
+      /> 
+      <state-edit-dialog
         :open-dialog="editStateDialog"
-		:state="state"
+	:state="state"
         @save="saveState"
         @close="editStateDialog = false"
-		@delete="editStateDialog = false"
       />
       <state-dialog
         v-if="board"
