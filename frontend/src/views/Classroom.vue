@@ -592,7 +592,7 @@ export default {
       if (this.room.token == 'None') {
         this.$notify({
           type: "error",
-          title: `Token cannot be copied since there is none, please create a token if you wish to copy it`,
+          title: `There is no token, please create a token if you wish to copy it`,
         });
         return;
       }
