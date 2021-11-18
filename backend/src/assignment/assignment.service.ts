@@ -1,11 +1,12 @@
 import { User, Assignment, Prisma } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { CardService } from 'src/card/card.service';
 import { CreateAssignmentDto } from 'src/constants/assignment';
 import { PrismaService } from 'src/prisma.service';
 
 @Injectable()
 export class AssignmentService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService, private cardService: CardService) {}
 
   /**
    * @param  {User} user
@@ -43,9 +44,24 @@ export class AssignmentService {
       },
     };
 
-    return this.prisma.assignment.create({
+    const assignment = await this.prisma.assignment.create({
       data: createInput,
     });
+
+    const students = await this.prisma.studentClassrooms.findMany({
+      where: {
+        classroom_id: +assignmentData.classroom_id,
+        state_id: {
+          not: null,
+        }
+      }
+    });
+
+    students.forEach(student => {
+      this.cardService.create({ ...assignment, state_id: student.state_id, assignment_id: assignment.id }, user)
+    });
+
+    return assignment;
   }
 
   /**
@@ -77,9 +93,13 @@ export class AssignmentService {
     const { where, data } = params;
     delete data.created_at;
     delete data.updated_at;
+    let { title, desc, submit_url, due_date, available_date, published_date } = data;
+    due_date = due_date ? new Date(due_date as string) : null;
+    available_date = available_date ? new Date(available_date as string) : null;
+    published_date = published_date ? new Date(published_date as string) : null;
 
     return this.prisma.assignment.update({
-      data,
+      data: { title, desc, submit_url, due_date, available_date, published_date},
       where,
     });
   }

@@ -54,7 +54,7 @@ export class CardService {
       },
     });
 
-    const { title, desc, due_date } = card;
+    const { title, desc, due_date, assignment_id } = card;
 
     const cardCreateInput: Prisma.CardCreateInput = {
       title,
@@ -73,8 +73,23 @@ export class CardService {
       order: cardOrder,
     };
 
+    if (assignment_id) {
+      cardCreateInput.assignment = {
+          connect: {
+            id: +assignment_id,
+          },
+        }
+      };
+
     return this.prisma.card.create({
       data: cardCreateInput,
+      include: {
+        assignment: {
+          include: {
+            classroom: true,
+          },
+        },
+      }
     });
   }
 

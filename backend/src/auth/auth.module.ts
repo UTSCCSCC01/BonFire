@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
+import { CardService } from 'src/card/card.service';
 import { PrismaService } from 'src/prisma.service';
 import { UserService } from 'src/user/user.service';
 import { AuthController } from './auth.controller';
@@ -24,7 +25,7 @@ const passport = PassportModule.register({
     passport,
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy, UserService, PrismaService],
+  providers: [AuthService, JwtStrategy, UserService, PrismaService, CardService],
   exports: [JwtModule, passport],
 })
 export class AuthModule {}

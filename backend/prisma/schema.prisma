@@ -31,7 +31,9 @@ model StudentClassrooms {
   created_at   DateTime  @default(now())
   classroom    Classroom @relation(fields: [classroom_id], references: [id])
   student      User      @relation(fields: [student_id], references: [id])
-  deleted    Boolean     @default(false)
+  deleted      Boolean   @default(false)
+  state_id     Int?
+  state        State?    @relation(fields: [state_id], references: [id])
 
   @@id([classroom_id, student_id])
   @@index([student_id])
@@ -41,7 +43,7 @@ model Classroom {
   id          Int                 @id @default(autoincrement())
   token       String              @unique
   name        String
-  deleted    Boolean              @default(false)
+  deleted     Boolean             @default(false)
   created_at  DateTime            @default(now())
   updated_at  DateTime            @updatedAt
   creator_id  Int
@@ -69,37 +71,38 @@ model Board {
 }
 
 model State {
-  id         Int       @id @default(autoincrement())
+  id         Int                 @id @default(autoincrement())
   board_id   Int
   title      String
-  created_at DateTime  @default(now())
-  updated_at DateTime  @updatedAt
-  deleted    Boolean   @default(false)
+  created_at DateTime            @default(now())
+  updated_at DateTime            @updatedAt
+  deleted    Boolean             @default(false)
   order      Int
   type       StateType
-  board      Board     @relation(fields: [board_id], references: [id])
+  board      Board               @relation(fields: [board_id], references: [id])
+  classrooms StudentClassrooms[]
   cards      Card[]
 
   @@index([board_id])
 }
 
 model Card {
-  id             Int          @id @default(autoincrement())
-  title          String
-  desc           String?
-  submit_url     String?
-  creator_id     Int
-  state_id       Int?
+  id            Int         @id @default(autoincrement())
+  title         String
+  desc          String?
+  submit_url    String?
+  creator_id    Int
+  state_id      Int?
   assignment_id Int?
-  order          Int
-  due_date       DateTime?
-  deleted    Boolean   @default(false)
-  created_at     DateTime     @default(now())
-  updated_at     DateTime     @updatedAt
-  creator        User         @relation(fields: [creator_id], references: [id])
-  Assignment    Assignment? @relation(fields: [assignment_id], references: [id])
-  state          State?       @relation(fields: [state_id], references: [id])
-  tags       Tag[]
+  order         Int
+  due_date      DateTime?
+  deleted       Boolean     @default(false)
+  created_at    DateTime    @default(now())
+  updated_at    DateTime    @updatedAt
+  creator       User        @relation(fields: [creator_id], references: [id])
+  assignment    Assignment? @relation(fields: [assignment_id], references: [id])
+  state         State?      @relation(fields: [state_id], references: [id])
+  tags          Tag[]
 
   @@index([creator_id, state_id])
   @@index([assignment_id])
