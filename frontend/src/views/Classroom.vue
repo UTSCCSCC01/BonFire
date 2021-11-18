@@ -133,7 +133,8 @@
         >
           <h6 class="px-2 py-2" style="font-family: Poppins">
             <strong>Invite Code: </strong>
-            <span>{{ room.token }}</span>
+            <span v-if="room.token != 'None'">{{ room.token }}</span>
+            <span v-else style="font-family: Poppins; color: #808080">{{ room.token }}</span>
             <br>
             <v-btn small icon color="blue" @click="refreshToken">
               <v-icon x-small> fas fa-sync-alt </v-icon>
@@ -350,6 +351,7 @@ export default {
       this.assignments = [];
       this.boardId = null;
       this.board = {};
+      this.no_token = false;
       this.reloadPageContent();
     },
   },
@@ -519,6 +521,7 @@ export default {
         .get(`classrooms/${this.classroomId}`)
         .then((res) => {
           this.room = res.data;
+          if (this.room.token == null) this.room.token = "None";
           this.boardId = res.data.board_id;
           this.board = res.data.board;
           this.getStates();
@@ -586,6 +589,13 @@ export default {
         });
     },
     copyToken() {
+      if (this.room.token == 'None') {
+        this.$notify({
+          type: "error",
+          title: `Token cannot be copied since there is none, please create a token if you wish to copy it`,
+        });
+        return;
+      }
       navigator.clipboard.writeText(this.room.token);
       this.$notify({
         type: "success",
