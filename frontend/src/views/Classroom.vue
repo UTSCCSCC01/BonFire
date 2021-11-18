@@ -521,7 +521,7 @@ export default {
         .get(`classrooms/${this.classroomId}`)
         .then((res) => {
           this.room = res.data;
-          if (this.room.token == null) this.room.token = "None";
+          if (!this.room.token) this.room.token = "None";
           this.boardId = res.data.board_id;
           this.board = res.data.board;
           this.getStates();
@@ -610,7 +610,7 @@ export default {
         this.$http
           .delete(`classrooms/${this.room.id}/token`)
           .then((res) => {
-            if (res.data.token == null) this.room.token = 'None';
+            if (!res.data.token) this.room.token = 'None';
             this.reorganizeStates();
           })
           .catch((err) => {
