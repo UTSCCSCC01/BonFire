@@ -136,4 +136,16 @@ export class ClassroomController {
   ): Promise<ClassroomDto> {
     return this.classroomService.kickStudent(user, +id, +studentId);
   }
+
+  @Delete(':id/token')
+  @ApiOperation({ summary: 'Delete token by specific classroom ID' })
+  @ApiOkResponse({
+    description: 'Classroom deletes token',
+  })
+  public async deleteToken(
+    @RequestUser() user,
+    @Param('id') id: number,
+  ): Promise<ClassroomDto> {
+    return this.classroomService.deleteToken(user, +id);
+  }
 }
