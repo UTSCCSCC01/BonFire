@@ -100,9 +100,10 @@ export class CardController {
     @Body()
     body: {
       label: string;
+      color_hex: string;
     },
   ): Promise<Tag> {
-    return this.tagService.create(user, +cardId, body.label);
+    return this.tagService.create(user, +cardId, body.label, body.color_hex);
   }
 
   @Delete(':id')

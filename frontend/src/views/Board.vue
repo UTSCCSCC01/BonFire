@@ -114,6 +114,7 @@
                   @updateCard="updateCard"
                   @deleteCard="removeStateCard"
                   @add-tag="addCardTag"
+									@removeTag="removeCardTag"
                 />
               </v-draggable>
             </v-sheet>
@@ -121,7 +122,6 @@
         </v-draggable>
       </v-row>
     </div>
-
     <div class="dialogs">
       <board-dialog
         v-if="board"
@@ -143,7 +143,6 @@
           required
         />
       </state-dialog>
-
       <card-dialog
         v-if="board && card.state"
         :title="`Create new ${card.state.title} Card`"
@@ -157,7 +156,6 @@
           maxlength="191"
           required
         />
-
         <v-textarea
           v-model="card.desc"
           name="input-7-1"
@@ -166,7 +164,6 @@
           auto-grow
           maxlength="191"
         />
-
         <v-menu
           ref="menu"
           v-model="menu"
@@ -286,6 +283,11 @@
 			this.reloadPageContent();
 		},
 		methods: {
+			removeCardTag({ state_id, tag }) {
+				console.log({ state_id, tag });
+				const card = this.states.find(state => state.id === state_id)?.cards.find(card => card.id === tag.card_id);
+				card.tags = card.tags.filter(t => t.id !== tag.id);
+			},
 			getUserClassrooms(){
 				this.$http.get('classrooms')
 				.then(res => {

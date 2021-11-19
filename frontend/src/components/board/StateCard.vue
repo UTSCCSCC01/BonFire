@@ -45,10 +45,10 @@
           style="padding: 0 5px; display: inline"
         >
           <v-chip
-            color="pink"
+            :color="tag.color_hex || 'pink'"
             small
             label
-            text-color="white"
+            :text-color="getContrastYIQ(tag.color_hex)"
           >
             {{ tag.label }}
           </v-chip>
@@ -62,6 +62,7 @@
       :card="card.assignment ? {...card, ...card.assignment, id: card.id} : card"
       @add-tag="$emit('add-tag', $event)"
       @update="$emit('updateCard', $event)"
+      @remove-tag="$emit('removeTag', $event)"
       @close="closeCardDialog"
     />
   </div>
@@ -97,6 +98,15 @@ export default {
     closeCardDialog() {
       console.log('Close')
       this.openDialog = false;
+    },
+    getContrastYIQ(hexcolor){
+      hexcolor = hexcolor.replace('#', '');
+      var r = parseInt(hexcolor.substr(0,2),16);
+      var g = parseInt(hexcolor.substr(2,2),16);
+      var b = parseInt(hexcolor.substr(4,2),16);
+
+      var yiq = ((r*299)+(g*587)+(b*114))/1000;
+      return (yiq >= 128) ? 'black' : 'white';
     },
     deleteCard(card) {
       if (!confirm(`Are you sure you want to delete card ${card.title}`)) return;
