@@ -4,7 +4,7 @@ For our release goal, we want to complete all of our sprint tasks/epics, minimiz
 
 The core features that need to be fully built out include;
 - Ensuring everything works
-- Figure out test cases
+- Ensure states and cards are editable
 - Clean up the ui
 - Board/classroom Analytics
 
