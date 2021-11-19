@@ -6,7 +6,6 @@ No Tasks were incomplete
 
 ## What are practices that you should continue during next sprint:
  - Group work sessions
- - Being More active on Jira
 
 ## What are some new practices that you might want to use during next sprint:
 - Ensuring features work after a merge to avoid hot fixes

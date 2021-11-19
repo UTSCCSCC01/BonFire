@@ -48,7 +48,7 @@
 ### UserService
 | Collaborators | Responsibilities |
 | :---: | :--- |
-| PrismaService | Get, create, update, delete user |
+| PrismaService | Get, create, update, delete user. add classroom. Show analytics |
 
 ### BoardService
 | Collaborators | Responsibilities |

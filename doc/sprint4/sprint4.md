@@ -1,11 +1,7 @@
-# Sprint 2 Planning
-
-#### Meeting and sprint goal is documented, all spikes clearly identified,
-- decisions about user stories to be completed this sprint are clear,
-- tasks breakdown is done.
+# Sprint 4 Planning
 
 ## Sprint goal:
- - Finish user stories: __WRLD-145__, __WRLD-142__, __WRLD-32__, __WRLD-33__, __WRLD-31__, __WRLD-186__, __WRLD-195__, __WRLD-21__, __WRLD-206__, __WRLD-26__, __WRLD-24__, __WRLD-127__, __WRLD-35__, __WRLD-200__
+ - Finish user stories: __WRLD-145__,
 
  Associated Tasks: __WRLD-67__, __WRLD-209__, __WRLD-122__, __WRLD-123__, [__WRLD-198__ - __WRLD-219__], [__WRLD-170__ - __WRLD-176__]
 
@@ -15,45 +11,38 @@
 ### Epic: Assignment Cards
 This epic is for showing assignment cards to students and teachers
 
-Story: __WRLD-145__, __WRLD-142__
+Story: __WRLD-147__
 
 Tasks:
- - Teachers can create assignment with due dates
- - Students can see created assignments
+ - Edits made on facilitator board is reflected on student board
 
 ### Epic: Basic KanBan Workflow
 This epic is for tickets that are required to provide the basic kanban workflow
 
-Story: __WRLD-32__, __WRLD-33__, __WRLD-31__
+Story: __WRLD-30__
 
 Tasks:
- - Users can create cards on the board
- - Frontend and backend for each task
- - Users can move cards around the board
- - Users can delete states form the board
+ - Users can rename states in a board
+ - Users can delete states on a board
 
 ### Epic: Board Customization
 This epic is for tickets that add additional customization to the board
 
-Story: __WRLD-35__, __WRLD-200__
+Story: __WRLD-36__, __WRLD-180__
 
 Tasks:
- - Allow users to create tags on boards
- - Allow users to see tags on boards
- - Users can select cards to see and edit their details in a modal
-
+ - Colors can be assigned to card tags
+ - Card tags can be deleted
+ - Students can see board aggregate data
 
 ### Epic: Teacher classrooms
 This epic is for tickets that adding classroom functionality to the site
 
-Story: __WRLD-186__, __WRLD-195__, __WRLD-21__, __WRLD-206__, __WRLD-26__, __WRLD-24__, __WRLD-127__
+Story: __WRLD-25__, __WRLD-28__
 
 Tasks:
- - User can see students in their classroom and manage them
- - Users can see thier classrooms
- - Users can create/delete classroom boards
- - Users can join/leave classrooms
- - Users can generate/re-generate classroom invite codes
+ - Facilitators can remove classroom join link
+ - Facilitators can see classroom aggregated data
 ## Spikes:
  - None
 
@@ -62,11 +51,11 @@ Tasks:
 ## Capacity
 | Name | Capacity (hours per day) |
 | --- | --- |
-| Mohamed Halat | 3 |
+| Mohamed Halat | 4 |
 | Christian Liu | 2 |
-| David Petrov | 4 |
-| Armand Sarkezians | 2 |
-| Ahmed Halat | 3 |
+| David Petrov | 5 |
+| Armand Sarkezians | 1 |
+| Ahmed Halat | 2 |
 
 ## Participants
 - Mohamed Halat
