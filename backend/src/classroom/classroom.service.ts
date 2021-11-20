@@ -292,4 +292,35 @@ export class ClassroomService {
     }
     return 'Campsite#'.concat(code);
   }
+
+  async deleteToken(user: User, classroomId: number): Promise<Classroom> {
+    const classroom = await this.prisma.classroom.findUnique({
+      where: {
+        id: classroomId,
+      },
+    });
+
+    if (!classroom) {
+      throw new HttpException(
+        'Classroom Does not exist',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    if (classroom.creator_id !== user.id) {
+      throw new HttpException(
+        'Insufficient permissions',
+        HttpStatus.UNAUTHORIZED,
+      );
+    }
+
+    return this.prisma.classroom.update({
+      where: {
+        id: classroomId,
+      },
+      data: {
+        token: null,
+      },
+    });
+  }
 }

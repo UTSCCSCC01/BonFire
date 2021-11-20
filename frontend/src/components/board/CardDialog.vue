@@ -94,6 +94,35 @@
                     style="margin-top: 25px;"
                   ></v-text-field>
                 </v-col>
+                <v-col cols="2">
+                  <v-menu
+                    v-model="colorMenu"
+                    :close-on-content-click="false"
+                    :nudge-width="200"
+                    offset-x
+                  >
+                    <template v-slot:activator="{ on, attrs }">
+                      <v-btn
+                        class="board-states-item-btn"
+                        :color="tagColor"
+                        x-small
+                        elevation="0"
+                        v-bind="attrs"
+                        v-on="on"
+                        style="margin-top: 40px;height: 30px;"
+                      >
+                      </v-btn>
+                    </template>
+                    <v-card>
+                      <v-color-picker
+                        v-model="tagColor"
+                        dot-size="17"
+                        mode="hexa"
+                        swatches-max-height="100"
+                      ></v-color-picker>
+                    </v-card>
+                  </v-menu>
+                </v-col>
                 <v-col cols="5">
                   <v-btn
                     class="board-states-item-btn"
@@ -113,7 +142,12 @@
               </v-row>
               <v-list>
                 <v-list-item v-for="tag in card.tags" :key="tag.id" style="padding: 0 5px; display: inline">
-                  <v-chip color="pink" small label text-color="white">
+                  <v-chip small label
+                    close close-icon="fa fa-times"
+                    @click:close="deleteTag(tag)"
+                    :color="tag.color_hex || 'pink'"
+                    :text-color="getContrastYIQ(tag.color_hex)"
+                  >
                     {{ tag.label }}
                   </v-chip>
                 </v-list-item>
@@ -179,6 +213,8 @@ export default {
       dialog: false,
       menu: false,
       tagLabel: '',
+      colorMenu: false,
+      tagColor: '#f7f7f7'
     };
   },
   watch: {
@@ -194,12 +230,18 @@ export default {
     this.cardData = JSON.parse(JSON.stringify(this.card));
   },
   methods: {
+    deleteTag(tag) {
+      this.$http.delete(`/tags/${tag.id}`)
+        .then(() => {
+          this.$emit('remove-tag', { state_id: this.card.state_id, tag });
+        });
+    },
     createTag() {
       if (!this.tagLabel){
         return;
       }
 
-      this.$http.post(`/cards/${this.cardData.id}/tags`, { label: this.tagLabel })
+      this.$http.post(`/cards/${this.cardData.id}/tags`, { label: this.tagLabel, color_hex: this.tagColor })
         .then(res => {
           this.$emit('add-tag', { card: this.cardData, tag: res.data });
         })
@@ -208,6 +250,15 @@ export default {
         });
 
       this.tagLabel = '';
+    },
+    getContrastYIQ(hexcolor){
+      hexcolor = hexcolor.replace('#', '');
+      var r = parseInt(hexcolor.substr(0,2),16);
+      var g = parseInt(hexcolor.substr(2,2),16);
+      var b = parseInt(hexcolor.substr(4,2),16);
+
+      var yiq = ((r*299)+(g*587)+(b*114))/1000;
+      return (yiq >= 128) ? 'black' : 'white';
     },
     updateChanges() {
       this.$emit('update', this.cardData);

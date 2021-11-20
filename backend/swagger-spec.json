@@ -1013,9 +1013,58 @@
         ]
       }
     },
+    "/classrooms/{id}/token": {
+      "delete": {
+        "operationId": "deleteToken",
+        "summary": "Delete token by specific classroom ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Classroom deletes token"
+          }
+        },
+        "tags": [
+          "classrooms"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
     "/user/classroom": {
       "put": {
         "operationId": "joinClassroom",
+        "summary": "Adds a student to a specific classroom",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "Added a student to classroom"
+          }
+        },
+        "tags": [
+          "user"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/user/classroom/state": {
+      "post": {
+        "operationId": "setClassroomState",
         "summary": "Adds a student to a specific classroom",
         "parameters": [],
         "responses": {
@@ -1192,6 +1241,35 @@
         },
         "tags": [
           "assignments"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
+      }
+    },
+    "/tags/{id}": {
+      "delete": {
+        "operationId": "deleteCard",
+        "summary": "Deletes a Tag",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "tags"
         ],
         "security": [
           {

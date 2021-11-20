@@ -41,6 +41,9 @@ export class Tag {
   readonly label: string;
 
   @ApiProperty()
+  readonly color_hex: string;
+
+  @ApiProperty()
   readonly card_id: number;
 
   @ApiProperty()

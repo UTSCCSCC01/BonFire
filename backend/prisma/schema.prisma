@@ -41,7 +41,7 @@ model StudentClassrooms {
 
 model Classroom {
   id          Int                 @id @default(autoincrement())
-  token       String              @unique
+  token       String?             @unique
   name        String
   deleted     Boolean             @default(false)
   created_at  DateTime            @default(now())
@@ -135,6 +135,7 @@ model Tag {
   card_id    Int
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  color_hex  String   @default("#f7f7f7")
   card       Card     @relation(fields: [card_id], references: [id])
 
   @@index([card_id])
