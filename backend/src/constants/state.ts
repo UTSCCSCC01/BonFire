@@ -27,3 +27,15 @@ export class StateDto {
   @ApiProperty()
   readonly type: string;
 }
+
+export class StateDetailsDto {
+  readonly id: number;
+
+  @ApiProperty()
+  readonly title: string;
+  
+  @ApiProperty()
+  readonly created_at: Date;
+
+  readonly updated_at: Date;
+}

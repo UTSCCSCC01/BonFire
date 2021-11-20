@@ -8,6 +8,7 @@ import {
   Post,
   UseGuards,
   Delete,
+  Put,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
@@ -19,9 +20,9 @@ import {
 import { StateService } from './state.service';
 import { RequestUser } from 'src/constants/auth';
 import { StateDto } from '../constants/state';
-import { CreateStateDto } from '../constants/state';
+import { CreateStateDto, StateDetailsDto } from '../constants/state';
 import { CardDto } from 'src/constants/card';
-import { User } from '@prisma/client';
+import { User, State } from '@prisma/client';
 
 @Controller('states')
 @ApiTags('states')
@@ -81,5 +82,24 @@ export class StateController {
     @Param('id') stateId: number,
   ): Promise<StateDto> {
     return this.stateService.delete(user, +stateId);
+  }
+
+  @Put(':id')
+  @ApiOperation({ summary: 'Update a state by specific ID' })
+  @ApiOkResponse({
+    description: 'State details',
+    type: StateDetailsDto,
+  })
+  public async updateState(
+    @RequestUser() user: User,
+    @Param('id') id: number,
+    @Body() state: State,
+  ): Promise<StateDto> {
+    const stateResult = await this.stateService.update({
+      where: { id: +id },
+      data: state,
+      user: user,
+    });
+    return stateResult;
   }
 }

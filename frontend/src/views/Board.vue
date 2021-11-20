@@ -75,12 +75,22 @@
                   elevation="0"
                   @click="deleteState(state)"
                 >
-                  <v-icon
-                    x-small
-                  >
+                  <v-icon x-small>
                     fa fa-times
                   </v-icon>
                 </v-btn>
+								<v-btn
+                  align="left"
+                  icon
+                  x-small
+                  color="dark-grey"
+                  elevation="0"
+                  @click="editState(state)"
+                >
+                  <v-icon x-small>
+                    fas fa-edit
+                  </v-icon>
+								</v-btn>
                 <v-btn
                   class="board-states-item-btn"
                   color="#f7f7f7"
@@ -129,6 +139,12 @@
         :board="board"
         @save="saveBoard"
         @close="editBoardDialog = false"
+      /> 
+      <state-edit-dialog
+        :open-dialog="editStateDialog"
+	:state="state"
+        @save="saveState"
+        @close="editStateDialog = false"
       />
       <state-dialog
         v-if="board"
@@ -243,12 +259,14 @@
 	import Draggable from "vuedraggable";
 	import StateCard from "@/components/board/StateCard";
 	import EditBoardDialog from "@/components/board/EditBoardDialog";
+	import EditStateDialog from "@/components/board/EditStateDialog";
 	import Dialog from "@/components/Dialog";
 	import Board from "@/mixins/boards.js";
 
 	export default {
 		components: {
 			'board-dialog': EditBoardDialog,
+			'state-edit-dialog': EditStateDialog,
 			'state-card': StateCard,
 			'card-dialog': Dialog,
 			'class-dialog': Dialog,
@@ -266,6 +284,14 @@
 			return {
 				isHovering: false,
 				classrooms: [],
+				card: { state: {} },
+				board: {},
+				editBoardDialog: false,
+				newClass: false,
+				newState: false,
+				state: {},
+				states: [],
+				editStateDialog: false,
 				selectedState: {},
 				selectedClass: {},
 			};
@@ -274,9 +300,8 @@
 			boardId: function() {
 				// If the board id changes, reload all board content
 				this.getUserClassrooms();
-				this.reloadPageContent()
+				this.reloadPageContent();
 			},
-
 		},
 		mounted() {
 			this.getUserClassrooms();
@@ -324,6 +349,17 @@
 				this.getBoardInfo();
 				this.getStates();
 			},
+			editState(state) {
+				this.state = state;
+				this.editStateDialog = true;	
+				this.reloadPageContent();
+			},
+			saveState(data) {
+				this.state = data;
+				this.editBoardDialog = false;
+				this.reloadPageContent();
+			},
+
 		},
 	}
 </script>

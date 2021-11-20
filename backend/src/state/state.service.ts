@@ -40,8 +40,25 @@ export class StateService {
   async update(params: {
     where: Prisma.StateWhereUniqueInput;
     data: Prisma.StateUpdateInput;
+    user: User;
   }): Promise<StateDto> {
-    const { where, data } = params;
+    const { where, data, user } = params;
+
+    const state = await this.prisma.state.findUnique({
+      where,
+    });
+
+    const board = await this.prisma.board.findFirst({
+      where: {
+        user_id: user.id,
+        id: state.board_id,
+      },
+    });
+
+    if (!board) {
+      throw new HttpException('BAD_REQUEST', HttpStatus.UNAUTHORIZED);
+    }
+
     delete data.created_at;
     delete data.updated_at;
 

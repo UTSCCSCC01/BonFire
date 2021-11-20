@@ -1,5 +1,5 @@
 <template>
-  <div class="board-dialog">
+  <div class="state-dialog">
     <v-dialog
       v-model="openDialog"
       persistent
@@ -7,7 +7,7 @@
     >
       <!-- Dialog Card -->
       <v-card>
-        <v-card-title> Edit Board </v-card-title>
+        <v-card-title> Edit State </v-card-title>
         <v-card-text>
           <v-container>
             <v-row>
@@ -17,8 +17,8 @@
                 md="12"
               >
                 <v-text-field
-                  v-model="boardData.title"
-                  label="Board Title"
+                  v-model="stateData.title"
+                  label="State Title"
                   required
                 />
               </v-col>
@@ -30,13 +30,6 @@
           <v-btn
             color="blue darken-1"
             text
-            @click="deleteBoard(board); closeDialog();"
-          >
-            Delete
-          </v-btn>
-          <v-btn
-            color="blue darken-1"
-            text
             @click="closeDialog"
           >
             Close
@@ -44,9 +37,9 @@
           <v-btn
             color="blue darken-1"
             text
-            :disabled="!boardData.title"
+            :disabled="!stateData.title"
             :loading="saving"
-            @click="saveBoard"
+            @click="saveState"
           >
             Save
           </v-btn>
@@ -63,38 +56,40 @@ export default {
       type: Boolean,
       required: true,
     },
-    board: {
+    state: {
       type: Object,
       required: true,
     },
   },
   data() {
     return {
-      boardData: {
+      stateData: {
         title: "",
       },
       saving: false,
     };
   },
   watch: {
-    board: function() {
-      this.boardData = JSON.parse(JSON.stringify(this.board));
+    state: function() {
+      this.stateData = JSON.parse(JSON.stringify(this.state));
     },
   },
   mounted() {
-    this.boardData = JSON.parse(JSON.stringify(this.board));
+    this.stateData = JSON.parse(JSON.stringify(this.state));
+    console.log(this.state);
   },
   methods: {
-    saveBoard() {
+    saveState() {
       this.saving = true;
       this.$http
-        .put(`boards/${this.board.id}`, this.boardData)
+        .put(`states/${this.state.id}`, { title: this.stateData.title })
         .then((response) => {
           this.$notify({
             type: "success",
             title: "Saved",
             text: "Changes Saved",
           });
+
           this.$emit('save', response.data);
         })
         .catch(() => {
@@ -110,23 +105,9 @@ export default {
         });
     },
     closeDialog() {
-      this.$emit('save', this.board);
+      this.$emit('save', this.state);
       this.$emit("close");
     },
-    deleteBoard(board) {
-      let confirmation = confirm(`Are you sure you want to delete board ${board.title}`);
-      if (confirmation) {
-        this.$http.delete(`boards/${board.id}`)
-        .then(() => {
-           this.$router.push({ name: 'Dashboard' });
-        })
-        .catch(err => {
-          console.error(err);
-        })
-      }
-
-    },
-
   },
 };
 </script>

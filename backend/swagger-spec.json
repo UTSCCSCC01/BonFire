@@ -433,6 +433,40 @@
             "bearer": []
           }
         ]
+      },
+      "put": {
+        "operationId": "updateState",
+        "summary": "Update a state by specific ID",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "State details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StateDetailsDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "states"
+        ],
+        "security": [
+          {
+            "bearer": []
+          }
+        ]
       }
     },
     "/states": {
@@ -1490,6 +1524,22 @@
         "required": [
           "board_id",
           "title"
+        ]
+      },
+      "StateDetailsDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "created_at": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "created_at"
         ]
       },
       "CreateCardDto": {
