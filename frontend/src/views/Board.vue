@@ -349,49 +349,6 @@
 				this.getBoardInfo();
 				this.getStates();
 			},
-			getStates() {
-				this.$http.get(`boards/${this.boardId}/states?include=cards`)
-					.then(res => {
-						console.log({res: res.data})
-						this.states = res.data;
-						this.states.forEach(state => {
-							if (!state.cards) this.$set(state, 'cards', [])
-							state.cards = state.cards.filter(card => !card.deleted);
-						});
-
-						this.reorganizeStates();
-					})
-					.catch(err => {
-						console.error(err);
-					})
-			},
-			getBoardInfo() {
-				this.$http.get(`boards/${this.boardId}`)
-					.then(res => {
-						this.board = res.data;
-					})
-					.catch(err => {
-						console.error(err);
-					})
-			},
-			deleteState(state) {
-				let confirmation = confirm(`Are you sure you want to delete state ${state.title}`);
-
-				if (confirmation) {
-
-					this.$http.delete(`states/${state.id}`)
-					.then(() => {
-						this.states = this.states.filter(s => s.id != state.id);
-						this.$notify({
-							type: "success",
-							title: "Successfully deleted state",
-						});
-					})
-					.catch(err => {
-					console.error(err);
-					})
-				}
-			},
 			editState(state) {
 				this.state = state;
 				this.editStateDialog = true;	
