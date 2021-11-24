@@ -9,7 +9,13 @@ import { CardService } from 'src/card/card.service';
 
 @Module({
   controllers: [BoardController],
-  providers: [BoardService, PrismaService, StateService, UserService, CardService],
+  providers: [
+    BoardService,
+    PrismaService,
+    StateService,
+    UserService,
+    CardService,
+  ],
   imports: [AuthModule],
 })
 export class BoardModule {}

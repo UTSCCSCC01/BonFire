@@ -75,11 +75,11 @@ export class CardService {
 
     if (assignment_id) {
       cardCreateInput.assignment = {
-          connect: {
-            id: +assignment_id,
-          },
-        }
+        connect: {
+          id: +assignment_id,
+        },
       };
+    }
 
     return this.prisma.card.create({
       data: cardCreateInput,
@@ -89,7 +89,7 @@ export class CardService {
             classroom: true,
           },
         },
-      }
+      },
     });
   }
 

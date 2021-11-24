@@ -10,7 +10,10 @@ import { filter } from 'rxjs';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService, private cardService: CardService) {}
+  constructor(
+    private prisma: PrismaService,
+    private cardService: CardService,
+  ) {}
 
   /** Find a user by email or id
    * @param  {Prisma.UserWhereUniqueInput} userWhereUniqueInput
@@ -100,7 +103,11 @@ export class UserService {
     return classroom;
   }
 
-  async setClassroomState(user: User, id: number, stateId: number): Promise<CardDto[]> {
+  async setClassroomState(
+    user: User,
+    id: number,
+    stateId: number,
+  ): Promise<CardDto[]> {
     // check if the token is valid
     const classroom = await this.prisma.classroom.findFirst({
       where: { id },
@@ -122,7 +129,7 @@ export class UserService {
         classroom_id_student_id: {
           classroom_id: classroom.id,
           student_id: user.id,
-        }
+        },
       },
     });
 
@@ -132,12 +139,17 @@ export class UserService {
         due_date: {
           gt: new Date(),
         },
-      }
+      },
     });
 
-    let cards = [];
+    const cards = [];
     for (const assignment of assignments) {
-      cards.push(await this.cardService.create({...assignment, state_id: state.id, assignment_id: assignment.id}, user));
+      cards.push(
+        await this.cardService.create(
+          { ...assignment, state_id: state.id, assignment_id: assignment.id },
+          user,
+        ),
+      );
     }
 
     return cards;
@@ -207,6 +219,7 @@ export class UserService {
         await this.prisma.state.findFirst({
           where: {
             id: card.state_id,
+            deleted: false,
           },
         }),
       );
@@ -261,6 +274,7 @@ export class UserService {
       const board = await this.prisma.board.findFirst({
         where: {
           id: state.board_id,
+          deleted: false,
         },
       });
 

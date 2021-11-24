@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Param, Put, UseGuards, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Put,
+  UseGuards,
+  Post,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
@@ -39,11 +47,15 @@ export class UserController {
   })
   public async setClassroomState(
     @RequestUser() user: User,
-    @Body() body: { state_id: number, classroom_id: number},
+    @Body() body: { state_id: number; classroom_id: number },
   ): Promise<CardDto[]> {
-    return await this.userService.setClassroomState(user, body.classroom_id, body.state_id);
+    return await this.userService.setClassroomState(
+      user,
+      body.classroom_id,
+      body.state_id,
+    );
   }
-  
+
   @Get('/analytics')
   @ApiOperation({ summary: 'Returns user aggregated analytics' })
   @ApiOkResponse({
