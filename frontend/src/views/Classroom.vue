@@ -26,7 +26,8 @@
               class="toolbar-btn"
               color="#f7f7f7"
               depressed
-              tile
+              rounded
+              right
               @click="newAssignment = true"
             >
               <v-icon left> fa fa-plus </v-icon>
@@ -36,7 +37,8 @@
               class="toolbar-btn mx-2"
               color="#f7f7f7"
               depressed
-              tile
+              rounded
+              right
               @click="studentDrawer = !studentDrawer"
             >
               <v-icon left> fa fa-user </v-icon>
@@ -45,11 +47,11 @@
           </div>
           <div>
             <v-btn
-              v-if="$currentUser.id != room.creator_id"
+            v-if="$currentUser.id != room.creator_id"
               class="toolbar-btn"
-              color="#FFCCCC"
+              color="#f7f7f7"
               depressed
-              tile
+              rounded
               right
               @click="leaveClass(room)"
             >
