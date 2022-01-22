@@ -1,7 +1,6 @@
 import { Board, Prisma } from '.prisma/client';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
-import e from 'express';
 import { CardDto } from 'src/constants/card';
 import { StateDto } from 'src/constants/state';
 import { PrismaService } from 'src/prisma.service';
@@ -101,7 +100,7 @@ export class BoardService {
     boardId: number,
     include?: Prisma.StateInclude,
   ): Promise<StateDto[]> {
-    // Find all states tied to a boardId with a specifc user
+    // Find all states tied to a boardId with a specific user
     const board = await this.prisma.board.findFirst({
       where: {
         id: boardId,

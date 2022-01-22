@@ -2,6 +2,10 @@
 node_modules
 */dist
 
+#firebase
+.firebase
+firebase.json
+.firebaserc
 
 # local env files
 .env.local
@@ -26,3 +30,4 @@ pnpm-debug.log*
 .vscode/*
 frontend/src/views/workspace.code-workspace
 *.code-workspace
+backend/firebase-admin-sdk.json

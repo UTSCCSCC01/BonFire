@@ -160,6 +160,11 @@ export class UserService {
       where: {
         creator_id: user.id,
         deleted: false,
+        state: {
+          board: {
+            deleted: false,
+          }
+        }
       },
     });
 

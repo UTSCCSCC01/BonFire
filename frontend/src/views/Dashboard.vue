@@ -1,5 +1,5 @@
 <template>
-  <div scroll>
+  <div class="mx-4" scroll>
     <h1 class="header">
       My Dashboard
     </h1>
@@ -13,7 +13,7 @@
       :items-per-page="5"
       class="elevation-1"
     />
-    
+
     <div class="main-container">
       <div class="aggregated-analytics">
         <h1 class="title">
@@ -47,7 +47,7 @@
         <h1 class="title">
           Personal Board Analytics
         </h1>
-        
+
         <v-container
           id="table-scroll"
           class="d-flex"
@@ -146,7 +146,7 @@ export default {
         { text: "Due Date", value: "due_date" },
         { text: "Days left", value: "days_left" },
       ],
-      
+
     };
   },
   computed: {

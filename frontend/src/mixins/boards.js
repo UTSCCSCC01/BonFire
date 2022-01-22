@@ -74,6 +74,10 @@ export default {
     createCard() {
       this.newCard = false;
       this.card.state_id = this.card.state.id;
+      if (this.card.due_date) {
+        let date = this.card.due_date.split('-');
+        this.card.due_date = new Date(date[0], date[1] - 1, date[2]).toISOString()
+      }
       delete this.card.state;
 
       this.$http.post('cards', this.card)
